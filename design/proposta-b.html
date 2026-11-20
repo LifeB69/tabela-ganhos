@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carteira azul</title>
+<meta name="description" content="Proposta B da Tabela de Ganhos: um documento trabalhista passado a limpo, com capa azul-marinho, listas de resumo e anotações.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@700;800&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+  try { var t = localStorage.getItem('tg-proposta-tema'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+</script>
+<style>
+:root {
+  --fundo: #FFFFFF;
+  --pagina: #F2F6F9;
+  --tinta: #0F1B2D;
+  --tinta-2: #4A5A6E;
+  --capa: #1D2F55;
+  --sobre-capa: #FFFFFF;
+  --sobre-capa-2: #C9D4E6;
+  --acao: #1F5FAD;
+  --acao-fundo: #E8F0FA;
+  --chip-ativo: #1D2F55;
+  --sobre-chip: #FFFFFF;
+  --indicador: #DCE6F4;
+  --ok: #1E7B45;
+  --alerta: #A4330F;
+  --alerta-fundo: #FBEEE9;
+  --aviso: #5C4400;
+  --aviso-fundo: #FFF4CC;
+  --borda: #7D8DA1;
+  --borda-leve: #D6DEE8;
+  --moldura: #E1E7EE;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fundo: #0D1522; --pagina: #152033; --tinta: #E6ECF4; --tinta-2: #9EADC2;
+    --capa: #152033; --sobre-capa: #E6ECF4; --sobre-capa-2: #9EADC2; --acao: #8FB4FF; --acao-fundo: #1A2A44;
+    --chip-ativo: #8FB4FF; --sobre-chip: #0D1522; --indicador: #26385C; --ok: #6CD49A;
+    --alerta: #FF9C7A; --alerta-fundo: #2A1812; --aviso: #F5D36B; --aviso-fundo: #2B2410;
+    --borda: #5B6E8A; --borda-leve: #24324A; --moldura: #1A2436; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --fundo: #0D1522; --pagina: #152033; --tinta: #E6ECF4; --tinta-2: #9EADC2;
+  --capa: #152033; --sobre-capa: #E6ECF4; --sobre-capa-2: #9EADC2; --acao: #8FB4FF; --acao-fundo: #1A2A44;
+  --chip-ativo: #8FB4FF; --sobre-chip: #0D1522; --indicador: #26385C; --ok: #6CD49A;
+  --alerta: #FF9C7A; --alerta-fundo: #2A1812; --aviso: #F5D36B; --aviso-fundo: #2B2410;
+  --borda: #5B6E8A; --borda-leve: #24324A; --moldura: #1A2436; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--pagina); color: var(--tinta); font-family: "Noto Sans", system-ui, sans-serif; font-size: 16px; line-height: 1.5; font-variant-numeric: tabular-nums; }
+a { color: var(--acao); text-underline-offset: 3px; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--acao); outline-offset: 2px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+svg.i { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+svg.i.p { width: 16px; height: 16px; }
+.franklin { font-family: "Libre Franklin", "Noto Sans", sans-serif; }
+
+/* apresentação */
+.apres { background: var(--capa); color: var(--sobre-capa); border-bottom: 1px solid var(--borda); }
+.apres-in { max-width: 1260px; margin: 0 auto; padding: 20px 16px 24px; display: flex; flex-wrap: wrap; gap: 16px 32px; align-items: flex-end; justify-content: space-between; }
+.apres-txt { max-width: 660px; }
+.apres a.volta { color: var(--sobre-capa); display: inline-flex; min-height: 44px; align-items: center; font-weight: 500; }
+.apres h1 { font-family: "Libre Franklin", sans-serif; font-weight: 800; font-size: clamp(32px, 5.6vw, 46px); line-height: 1.05; margin: 2px 0 10px; letter-spacing: -.01em; }
+.apres p { margin: 0; color: var(--sobre-capa-2); }
+.tema-btn { min-height: 44px; padding: 0 16px; border: 1.5px solid var(--sobre-capa-2); border-radius: 2px; background: transparent; color: var(--sobre-capa); display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 500; }
+
+.telas { max-width: 1260px; margin: 0 auto; padding: 28px 16px 56px; display: flex; flex-wrap: wrap; gap: 32px 24px; justify-content: center; align-items: flex-start; }
+.tela { flex: 0 1 390px; width: 390px; max-width: 100%; margin: 0; }
+.tela > h2 { font-family: "Libre Franklin", sans-serif; font-weight: 700; font-size: 17px; margin: 0 0 10px; color: var(--tinta); display: flex; gap: 10px; align-items: center; }
+.tela > h2 b { display: inline-grid; place-items: center; width: 28px; height: 28px; background: var(--capa); color: var(--sobre-capa); border-radius: 2px; font-size: 15px; border: 1px solid var(--borda); }
+
+/* moldura */
+.celular { background: var(--fundo); border: 1px solid var(--borda); border-radius: 30px; overflow: hidden; box-shadow: 0 0 0 7px var(--moldura); display: flex; flex-direction: column; min-height: 820px; }
+.app-topo { background: var(--capa); color: var(--sobre-capa); padding: 10px 16px 14px; border-bottom: 1px solid var(--borda); }
+.status { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; padding: 0 8px 6px; }
+.status svg { width: 34px; height: 12px; }
+.app-linha { display: flex; align-items: center; justify-content: space-between; }
+.app-nome { font-family: "Libre Franklin", sans-serif; font-weight: 800; font-size: 22px; margin: 0; letter-spacing: -.005em; }
+.icone-btn { width: 44px; height: 44px; display: grid; place-items: center; border: 0; background: transparent; color: var(--sobre-capa); border-radius: 2px; cursor: pointer; margin-right: -10px; }
+.selo { margin: 4px 0 0; font-size: 14px; color: var(--sobre-capa-2); display: flex; align-items: center; gap: 8px; }
+.selo::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #6CD49A; flex: none; }
+
+.app-corpo { flex: 1; display: flex; flex-direction: column; }
+.secao { padding: 16px; border-bottom: 1px solid var(--borda-leve); display: flex; flex-direction: column; gap: 14px; }
+.secao.cinza { background: var(--pagina); }
+.secao h3 { font-family: "Libre Franklin", sans-serif; font-weight: 700; font-size: 20px; margin: 0; line-height: 1.2; }
+.secao .sub { margin: -8px 0 0; color: var(--tinta-2); font-size: 15px; }
+
+/* segmentado de modos */
+.modos { display: grid; grid-template-columns: repeat(3, 1fr); border: 1.5px solid var(--borda); border-radius: 2px; overflow: hidden; }
+.modos .chip { border: 0; border-right: 1.5px solid var(--borda); border-radius: 0; justify-content: center; }
+.modos .chip:last-child { border-right: 0; }
+.chip { min-height: 46px; padding: 0 12px; border: 1.5px solid var(--borda); border-radius: 2px; background: var(--fundo); font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+.chip[aria-pressed="true"] { background: var(--chip-ativo); color: var(--sobre-chip); font-weight: 600; }
+.link-btn { align-self: flex-start; min-height: 44px; border: 0; background: none; padding: 0; color: var(--acao); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; margin: -6px 0; }
+
+/* campos em caixa */
+.campos { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 12px; }
+.campo { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.campo.largo { grid-column: 1 / -1; }
+.rotulo { font-weight: 600; font-size: 16px; }
+.dica { font-size: 14px; color: var(--tinta-2); margin: 0; }
+.caixa { display: flex; align-items: center; gap: 6px; border: 1.5px solid var(--borda); border-radius: 2px; background: var(--fundo); min-height: 50px; padding: 0 12px; }
+.caixa:focus-within { border-color: var(--acao); box-shadow: 0 0 0 2px var(--acao); }
+.caixa .pre { color: var(--tinta-2); }
+.caixa input, .caixa select { flex: 1; min-width: 0; border: 0; background: transparent; font-size: 19px; font-weight: 500; padding: 10px 0; outline: none; appearance: none; -webkit-appearance: none; }
+.caixa svg { color: var(--tinta-2); }
+.segmento { display: flex; gap: 8px; }
+.segmento .chip { flex: 1; }
+.passos { display: grid; grid-template-columns: 48px 1fr 48px; border: 1.5px solid var(--borda); border-radius: 2px; min-height: 50px; }
+.passos button { border: 0; background: var(--pagina); cursor: pointer; display: grid; place-items: center; min-height: 48px; }
+.passos output { display: grid; place-items: center; font-size: 19px; font-weight: 600; border-left: 1.5px solid var(--borda); border-right: 1.5px solid var(--borda); }
+
+/* resultado */
+.result-cab { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.result-cab span { font-size: 14px; color: var(--tinta-2); }
+.numero { font-weight: 600; font-size: 44px; line-height: 1.05; letter-spacing: -.02em; margin: 0; display: flex; align-items: baseline; gap: 6px; }
+.numero small { font-size: 22px; font-weight: 500; color: var(--tinta-2); letter-spacing: 0; }
+.lista { margin: 0; border-top: 1px solid var(--borda); }
+.lista > div { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; padding: 12px 0; border-bottom: 1px solid var(--borda); align-items: baseline; }
+.lista dt { font-weight: 500; }
+.lista dt small, .lista .obs { display: block; font-weight: 400; font-size: 14px; color: var(--tinta-2); }
+.lista dd { margin: 0; text-align: right; font-weight: 600; font-size: 18px; white-space: nowrap; }
+.lista dd.grande { font-size: 22px; }
+.acoes { display: flex; gap: 8px; }
+.btn { flex: 1; min-height: 48px; padding: 0 14px; border-radius: 2px; border: 1.5px solid var(--acao); background: var(--fundo); color: var(--acao); font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.btn.cheio { background: var(--acao); color: var(--fundo); }
+
+/* anotação */
+.anotacao { border-left: 5px solid var(--alerta); background: var(--alerta-fundo); padding: 12px 14px; }
+.anotacao .tit { margin: 0 0 4px; display: flex; gap: 8px; align-items: center; font-family: "Libre Franklin", sans-serif; font-weight: 700; color: var(--alerta); font-size: 17px; }
+.anotacao p { margin: 0 0 8px; }
+.anotacao .art { font-weight: 700; color: var(--alerta); font-size: 14px; letter-spacing: .02em; }
+.anotacao .linha-acoes { display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: center; }
+.anotacao .btn { flex: none; border-color: var(--alerta); color: var(--alerta); background: transparent; }
+
+/* mostrar a conta */
+.conta summary { list-style: none; min-height: 52px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; font-family: "Libre Franklin", sans-serif; font-weight: 700; font-size: 18px; }
+.conta summary::-webkit-details-marker { display: none; }
+.conta[open] summary svg { transform: rotate(180deg); }
+.conta .lista > div { grid-template-columns: 1fr auto; }
+.lei { grid-column: 1 / -1; display: inline-flex; align-items: center; gap: 5px; min-height: 34px; font-size: 14.5px; font-weight: 600; justify-self: start; }
+.dig { color: var(--acao); font-weight: 600; }
+.conta .soma { border-bottom: 3px double var(--tinta) !important; }
+.naogov { margin: 0; font-size: 14px; color: var(--tinta-2); }
+
+/* tabela */
+.rolavel { overflow-x: auto; border: 1.5px solid var(--borda); border-radius: 2px; }
+table.comp { border-collapse: separate; border-spacing: 0; width: 100%; font-size: 13.5px; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+table.comp caption { text-align: left; caption-side: top; font-size: 14px; color: var(--tinta-2); padding: 0 0 8px; }
+table.comp th, table.comp td { padding: 0 3px; height: 40px; text-align: right; white-space: nowrap; }
+table.comp thead th { background: var(--capa); color: var(--sobre-capa); font-weight: 600; font-size: 13.5px; height: 46px; }
+table.comp tbody th { position: sticky; left: 0; text-align: left; padding-left: 8px; font-weight: 700; background: var(--fundo); border-right: 1.5px solid var(--borda); }
+table.comp thead th:first-child { position: sticky; left: 0; z-index: 1; text-align: left; padding-left: 10px; border-right: 1.5px solid var(--borda); }
+table.comp tbody tr:nth-child(even) > * { background: var(--pagina); }
+table.comp .sel { font-weight: 700; box-shadow: inset 2px 0 0 var(--acao), inset -2px 0 0 var(--acao); }
+table.comp thead .sel { box-shadow: inset 0 -4px 0 #8FB4FF; }
+table.comp .min { color: var(--ok); font-weight: 700; border-left: 1.5px solid var(--borda); padding-right: 6px; padding-left: 5px; }
+table.comp thead .min { color: var(--sobre-capa); }
+.horas { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+.horas .chip { padding: 0; }
+.pilula { display: inline-block; font-size: 12.5px; font-weight: 700; padding: 1px 8px; border-radius: 999px; background: var(--aviso-fundo); color: var(--aviso); vertical-align: 2px; margin-left: 6px; }
+
+/* salvos */
+.busca { display: flex; align-items: center; gap: 8px; }
+.lista-salvos { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--borda); }
+.salvo { padding: 14px 16px; border-bottom: 1px solid var(--borda); display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; }
+.salvo.fixo { background: var(--acao-fundo); }
+.salvo h3 { font-family: "Noto Sans", sans-serif; font-size: 17px; font-weight: 600; margin: 0; }
+.salvo h3 a { color: var(--tinta); text-decoration: underline; text-decoration-color: var(--borda); text-underline-offset: 4px; }
+.salvo .val { margin: 0; font-weight: 700; font-size: 17px; text-align: right; white-space: nowrap; }
+.salvo .val small { display: block; font-size: 13px; font-weight: 400; color: var(--tinta-2); }
+.salvo .meta { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; font-size: 14px; color: var(--tinta-2); }
+.salvo .nota { grid-column: 1 / -1; margin: 2px 0 0; font-size: 15px; padding-left: 10px; border-left: 3px solid var(--borda-leve); }
+.etq { background: var(--indicador); color: var(--tinta); font-weight: 600; padding: 0 8px; border-radius: 999px; font-size: 13.5px; }
+.ex { color: var(--aviso); background: var(--aviso-fundo); font-weight: 700; padding: 0 8px; border-radius: 999px; font-size: 13px; }
+.fix { display: inline-flex; gap: 3px; align-items: center; color: var(--tinta); font-weight: 600; }
+.filtros { display: flex; gap: 6px; flex-wrap: wrap; }
+.filtros .chip { border-radius: 999px; padding: 0 14px; font-size: 15px; min-height: 44px; }
+
+/* barra inferior com indicador em pílula */
+.abas { display: grid; grid-template-columns: repeat(5, 1fr); border-top: 1px solid var(--borda); background: var(--fundo); padding: 6px 0 16px; }
+.abas a { min-height: 58px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: var(--tinta-2); text-decoration: none; font-size: 13px; font-weight: 500; }
+.abas a .pil { width: 56px; height: 30px; border-radius: 999px; display: grid; place-items: center; }
+.abas a[aria-current="page"] { color: var(--tinta); font-weight: 700; }
+.abas a[aria-current="page"] .pil { background: var(--indicador); }
+
+.rodape { max-width: 1260px; margin: 0 auto; padding: 0 16px 40px; color: var(--tinta-2); font-size: 14.5px; }
+@media (max-width: 420px) {
+  .celular { border-radius: 22px; box-shadow: 0 0 0 4px var(--moldura); }
+  .numero { font-size: 38px; }
+  .campos { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+.lei { min-height: 44px; }
+.salvo h3 a { display: inline-flex; align-items: center; min-height: 44px; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-calc" viewBox="0 0 24 24"><rect x="5" y="2.5" width="14" height="19" rx="2"/><rect x="8" y="5.5" width="8" height="4" rx=".6"/><path d="M8.6 13.2h.01M12 13.2h.01M15.4 13.2h.01M8.6 17h.01M12 17h.01M15.4 17h.01" stroke-width="2.4"/></symbol>
+  <symbol id="i-tab" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="M3 9h18M3 14.5h18M9 9v11M15 9v11"/></symbol>
+  <symbol id="i-salvos" viewBox="0 0 24 24"><path d="M6.5 3.5h11v17l-5.5-3.8-5.5 3.8z"/><path d="M9.5 8h5"/></symbol>
+  <symbol id="i-leis" viewBox="0 0 24 24"><path d="M12 3.5v16M7.5 20.5h9M5 6.5c2.2.9 4.6 1 7 0 2.4 1 4.8.9 7 0"/><path d="M2.6 13.5 5 7l2.4 6.5M16.6 13.5 19 7l2.4 6.5"/><path d="M2.4 13.5a2.6 2 0 0 0 5.2 0zM16.4 13.5a2.6 2 0 0 0 5.2 0z"/></symbol>
+  <symbol id="i-mais" viewBox="0 0 24 24"><path d="M4 7h9M17.5 7H20M4 17h3.5M12 17h8"/><circle cx="15.2" cy="7" r="2.2"/><circle cx="9.8" cy="17" r="2.2"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-8.5 8.5M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+  <symbol id="i-seta" viewBox="0 0 24 24"><path d="M6 9.5l6 6 6-6"/></symbol>
+  <symbol id="i-nota" viewBox="0 0 24 24"><path d="M5 3.5h10l4 4v13H5z"/><path d="M14.5 3.5V8H19M8.5 12.5h7M8.5 16h5"/></symbol>
+  <symbol id="i-fixo" viewBox="0 0 24 24"><path d="M9 3.5h6l-1 5.2 3 2.8v2H7v-2l3-2.8zM12 13.5V21"/></symbol>
+  <symbol id="i-busca" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.3"/><path d="M15.6 15.6l4.9 4.9"/></symbol>
+  <symbol id="i-menos" viewBox="0 0 24 24"><path d="M6 12h12"/></symbol>
+  <symbol id="i-mais-s" viewBox="0 0 24 24"><path d="M6 12h12M12 6v12"/></symbol>
+  <symbol id="i-comp" viewBox="0 0 24 24"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="5.8" r="2.5"/><circle cx="18" cy="18.2" r="2.5"/><path d="M8.3 10.8l7.4-3.8M8.3 13.2l7.4 3.8"/></symbol>
+  <symbol id="i-guardar" viewBox="0 0 24 24"><path d="M6.5 3.5h11v17l-5.5-3.8-5.5 3.8z"/><path d="M12 7.5v5M9.5 10h5"/></symbol>
+  <symbol id="i-sol" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.8v2M12 19.2v2M2.8 12h2M19.2 12h2M5.5 5.5l1.4 1.4M17.1 17.1l1.4 1.4M5.5 18.5l1.4-1.4M17.1 6.9l1.4-1.4"/></symbol>
+  <symbol id="i-lua" viewBox="0 0 24 24"><path d="M19.5 14.5A8 8 0 0 1 9.5 4.5a8 8 0 1 0 10 10z"/></symbol>
+  <symbol id="i-copiar" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="11.5" height="11.5" rx="1.5"/><path d="M15.5 8.5V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v9.5a1 1 0 0 0 1 1h3.5"/></symbol>
+  <symbol id="i-bateria" viewBox="0 0 34 12"><rect x="12.5" y="1" width="18" height="10" rx="2.5" fill="none" stroke="currentColor"/><rect x="14.5" y="3" width="11" height="6" rx="1" fill="currentColor"/><path d="M1 10.5h2v-2H1zM4.5 10.5h2v-4h-2zM8 10.5h2V4.5H8z" fill="currentColor"/></symbol>
+</svg>
+
+<header class="apres">
+  <div class="apres-in">
+    <div class="apres-txt">
+      <a class="volta" href="index.html">← As três propostas</a>
+      <h1>Proposta B · Carteira azul</h1>
+      <p>Um documento trabalhista passado a limpo: capa azul-marinho, páginas claras, listas de resumo com o valor à direita e o alerta como uma anotação com o artigo da lei. Sem marca do governo.</p>
+    </div>
+    <button class="tema-btn" type="button" id="tema-btn" aria-live="polite"><svg class="i" aria-hidden="true"><use href="#i-sol"/></svg><span>Tema: automático</span></button>
+  </div>
+</header>
+
+<main class="telas">
+
+<!-- ================= TELA 1 ================= -->
+<section class="tela" aria-labelledby="t1">
+  <h2 id="t1"><b>1</b> Calcular · Doméstico</h2>
+  <div class="celular">
+    <header class="app-topo">
+      <div class="status" aria-hidden="true"><span>14:32</span><svg viewBox="0 0 34 12"><use href="#i-bateria"/></svg></div>
+      <div class="app-linha"><p class="app-nome">Tabela de Ganhos</p><button class="icone-btn" type="button" aria-label="Trocar o tema do app"><svg class="i"><use href="#i-lua"/></svg></button></div>
+      <p class="selo">Valores de 2026 · conferidos em 20/11/2026</p>
+    </header>
+    <div class="app-corpo">
+      <div class="secao">
+        <div class="modos" role="group" aria-label="Modo de cálculo">
+          <button class="chip" type="button" aria-pressed="false">Por hora</button>
+          <button class="chip" type="button" aria-pressed="false">Diarista</button>
+          <button class="chip" type="button" aria-pressed="true">Doméstico</button>
+        </div>
+        <button class="link-btn" type="button">Não sei qual é o meu</button>
+        <div class="campos">
+          <div class="campo largo">
+            <span class="rotulo" id="b1-tipo">Tipo de contrato</span>
+            <div class="segmento" role="group" aria-labelledby="b1-tipo">
+              <button class="chip" type="button" aria-pressed="true">Mensalista</button>
+              <button class="chip" type="button" aria-pressed="false">Horista</button>
+            </div>
+          </div>
+          <div class="campo largo">
+            <label class="rotulo" for="b1-sal">Salário mensal</label>
+            <div class="caixa"><span class="pre">R$</span><input id="b1-sal" inputmode="decimal" value="1.621,00" autocomplete="off" aria-describedby="b1-sal-d"></div>
+            <p class="dica" id="b1-sal-d">O valor combinado, antes dos descontos.</p>
+          </div>
+          <div class="campo">
+            <label class="rotulo" for="b1-uf">Estado</label>
+            <div class="caixa"><select id="b1-uf"><option>SP</option><option>RJ</option><option>MG</option><option>PR</option><option>RS</option><option>SC</option></select><svg class="i" aria-hidden="true"><use href="#i-seta"/></svg></div>
+          </div>
+          <div class="campo">
+            <span class="rotulo" id="b1-dep">Dependentes</span>
+            <div class="passos" role="group" aria-labelledby="b1-dep">
+              <button type="button" aria-label="Menos um dependente"><svg class="i"><use href="#i-menos"/></svg></button>
+              <output aria-live="polite">0</output>
+              <button type="button" aria-label="Mais um dependente"><svg class="i"><use href="#i-mais-s"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="secao cinza" aria-labelledby="b1-res">
+        <div class="result-cab"><h3 id="b1-res">Você paga por mês</h3><span>nov/2026</span></div>
+        <p class="numero"><small>R$</small>1.945,20</p>
+        <dl class="lista">
+          <div><dt>A pessoa recebe<small>líquido, já sem o INSS dela</small></dt><dd class="grande">R$&nbsp;1.499,42</dd></div>
+          <div><dt>Guia DAE<small>vence 18/12/2026 (dia 20 é domingo)</small></dt><dd class="grande">R$&nbsp;445,78</dd></div>
+        </dl>
+        <div class="acoes">
+          <button class="btn cheio" type="button"><svg class="i"><use href="#i-guardar"/></svg>Salvar</button>
+          <button class="btn" type="button"><svg class="i"><use href="#i-comp"/></svg>Compartilhar</button>
+        </div>
+      </div>
+
+      <div class="secao">
+        <aside class="anotacao" aria-labelledby="b1-an">
+          <p class="tit" id="b1-an"><svg class="i"><use href="#i-nota"/></svg>Anotação: abaixo do piso de SP</p>
+          <p>Em São Paulo, a doméstica tem piso de <strong>R$&nbsp;1.874,36</strong> desde 01/06/2026. Faltam <strong>R$&nbsp;253,36</strong> por mês.</p>
+          <p class="art">LEI ESTADUAL 18.471/2026</p>
+          <div class="linha-acoes">
+            <button class="btn" type="button">Calcular com o piso</button>
+            <a class="lei" href="https://www.al.sp.gov.br/repositorio/legislacao/lei/2026/lei-18471-27.05.2026.html" target="_blank" rel="noopener">Ler a lei <svg class="i p" aria-hidden="true"><use href="#i-ext"/></svg><span class="sr">(abre em nova aba)</span></a>
+          </div>
+        </aside>
+
+        <details class="conta" open>
+          <summary>Mostrar a conta <svg class="i" aria-hidden="true"><use href="#i-seta"/></svg></summary>
+          <dl class="lista">
+            <div><dt>INSS dela<span class="obs">7,5% × <span class="dig">1.621,00</span></span></dt><dd>121,58</dd>
+              <a class="lei" href="https://www.gov.br/inss/pt-br/direitos-e-deveres/inscricao-e-contribuicao/tabela-de-contribuicao-mensal" target="_blank" rel="noopener">Portaria MPS/MF 13/2026 <svg class="i p" aria-hidden="true"><use href="#i-ext"/></svg><span class="sr">(abre em nova aba)</span></a></div>
+            <div><dt>IR dela<span class="obs">base 1.499,42 abaixo de 2.428,80: isento</span></dt><dd>0,00</dd>
+              <a class="lei" href="https://www.gov.br/receitafederal/pt-br/assuntos/meu-imposto-de-renda/tabelas/2026" target="_blank" rel="noopener">Tabela do IRRF 2026 <svg class="i p" aria-hidden="true"><use href="#i-ext"/></svg><span class="sr">(abre em nova aba)</span></a></div>
+            <div><dt>Líquido dela<span class="obs"><span class="dig">1.621,00</span> − 121,58</span></dt><dd>1.499,42</dd></div>
+            <div><dt>Sua parte<span class="obs">20% × <span class="dig">1.621,00</span>: CPP 8% + GILRAT 0,8% + FGTS 8% + 3,2% de multa</span></dt><dd>324,20</dd>
+              <a class="lei" href="https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp150.htm" target="_blank" rel="noopener">LC 150, arts. 22 e 34 <svg class="i p" aria-hidden="true"><use href="#i-ext"/></svg><span class="sr">(abre em nova aba)</span></a></div>
+            <div><dt>Guia DAE<span class="obs">324,20 + 121,58, no dia 20 do mês seguinte</span></dt><dd>445,78</dd>
+              <a class="lei" href="https://www.gov.br/esocial/pt-br/noticias/mudanca-na-data-de-vencimento-do-dae" target="_blank" rel="noopener">eSocial: vencimento do DAE <svg class="i p" aria-hidden="true"><use href="#i-ext"/></svg><span class="sr">(abre em nova aba)</span></a></div>
+            <div class="soma"><dt>Você paga<span class="obs"><span class="dig">1.621,00</span> + 324,20</span></dt><dd class="grande">1.945,20</dd></div>
+          </dl>
+        </details>
+        <p class="naogov">Este app não é do governo. Estimativa educativa: não substitui contador, advogado nem a folha do eSocial.</p>
+      </div>
+    </div>
+    <nav class="abas" aria-label="Abas do app (tela Calcular)">
+      <a href="#t1" aria-current="page"><span class="pil"><svg class="i" aria-hidden="true"><use href="#i-calc"/></svg></span>Calcular</a>
+      <a href="#t2"><span class="pil"><svg class="i" aria-hidden="true"><use href="#i-tab"/></svg></span>Tabela</a>
+      <a href="#t3"><span class="pil"><svg class="i" aria-hidden="true"><use href="#i-salvos"/></svg></span>Salvos</a>
+      <a href="#t1"><span class="pil"><svg class="i" aria-hidden="true"><use href="#i-leis"/></svg></span>Leis</a>
+      <a href="#t1"><span class="pil"><svg class="i" aria-hidden="true"><use href="#i-mais"/></svg></span>Mais</a>
+    </nav>
+  </div>
+</section>
+
+<!-- ================= TELA 2 ================= -->
+<section class="tela" aria-labelledby="t2">
+  <h2 id="t2"><b>2</b> Tabela de comparação</h2>
+  <div class="celular">
+    <header class="app-topo">
+      <div class="status" aria-hidden="true"><span>14:33</span><svg viewBox="0 0 34 12"><use href="#i-bateria"/></svg></div>
+      <div class="app-linha"><p class="app-nome">Tabela de Ganhos</p><button class="icone-btn" type="button" aria-label="Trocar o tema do app"><svg class="i"><use href="#i-lua"/></svg></button></div>
+      <p class="selo">Valores de 2026 · conferidos em 20/11/2026</p>
+    </header>
+    <div class="app-corpo">
+      <div class="secao">
+        <h3>Quanto dá no mês</h3>
+        <p class="sub">Dias no mês × horas por dia.</p>
+        <div class="campo">
+          <label class="rotulo" for="b2-h">Valor por hora</label>
+          <div class="caixa"><span class="pre">R$</span><input id="b2-h" inputmode="decimal" value="25,00" autocomplete="off"></div>
+        </div>
+        <div class="campo">
+          <span class="rotulo" id="b2-hh">Horas por dia para o mínimo</span>
+          <div class="horas" role="group" aria-labelledby="b2-hh">
+            <button class="chip" type="button" aria-pressed="false">1 h</button>
+            <button class="chip" type="button" aria-pressed="false">2 h</button>
+            <button class="chip" type="button" aria-pressed="false">3 h</button>
+            <button class="chip" type="button" aria-pressed="true">4 h</button>
+            <button class="chip" type="button" aria-pressed="false">5 h</button>
+            <button class="chip" type="button" aria-pressed="false">6 h</button>
+          </div>
+        </div>
+        <div>
+          <div class="rolavel" role="region" aria-labelledby="b2-cap" tabindex="0">
+            <table class="comp">
+              <caption id="b2-cap" class="sr">Total do mês em reais a R$ 25,00 por hora</caption>
+              <thead><tr><th scope="col">Dias</th><th scope="col">1h</th><th scope="col">2h</th><th scope="col">3h</th><th scope="col" class="sel">4h</th><th scope="col">5h</th><th scope="col">6h</th><th scope="col" class="min">Mín.</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">8</th><td>200</td><td>400</td><td>600</td><td class="sel">800</td><td>1.000</td><td>1.200</td><td class="min">235,84</td></tr>
+                <tr><th scope="row">9</th><td>225</td><td>450</td><td>675</td><td class="sel">900</td><td>1.125</td><td>1.350</td><td class="min">265,32</td></tr>
+                <tr><th scope="row">10</th><td>250</td><td>500</td><td>750</td><td class="sel">1.000</td><td>1.250</td><td>1.500</td><td class="min">294,80</td></tr>
+                <tr><th scope="row">11</th><td>275</td><td>550</td><td>825</td><td class="sel">1.100</td><td>1.375</td><td>1.650</td><td class="min">324,28</td></tr>
+                <tr><th scope="row">12</th><td>300</td><td>600</td><td>900</td><td class="sel">1.200</td><td>1.500</td><td>1.800</td><td class="min">353,76</td></tr>
+                <tr><th scope="row">13</th><td>325</td><td>650</td><td>975</td><td class="sel">1.300</td><td>1.625</td><td>1.950</td><td class="min">383,24</td></tr>
+                <tr><th scope="row">14</th><td>350</td><td>700</td><td>1.050</td><td class="sel">1.400</td><td>1.750</td><td>2.100</td><td class="min">412,72</td></tr>
+                <tr><th scope="row">15</th><td>375</td><td>750</td><td>1.125</td><td class="sel">1.500</td><td>1.875</td><td>2.250</td><td class="min">442,20</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="dica" style="margin-top:8px">Em R$, sem centavos, a <span class="dig">R$&nbsp;25,00</span>/h. Mínimo = R$&nbsp;7,37/h × 4 h × dias (<a href="https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2025/decreto/d12797.htm" target="_blank" rel="noopener">Decreto 12.797/2025<span class="sr"> (abre em nova aba)</span></a>).</p>
+        </div>
+        <div class="acoes"><button class="btn" type="button"><svg class="i"><use href="#i-copiar"/></svg>Copiar para planilha</button></div>
+      </div>
+      <div class="secao cinza">
+        <h3>Salário mínimo nacional</h3>
+        <dl class="lista">
+          <div><dt>Por mês<small>desde 01/01/2026</small></dt><dd>R$&nbsp;1.621,00</dd></div>
+          <div><dt>Por dia</dt><dd>R$&nbsp;54,04</dd></div>
+          <div><dt>Por hora</dt><dd>R$&nbsp;7,37</dd></div>
+          <div><dt>Em 2027<span class="pilula">previsto</span><small>não entra na conta até sair o decreto</small></dt><dd>R$&nbsp;1.741</dd></div>
+        </dl>
+      </div>
+    </div>
+    <nav class="abas" aria-label="Abas do app (tela Tabela)">
+      <a href="#t1"><span class="pil"><svg class="i" aria-hidden="true"><use href="#i-calc"/></svg></span>Calcular</a>
+      <a href="#t2" aria-current="page"><span class="pil"><svg class="i" aria-hidden="true"><use href="#i-tab"/></svg></span>Tabela</a>
+      <a href="#t3"><span class="pil"><svg class="i" aria-hidden="true"><use href="#i-salvos"/></svg></span>Salvos</a>
+      <a href="#t2"><span class="pil"><svg class="i" aria-hidden="true"><use href="#i-leis"/></svg></span>Leis</a>
+      <a href="#t2"><span class="pil"><svg class="i" aria-hidden="true"><use href="#i-mais"/></svg></span>Mais</a>
+    </nav>
+  </div>
+</section>
+
+<!-- ================= TELA 3 ================= -->
+<section class="tela" aria-labelledby="t3">
+  <h2 id="t3"><b>3</b> Salvos</h2>
+  <div class="celular">
+    <header class="app-topo">
+      <div class="status" aria-hidden="true"><span>14:35</span><svg viewBox="0 0 34 12"><use href="#i-bateria"/></svg></div>
+      <div class="app-linha"><p class="app-nome">Tabela de Ganhos</p><button class="icone-btn" type="button" aria-label="Trocar o tema do app"><svg class="i"><use href="#i-lua"/></svg></button></div>
+      <p class="selo">Valores de 2026 · conferidos em 20/11/2026</p>
+    </header>
+    <div class="app-corpo">
+      <div class="secao">
+        <h3>Cálculos salvos</h3>
+        <p class="sub">Ficam só neste aparelho.</p>
+        <div class="campo">
+          <label class="rotulo sr" for="b3-busca">Buscar nos salvos</label>
+          <div class="caixa"><svg class="i" aria-hidden="true"><use href="#i-busca"/></svg><input id="b3-busca" type="search" placeholder="Buscar título, nota ou etiqueta"></div>
+        </div>
+        <div class="filtros" role="group" aria-label="Filtrar por modo">
+          <button class="chip" type="button" aria-pressed="true">Todos</button>
+          <button class="chip" type="button" aria-pressed="false">Diarista</button>
+          <button class="chip" type="button" aria-pressed="false">Doméstico</button>
+          <button class="chip" type="button" aria-pressed="false">Por hora</button>
+        </div>
+        <p class="dica">Os 4 abaixo são <strong>exemplos</strong>, para você ver como fica. Apague quando quiser.</p>
+      </div>
+      <ul class="lista-salvos">
+        <li class="salvo fixo">
+          <h3><a href="#t1">Cuidadora do meu pai</a></h3>
+          <p class="val">R$&nbsp;2.249,23<small>por mês</small></p>
+          <div class="meta"><span class="ex">Exemplo</span><span class="etq">Doméstico</span><span>03/11/2026</span><span class="fix"><svg class="i p" aria-hidden="true"><use href="#i-fixo"/></svg>Fixado</span></div>
+          <p class="nota">Piso de SP, <span class="dig">R$&nbsp;1.874,36</span>. Perguntar sobre as noites: adicional de 20%.</p>
+        </li>
+        <li class="salvo">
+          <h3><a href="#t1">Faxina às terças</a></h3>
+          <p class="val">R$&nbsp;720,00<small>por mês</small></p>
+          <div class="meta"><span class="ex">Exemplo</span><span class="etq">Diarista</span><span>14/11/2026</span></div>
+          <p class="nota">Diária de <span class="dig">R$&nbsp;180,00</span>, 1 vez por semana. Com 3 dias, pode virar emprego doméstico.</p>
+        </li>
+        <li class="salvo">
+          <h3><a href="#t1">Aulas de violão</a></h3>
+          <p class="val">R$&nbsp;480,00<small>por mês</small></p>
+          <div class="meta"><span class="ex">Exemplo</span><span class="etq">Por hora</span><span>28/10/2026</span></div>
+          <p class="nota"><span class="dig">R$&nbsp;60,00</span> por hora, 2 h por semana, 4 semanas.</p>
+        </li>
+        <li class="salvo">
+          <h3><a href="#t1">Ajudante da reforma</a></h3>
+          <p class="val">R$&nbsp;1.440,00<small>no total</small></p>
+          <div class="meta"><span class="ex">Exemplo</span><span class="etq">Por hora</span><span>12/10/2026</span></div>
+          <p class="nota"><span class="dig">R$&nbsp;30,00</span> por hora, 8 h por dia, 6 dias. Comparar com diária fechada.</p>
+        </li>
+      </ul>
+      <div class="secao" style="border-bottom:0">
+        <div class="acoes"><button class="btn" type="button"><svg class="i"><use href="#i-copiar"/></svg>Fazer backup</button></div>
+      </div>
+    </div>
+    <nav class="abas" aria-label="Abas do app (tela Salvos)">
+      <a href="#t1"><span class="pil"><svg class="i" aria-hidden="true"><use href="#i-calc"/></svg></span>Calcular</a>
+      <a href="#t2"><span class="pil"><svg class="i" aria-hidden="true"><use href="#i-tab"/></svg></span>Tabela</a>
+      <a href="#t3" aria-current="page"><span class="pil"><svg class="i" aria-hidden="true"><use href="#i-salvos"/></svg></span>Salvos</a>
+      <a href="#t3"><span class="pil"><svg class="i" aria-hidden="true"><use href="#i-leis"/></svg></span>Leis</a>
+      <a href="#t3"><span class="pil"><svg class="i" aria-hidden="true"><use href="#i-mais"/></svg></span>Mais</a>
+    </nav>
+  </div>
+</section>
+</main>
+
+<p class="rodape">Proposta estática para escolha de visual. Os números seguem o PLANO.md (salário de R$&nbsp;1.621,00, tabelas de 2026). Os 4 salvos são exemplos inventados.</p>
+
+<script>
+(function () {
+  var root = document.documentElement, btn = document.getElementById('tema-btn');
+  var nomes = { auto: 'automático', light: 'claro', dark: 'escuro' }, ordem = ['auto', 'light', 'dark'];
+  function atual() { return root.getAttribute('data-theme') || 'auto'; }
+  function escuro() { var t = atual(); return t === 'dark' || (t === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches); }
+  function mostrar() { btn.querySelector('span').textContent = 'Tema: ' + nomes[atual()]; btn.querySelector('use').setAttribute('href', escuro() ? '#i-lua' : '#i-sol'); }
+  function definir(t) {
+    if (t === 'auto') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', t);
+    try { if (t === 'auto') localStorage.removeItem('tg-proposta-tema'); else localStorage.setItem('tg-proposta-tema', t); } catch (e) {}
+    mostrar();
+  }
+  btn.addEventListener('click', function () { definir(ordem[(ordem.indexOf(atual()) + 1) % 3]); });
+  document.querySelectorAll('.icone-btn').forEach(function (b) { b.addEventListener('click', function () { definir(escuro() ? 'light' : 'dark'); }); });
+  document.querySelectorAll('[role="group"]').forEach(function (g) {
+    var chips = g.querySelectorAll('.chip');
+    chips.forEach(function (c) { c.addEventListener('click', function () { chips.forEach(function (o) { o.setAttribute('aria-pressed', o === c ? 'true' : 'false'); }); }); });
+  });
+  mostrar();
+})();
+</script>
+</body>
+</html>

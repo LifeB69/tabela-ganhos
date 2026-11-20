@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Talão e carimbo</title>
+<meta name="description" content="Proposta A da Tabela de Ganhos: o resultado é um recibo preenchido; o que você digitou fica em azul de caneta e o que o app calculou fica em preto.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+  try { var t = localStorage.getItem('tg-proposta-tema'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+</script>
+<style>
+:root {
+  --fundo: #F6F7F2;
+  --papel: #FFFFFF;
+  --tinta: #1C2320;
+  --tinta-2: #55605A;
+  --talao: #2E6B4E;
+  --sobre-talao: #FFFFFF;
+  --caneta: #1F3F99;
+  --carimbo: #B42318;
+  --carimbo-fundo: #FDF0EE;
+  --selo: #5A3E9B;
+  --ok: #1E7B45;
+  --aviso: #5C4400;
+  --aviso-fundo: #FFF3C4;
+  --filete: #7E8A82;
+  --filete-leve: #D3D9D4;
+  --realce: #E4EFE8;
+  --moldura: #E3E7E1;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fundo: #121613; --papel: #1A201C; --tinta: #E8EDE9; --tinta-2: #A3AFA7;
+    --talao: #6FC79A; --sobre-talao: #0B1A12; --caneta: #9DB5FF; --carimbo: #FF8A7A;
+    --carimbo-fundo: #2A1714; --selo: #C5B0FF; --ok: #6CD49A; --aviso: #F5D36B;
+    --aviso-fundo: #2B2410; --filete: #5E6D64; --filete-leve: #2C3530; --realce: #203328;
+    --moldura: #252C27; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --fundo: #121613; --papel: #1A201C; --tinta: #E8EDE9; --tinta-2: #A3AFA7;
+  --talao: #6FC79A; --sobre-talao: #0B1A12; --caneta: #9DB5FF; --carimbo: #FF8A7A;
+  --carimbo-fundo: #2A1714; --selo: #C5B0FF; --ok: #6CD49A; --aviso: #F5D36B;
+  --aviso-fundo: #2B2410; --filete: #5E6D64; --filete-leve: #2C3530; --realce: #203328;
+  --moldura: #252C27; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--fundo); color: var(--tinta);
+  font-family: "Barlow", system-ui, sans-serif; font-size: 16px; line-height: 1.45;
+  font-variant-numeric: tabular-nums;
+}
+a { color: var(--talao); text-underline-offset: 3px; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--caneta); outline-offset: 2px; }
+.cond { font-family: "Barlow Condensed", "Barlow", sans-serif; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+svg.i { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+svg.i.p { width: 16px; height: 16px; }
+
+/* ---------- página de apresentação ---------- */
+.apres { max-width: 1260px; margin: 0 auto; padding: 24px 16px 4px; display: flex; flex-wrap: wrap; gap: 16px 32px; align-items: flex-end; justify-content: space-between; }
+.apres-txt { max-width: 640px; }
+.apres-volta { display: inline-flex; align-items: center; min-height: 44px; font-weight: 500; }
+.apres h1 { font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: clamp(34px, 6vw, 48px); line-height: 1; margin: 4px 0 8px; letter-spacing: .01em; }
+.apres h1 span { color: var(--talao); }
+.apres p { margin: 0 0 8px; color: var(--tinta-2); }
+.legenda-tinta { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 10px 0 0; padding: 0; list-style: none; font-size: 15px; }
+.legenda-tinta li { display: flex; align-items: center; gap: 8px; }
+.legenda-tinta b { font-weight: 600; }
+.amostra { width: 26px; height: 0; border-top: 3px solid; }
+.tema-btn {
+  min-height: 44px; padding: 0 16px; border: 1.5px solid var(--filete); border-radius: 4px; background: var(--papel);
+  display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 500;
+}
+.tema-btn:hover { border-color: var(--talao); }
+
+.telas { max-width: 1260px; margin: 0 auto; padding: 16px 16px 56px; display: flex; flex-wrap: wrap; gap: 32px 24px; justify-content: center; align-items: flex-start; }
+.tela { flex: 0 1 390px; width: 390px; max-width: 100%; margin: 0; }
+.tela > h2 { font-family: "Barlow Condensed", sans-serif; font-weight: 600; font-size: 18px; letter-spacing: .06em; text-transform: uppercase; margin: 0 0 10px; color: var(--tinta-2); display: flex; gap: 10px; align-items: baseline; }
+.tela > h2 b { color: var(--talao); font-size: 22px; }
+
+/* ---------- moldura de celular ---------- */
+.celular {
+  background: var(--fundo); border: 1px solid var(--filete); border-radius: 30px; overflow: hidden;
+  box-shadow: 0 0 0 7px var(--moldura); display: flex; flex-direction: column; min-height: 820px;
+}
+.status { display: flex; justify-content: space-between; align-items: center; padding: 10px 24px 2px; font-size: 13px; font-weight: 600; color: var(--tinta); }
+.status svg { width: 34px; height: 12px; }
+
+.app-topo { padding: 6px 16px 12px; border-bottom: 1px solid var(--filete); background: var(--papel); position: relative; }
+.app-topo::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--talao); }
+.app-linha { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.app-nome { font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 24px; margin: 0; letter-spacing: .01em; }
+.icone-btn { width: 44px; height: 44px; display: grid; place-items: center; border: 0; background: transparent; border-radius: 4px; color: var(--tinta-2); cursor: pointer; }
+.selo {
+  display: inline-block; margin: 2px 0 0; padding: 3px 8px 2px; border: 1.5px solid var(--selo); border-radius: 3px;
+  color: var(--selo); font-family: "Barlow Condensed", sans-serif; font-weight: 600; font-size: 13.5px; letter-spacing: .07em; text-transform: uppercase;
+  transform: rotate(-1.2deg); transform-origin: left center;
+}
+
+.app-corpo { flex: 1; padding: 16px 16px 24px; display: flex; flex-direction: column; gap: 16px; }
+
+/* chips de modo */
+.modos { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  min-height: 44px; padding: 0 14px; border: 1.5px solid var(--filete); border-radius: 4px; background: var(--papel);
+  font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+}
+.chip[aria-pressed="true"] { background: var(--talao); border-color: var(--talao); color: var(--sobre-talao); font-weight: 600; }
+.chip.peq { min-height: 44px; padding: 0 12px; font-size: 15px; }
+.linha-links { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: -6px; }
+.link-btn { min-height: 44px; padding: 0; border: 0; background: none; color: var(--talao); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+
+/* campos estilo talão */
+.campos { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 16px; }
+.campo { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.campo.largo { grid-column: 1 / -1; }
+.rotulo { font-family: "Barlow Condensed", sans-serif; font-weight: 600; font-size: 14px; letter-spacing: .08em; text-transform: uppercase; color: var(--tinta-2); }
+.linha-valor { display: flex; align-items: baseline; gap: 6px; border-bottom: 2px solid var(--filete); min-height: 48px; }
+.linha-valor:focus-within { border-bottom-color: var(--caneta); }
+.prefixo { color: var(--tinta-2); font-weight: 500; }
+.linha-valor input, .linha-valor select {
+  flex: 1; min-width: 0; border: 0; background: transparent; color: var(--caneta); font-weight: 500; font-size: 22px;
+  padding: 8px 0 6px; font-variant-numeric: tabular-nums; outline: none; appearance: none; -webkit-appearance: none;
+}
+.linha-valor select { font-size: 20px; cursor: pointer; }
+.linha-valor .seta { color: var(--tinta-2); align-self: center; }
+.campo:focus-within .rotulo { color: var(--caneta); }
+.segmento { display: flex; gap: 8px; }
+.passos { display: flex; align-items: center; border-bottom: 2px solid var(--filete); min-height: 48px; justify-content: space-between; }
+.passos button { width: 44px; height: 44px; border: 1.5px solid var(--filete); background: var(--papel); border-radius: 4px; display: grid; place-items: center; cursor: pointer; color: var(--tinta); }
+.passos output { color: var(--caneta); font-size: 22px; font-weight: 500; }
+
+/* recibo */
+.recibo { background: var(--papel); border: 1px solid var(--filete); border-radius: 4px; position: relative; }
+.recibo-cab { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 10px 14px 0; font-family: "Barlow Condensed", sans-serif; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; font-size: 13.5px; color: var(--tinta-2); }
+.recibo-cab .n { color: var(--talao); }
+.recibo-total { padding: 4px 14px 14px; }
+.recibo-total h3 { margin: 0; font-size: 17px; font-weight: 600; }
+.numero { font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 50px; line-height: 1.02; letter-spacing: .005em; font-variant-numeric: tabular-nums; display: flex; align-items: baseline; gap: 6px; margin: 2px 0; }
+.numero small { font-size: 26px; font-weight: 600; color: var(--tinta-2); }
+.extenso { margin: 0; color: var(--tinta-2); font-size: 14.5px; }
+.picote { position: relative; height: 0; border-top: 2px dashed var(--filete); margin: 0 12px; }
+.picote::before, .picote::after { content: ""; position: absolute; top: -11px; width: 20px; height: 20px; border-radius: 50%; background: var(--fundo); border: 1px solid var(--filete); }
+.picote::before { left: -24px; clip-path: inset(0 0 0 50%); }
+.picote::after { right: -24px; clip-path: inset(0 50% 0 0); }
+.canhoto { padding: 12px 14px 12px; display: grid; gap: 8px; }
+.par { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.par dt { color: var(--tinta-2); }
+.par dd { margin: 0; font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 26px; white-space: nowrap; }
+.par .sub { display: block; font-size: 14px; color: var(--tinta-2); }
+.acoes { display: flex; gap: 8px; padding: 0 14px 14px; }
+.btn {
+  min-height: 48px; padding: 0 16px; border-radius: 4px; border: 1.5px solid var(--talao); background: var(--papel); color: var(--talao);
+  font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; flex: 1;
+}
+.btn.cheio { background: var(--talao); color: var(--sobre-talao); }
+
+/* carimbo de alerta */
+.alerta { border: 2px solid var(--carimbo); background: var(--carimbo-fundo); border-radius: 4px; padding: 12px 14px 14px; }
+.alerta-tit {
+  display: inline-flex; align-items: center; gap: 6px; color: var(--carimbo); font-family: "Barlow Condensed", sans-serif; font-weight: 700;
+  font-size: 17px; letter-spacing: .08em; text-transform: uppercase; border: 1.5px solid var(--carimbo); padding: 1px 8px; border-radius: 3px;
+  transform: rotate(-1.5deg); transform-origin: left center; margin: 0 0 8px;
+}
+.alerta p { margin: 0 0 8px; }
+.alerta .btn { border-color: var(--carimbo); color: var(--carimbo); background: transparent; flex: none; }
+.alerta-acoes { display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: center; }
+
+/* mostrar a conta */
+.conta { background: var(--papel); border: 1px solid var(--filete); border-radius: 4px; }
+.conta summary { list-style: none; min-height: 52px; padding: 0 14px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; font-weight: 600; }
+.conta summary::-webkit-details-marker { display: none; }
+.conta[open] summary svg { transform: rotate(180deg); }
+.conta ol { list-style: none; margin: 0; padding: 0 14px 6px; border-top: 1px solid var(--filete-leve); counter-reset: l; }
+.conta li { padding: 10px 0 10px; border-bottom: 1px dotted var(--filete); counter-increment: l; }
+.conta li:last-child { border-bottom: 0; }
+.conta .lin { display: flex; align-items: baseline; gap: 6px; }
+.conta .lin::before { content: counter(l); font-family: "Barlow Condensed", sans-serif; font-weight: 600; color: var(--tinta-2); width: 14px; flex: none; }
+.conta .nome { font-weight: 600; white-space: nowrap; }
+.conta .guia { flex: 1; border-bottom: 2px dotted var(--filete); transform: translateY(-4px); min-width: 12px; }
+.conta .val { font-weight: 600; white-space: nowrap; }
+.conta .val.total { font-family: "Barlow Condensed", sans-serif; font-size: 20px; font-weight: 700; }
+.conta .form { margin: 2px 0 0 20px; font-size: 14.5px; color: var(--tinta-2); }
+.conta .lei { display: inline-flex; align-items: center; gap: 4px; min-height: 32px; font-size: 14.5px; font-weight: 600; margin-left: 20px; }
+.dig { color: var(--caneta); font-weight: 600; }
+.conta li.soma { border-top: 2px solid var(--tinta); margin-top: 2px; }
+
+.nota-legal { font-size: 14px; color: var(--tinta-2); margin: 0; padding-left: 10px; border-left: 3px solid var(--filete-leve); }
+
+/* tabela */
+.bloco-tit { font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 26px; margin: 0; line-height: 1.1; }
+.bloco-sub { margin: 2px 0 0; color: var(--tinta-2); font-size: 15px; }
+.rolavel { overflow-x: auto; background: var(--papel); border: 1px solid var(--filete); border-radius: 4px; }
+table.comp { border-collapse: collapse; width: 100%; font-size: 15px; font-variant-numeric: tabular-nums; }
+table.comp caption { text-align: left; padding: 10px 10px 8px; font-size: 14px; color: var(--tinta-2); caption-side: top; }
+table.comp th, table.comp td { padding: 0 4px; height: 40px; text-align: right; white-space: nowrap; border-bottom: 1px solid var(--filete-leve); }
+table.comp thead th { font-family: "Barlow Condensed", sans-serif; font-weight: 600; letter-spacing: .04em; color: var(--tinta-2); font-size: 14px; border-bottom: 2px solid var(--filete); height: 44px; vertical-align: bottom; padding-bottom: 6px; }
+table.comp tbody td { font-family: "Barlow Condensed", sans-serif; font-weight: 600; font-size: 16.5px; }
+table.comp tbody th { font-family: "Barlow Condensed", sans-serif; font-weight: 700; text-align: left; padding-left: 10px; font-size: 16px; }
+table.comp .sel { background: var(--realce); font-weight: 700; }
+table.comp thead .sel { color: var(--talao); }
+table.comp .min { border-left: 2px dashed var(--filete); color: var(--selo); font-weight: 700; padding-right: 8px; padding-left: 6px; }
+table.comp thead .min { color: var(--selo); }
+table.comp tbody tr:last-child > * { border-bottom: 0; }
+.horas { display: flex; gap: 6px; flex-wrap: wrap; }
+.horas .chip { min-width: 44px; justify-content: center; padding: 0 8px; }
+.resumo { margin: 0; background: var(--papel); border: 1px solid var(--filete); border-radius: 4px; padding: 4px 14px; }
+.resumo div { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; min-height: 44px; padding: 8px 0; border-bottom: 1px dotted var(--filete); }
+.resumo div:last-child { border-bottom: 0; }
+.resumo dt { color: var(--tinta-2); }
+.resumo dd { margin: 0; font-weight: 600; text-align: right; }
+.pilula { display: inline-block; font-size: 12.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; padding: 1px 7px; border-radius: 3px; background: var(--aviso-fundo); color: var(--aviso); vertical-align: 2px; margin-left: 4px; }
+.botoes-linha { display: flex; gap: 8px; flex-wrap: wrap; }
+.botoes-linha .btn { flex: 1 1 140px; }
+
+/* salvos */
+.busca { display: flex; align-items: center; gap: 8px; border-bottom: 2px solid var(--filete); min-height: 48px; color: var(--tinta-2); }
+.busca input { flex: 1; min-width: 0; border: 0; background: transparent; font-size: 18px; padding: 10px 0; outline: none; color: var(--tinta); }
+.busca:focus-within { border-bottom-color: var(--caneta); }
+.faixa-exemplo { margin: 0; padding: 10px 12px; background: var(--aviso-fundo); color: var(--aviso); border-radius: 4px; font-size: 15px; display: flex; gap: 8px; align-items: flex-start; }
+.faixa-exemplo svg { margin-top: 2px; }
+.lista-salvos { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.salvo { display: grid; grid-template-columns: 18px 1fr; background: var(--papel); border: 1px solid var(--filete); border-radius: 4px; overflow: hidden; }
+.salvo-margem { border-right: 2px dashed var(--filete); background: repeating-linear-gradient(to bottom, transparent 0 10px, var(--filete-leve) 10px 11px); }
+.salvo.fixo .salvo-margem { background: var(--talao); border-right-color: var(--talao); }
+.salvo-corpo { padding: 10px 12px 12px; min-width: 0; }
+.salvo-topo { display: flex; justify-content: space-between; gap: 8px; align-items: flex-start; }
+.salvo h3 { margin: 0; font-size: 18px; font-weight: 600; line-height: 1.25; }
+.salvo h3 a { color: var(--tinta); text-decoration: none; }
+.salvo h3 a:hover { text-decoration: underline; }
+.salvo-valor { font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 22px; white-space: nowrap; }
+.salvo-valor small { display: block; font-family: "Barlow", sans-serif; font-weight: 500; font-size: 13px; color: var(--tinta-2); text-align: right; }
+.salvo-meta { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; margin: 6px 0; font-size: 14px; color: var(--tinta-2); }
+.etiqueta { border: 1.5px solid var(--talao); color: var(--talao); padding: 0 7px; border-radius: 3px; font-weight: 600; font-size: 13.5px; }
+.ex { color: var(--selo); border: 1.5px solid var(--selo); padding: 0 6px; border-radius: 3px; font-family: "Barlow Condensed", sans-serif; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; font-size: 13px; transform: rotate(-1.5deg); }
+.salvo-nota { margin: 0; font-size: 15px; color: var(--tinta); }
+.salvo-nota .dig { font-weight: 500; }
+.fixado { display: inline-flex; align-items: center; gap: 3px; color: var(--talao); font-weight: 600; }
+
+/* barra inferior */
+.abas { display: grid; grid-template-columns: repeat(5, 1fr); background: var(--papel); border-top: 1px solid var(--filete); padding-bottom: 14px; }
+.abas a {
+  min-height: 58px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  color: var(--tinta-2); text-decoration: none; font-size: 13.5px; font-weight: 500; border-top: 3px solid transparent; margin-top: -1px;
+}
+.abas a[aria-current="page"] { color: var(--talao); border-top-color: var(--talao); font-weight: 600; }
+.abas a:hover { color: var(--tinta); }
+
+.rodape { max-width: 1260px; margin: 0 auto; padding: 0 16px 40px; color: var(--tinta-2); font-size: 14.5px; }
+@media (max-width: 420px) {
+  .numero { font-size: 44px; }
+  .celular { border-radius: 22px; box-shadow: 0 0 0 4px var(--moldura); }
+  .campos { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+.lei { min-height: 44px !important; }
+.salvo h3 a { display: inline-flex; align-items: center; min-height: 44px; }
+.linha-valor select, .linha-valor input { min-height: 44px; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-calc" viewBox="0 0 24 24"><rect x="5" y="2.5" width="14" height="19" rx="2"/><rect x="8" y="5.5" width="8" height="4" rx=".6"/><path d="M8.6 13.2h.01M12 13.2h.01M15.4 13.2h.01M8.6 17h.01M12 17h.01M15.4 17h.01" stroke-width="2.4"/></symbol>
+  <symbol id="i-tab" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="M3 9h18M3 14.5h18M9 9v11M15 9v11"/></symbol>
+  <symbol id="i-salvos" viewBox="0 0 24 24"><path d="M6.5 3.5h11v17l-5.5-3.8-5.5 3.8z"/><path d="M9.5 8h5"/></symbol>
+  <symbol id="i-leis" viewBox="0 0 24 24"><path d="M12 3.5v16M7.5 20.5h9M5 6.5c2.2.9 4.6 1 7 0 2.4 1 4.8.9 7 0"/><path d="M2.6 13.5 5 7l2.4 6.5M16.6 13.5 19 7l2.4 6.5"/><path d="M2.4 13.5a2.6 2 0 0 0 5.2 0zM16.4 13.5a2.6 2 0 0 0 5.2 0z"/></symbol>
+  <symbol id="i-mais" viewBox="0 0 24 24"><path d="M4 7h9M17.5 7H20M4 17h3.5M12 17h8"/><circle cx="15.2" cy="7" r="2.2"/><circle cx="9.8" cy="17" r="2.2"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-8.5 8.5M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+  <symbol id="i-seta" viewBox="0 0 24 24"><path d="M6 9.5l6 6 6-6"/></symbol>
+  <symbol id="i-alerta" viewBox="0 0 24 24"><path d="M12 3.8 2.6 20h18.8z"/><path d="M12 10v4.6M12 17.4h.01"/></symbol>
+  <symbol id="i-fixo" viewBox="0 0 24 24"><path d="M9 3.5h6l-1 5.2 3 2.8v2H7v-2l3-2.8zM12 13.5V21"/></symbol>
+  <symbol id="i-busca" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.3"/><path d="M15.6 15.6l4.9 4.9"/></symbol>
+  <symbol id="i-menos" viewBox="0 0 24 24"><path d="M6 12h12"/></symbol>
+  <symbol id="i-mais-s" viewBox="0 0 24 24"><path d="M6 12h12M12 6v12"/></symbol>
+  <symbol id="i-comp" viewBox="0 0 24 24"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="5.8" r="2.5"/><circle cx="18" cy="18.2" r="2.5"/><path d="M8.3 10.8l7.4-3.8M8.3 13.2l7.4 3.8"/></symbol>
+  <symbol id="i-guardar" viewBox="0 0 24 24"><path d="M6.5 3.5h11v17l-5.5-3.8-5.5 3.8z"/><path d="M12 7.5v5M9.5 10h5"/></symbol>
+  <symbol id="i-sol" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.8v2M12 19.2v2M2.8 12h2M19.2 12h2M5.5 5.5l1.4 1.4M17.1 17.1l1.4 1.4M5.5 18.5l1.4-1.4M17.1 6.9l1.4-1.4"/></symbol>
+  <symbol id="i-lua" viewBox="0 0 24 24"><path d="M19.5 14.5A8 8 0 0 1 9.5 4.5a8 8 0 1 0 10 10z"/></symbol>
+  <symbol id="i-tela" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
+  <symbol id="i-copiar" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="11.5" height="11.5" rx="1.5"/><path d="M15.5 8.5V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v9.5a1 1 0 0 0 1 1h3.5"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.8h.01"/></symbol>
+  <symbol id="i-bateria" viewBox="0 0 34 12"><rect x="12.5" y="1" width="18" height="10" rx="2.5" fill="none" stroke="currentColor"/><rect x="14.5" y="3" width="11" height="6" rx="1" fill="currentColor"/><path d="M1 10.5h2v-2H1zM4.5 10.5h2v-4h-2zM8 10.5h2V4.5H8z" fill="currentColor"/></symbol>
+</svg>
+
+<header class="apres">
+  <div class="apres-txt">
+    <a class="apres-volta" href="index.html">← As três propostas</a>
+    <h1>Proposta A · <span>Talão e carimbo</span></h1>
+    <p>O resultado é um recibo preenchido. Carimbos só para a data de conferência e para os alertas. O picote separa o que você paga do que vai para cada lado.</p>
+    <ul class="legenda-tinta" aria-label="Legenda das cores dos números">
+      <li><span class="amostra" style="border-color:var(--caneta)"></span><b style="color:var(--caneta)">Azul de caneta</b> o que você digitou</li>
+      <li><span class="amostra" style="border-color:var(--tinta)"></span><b>Preto de impressão</b> o que o app calculou</li>
+    </ul>
+  </div>
+  <button class="tema-btn" type="button" id="tema-btn" aria-live="polite"><svg class="i" aria-hidden="true"><use href="#i-sol"/></svg><span>Tema: automático</span></button>
+</header>
+
+<main class="telas">
+
+<!-- ================= TELA 1: CALCULAR ================= -->
+<section class="tela" aria-labelledby="t1">
+  <h2 id="t1"><b>1</b> Calcular · Doméstico</h2>
+  <div class="celular">
+    <div class="status" aria-hidden="true"><span>14:32</span><svg viewBox="0 0 34 12"><use href="#i-bateria"/></svg></div>
+    <header class="app-topo">
+      <div class="app-linha">
+        <p class="app-nome">Tabela de Ganhos</p>
+        <button class="icone-btn" type="button" aria-label="Trocar o tema do app"><svg class="i"><use href="#i-lua"/></svg></button>
+      </div>
+      <p class="selo">Valores de 2026 · conferidos em 20/11/2026</p>
+    </header>
+
+    <div class="app-corpo">
+      <div class="modos" role="group" aria-label="Modo de cálculo">
+        <button class="chip" type="button" aria-pressed="false">Por hora</button>
+        <button class="chip" type="button" aria-pressed="false">Diarista</button>
+        <button class="chip" type="button" aria-pressed="true">Doméstico</button>
+      </div>
+      <div class="linha-links">
+        <button class="link-btn" type="button">Não sei qual é o meu</button>
+      </div>
+
+      <div class="campos">
+        <div class="campo largo">
+          <span class="rotulo" id="a-tipo">Contrato</span>
+          <div class="segmento" role="group" aria-labelledby="a-tipo">
+            <button class="chip peq" type="button" aria-pressed="true">Mensalista</button>
+            <button class="chip peq" type="button" aria-pressed="false">Horista</button>
+          </div>
+        </div>
+        <div class="campo largo">
+          <label class="rotulo" for="a-sal">Salário mensal</label>
+          <div class="linha-valor"><span class="prefixo">R$</span><input id="a-sal" inputmode="decimal" value="1.621,00" autocomplete="off"></div>
+        </div>
+        <div class="campo">
+          <label class="rotulo" for="a-uf">Estado</label>
+          <div class="linha-valor">
+            <select id="a-uf"><option>SP</option><option>RJ</option><option>MG</option><option>PR</option><option>RS</option><option>SC</option></select>
+            <svg class="i seta" aria-hidden="true"><use href="#i-seta"/></svg>
+          </div>
+        </div>
+        <div class="campo">
+          <span class="rotulo" id="a-dep">Dependentes</span>
+          <div class="passos" role="group" aria-labelledby="a-dep">
+            <button type="button" aria-label="Menos um dependente"><svg class="i"><use href="#i-menos"/></svg></button>
+            <output aria-live="polite">0</output>
+            <button type="button" aria-label="Mais um dependente"><svg class="i"><use href="#i-mais-s"/></svg></button>
+          </div>
+        </div>
+      </div>
+
+      <article class="recibo" aria-labelledby="a-res">
+        <div class="recibo-cab"><span>Competência nov/2026</span><span class="n">Mensalista · SP</span></div>
+        <div class="recibo-total">
+          <h3 id="a-res">Você paga por mês</h3>
+          <p class="numero"><small>R$</small>1.945,20</p>
+          <p class="extenso">mil novecentos e quarenta e cinco reais e vinte centavos</p>
+        </div>
+        <div class="picote" aria-hidden="true"></div>
+        <dl class="canhoto">
+          <div class="par"><dt>A pessoa recebe<span class="sub">líquido, já sem o INSS dela</span></dt><dd>R$&nbsp;1.499,42</dd></div>
+          <div class="par"><dt>Guia DAE<span class="sub">vence 18/12/2026 (dia 20 é domingo)</span></dt><dd>R$&nbsp;445,78</dd></div>
+        </dl>
+        <div class="acoes">
+          <button class="btn cheio" type="button"><svg class="i"><use href="#i-guardar"/></svg>Salvar</button>
+          <button class="btn" type="button"><svg class="i"><use href="#i-comp"/></svg>Compartilhar</button>
+        </div>
+      </article>
+
+      <aside class="alerta" aria-labelledby="a-al">
+        <p class="alerta-tit" id="a-al"><svg class="i p"><use href="#i-alerta"/></svg>Abaixo do piso de SP</p>
+        <p>Em São Paulo, o piso da doméstica é <strong>R$&nbsp;1.874,36</strong> desde 01/06/2026. Este salário fica <strong>R$&nbsp;253,36</strong> abaixo.</p>
+        <div class="alerta-acoes">
+          <button class="btn" type="button">Calcular com o piso</button>
+          <a class="lei" href="https://www.al.sp.gov.br/repositorio/legislacao/lei/2026/lei-18471-27.05.2026.html" target="_blank" rel="noopener">Lei SP 18.471/2026 <svg class="i p" aria-hidden="true"><use href="#i-ext"/></svg><span class="sr">(abre em nova aba)</span></a>
+        </div>
+      </aside>
+
+      <details class="conta" open>
+        <summary>Mostrar a conta <svg class="i" aria-hidden="true"><use href="#i-seta"/></svg></summary>
+        <ol>
+          <li>
+            <div class="lin"><span class="nome">INSS dela</span><span class="guia"></span><span class="val">121,58</span></div>
+            <p class="form">7,5% × <span class="dig">1.621,00</span></p>
+            <a class="lei" href="https://www.gov.br/inss/pt-br/direitos-e-deveres/inscricao-e-contribuicao/tabela-de-contribuicao-mensal" target="_blank" rel="noopener">Portaria MPS/MF 13/2026 <svg class="i p" aria-hidden="true"><use href="#i-ext"/></svg><span class="sr">(abre em nova aba)</span></a>
+          </li>
+          <li>
+            <div class="lin"><span class="nome">IR dela</span><span class="guia"></span><span class="val">0,00</span></div>
+            <p class="form">base 1.499,42 abaixo de 2.428,80: isento</p>
+            <a class="lei" href="https://www.gov.br/receitafederal/pt-br/assuntos/meu-imposto-de-renda/tabelas/2026" target="_blank" rel="noopener">Tabela IRRF 2026 <svg class="i p" aria-hidden="true"><use href="#i-ext"/></svg><span class="sr">(abre em nova aba)</span></a>
+          </li>
+          <li>
+            <div class="lin"><span class="nome">Líquido dela</span><span class="guia"></span><span class="val">1.499,42</span></div>
+            <p class="form"><span class="dig">1.621,00</span> − 121,58</p>
+          </li>
+          <li>
+            <div class="lin"><span class="nome">Sua parte</span><span class="guia"></span><span class="val">324,20</span></div>
+            <p class="form">20% × <span class="dig">1.621,00</span> (8% CPP + 0,8% GILRAT + 8% FGTS + 3,2% multa)</p>
+            <a class="lei" href="https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp150.htm" target="_blank" rel="noopener">LC 150, arts. 22 e 34 <svg class="i p" aria-hidden="true"><use href="#i-ext"/></svg><span class="sr">(abre em nova aba)</span></a>
+          </li>
+          <li>
+            <div class="lin"><span class="nome">Guia DAE</span><span class="guia"></span><span class="val">445,78</span></div>
+            <p class="form">324,20 + 121,58 · vence no dia 20 do mês seguinte</p>
+            <a class="lei" href="https://www.gov.br/esocial/pt-br/noticias/mudanca-na-data-de-vencimento-do-dae" target="_blank" rel="noopener">eSocial: vencimento do DAE <svg class="i p" aria-hidden="true"><use href="#i-ext"/></svg><span class="sr">(abre em nova aba)</span></a>
+          </li>
+          <li class="soma">
+            <div class="lin"><span class="nome">Você paga</span><span class="guia"></span><span class="val total">1.945,20</span></div>
+            <p class="form"><span class="dig">1.621,00</span> + 324,20</p>
+          </li>
+        </ol>
+      </details>
+
+      <p class="nota-legal">Estimativa educativa. Não substitui contador, advogado nem a folha do eSocial.</p>
+    </div>
+
+    <nav class="abas" aria-label="Abas do app (tela Calcular)">
+      <a href="#t1" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-calc"/></svg>Calcular</a>
+      <a href="#t2"><svg class="i" aria-hidden="true"><use href="#i-tab"/></svg>Tabela</a>
+      <a href="#t3"><svg class="i" aria-hidden="true"><use href="#i-salvos"/></svg>Salvos</a>
+      <a href="#t1"><svg class="i" aria-hidden="true"><use href="#i-leis"/></svg>Leis</a>
+      <a href="#t1"><svg class="i" aria-hidden="true"><use href="#i-mais"/></svg>Mais</a>
+    </nav>
+  </div>
+</section>
+
+<!-- ================= TELA 2: TABELA ================= -->
+<section class="tela" aria-labelledby="t2">
+  <h2 id="t2"><b>2</b> Tabela de comparação</h2>
+  <div class="celular">
+    <div class="status" aria-hidden="true"><span>14:33</span><svg viewBox="0 0 34 12"><use href="#i-bateria"/></svg></div>
+    <header class="app-topo">
+      <div class="app-linha">
+        <p class="app-nome">Tabela de Ganhos</p>
+        <button class="icone-btn" type="button" aria-label="Trocar o tema do app"><svg class="i"><use href="#i-lua"/></svg></button>
+      </div>
+      <p class="selo">Valores de 2026 · conferidos em 20/11/2026</p>
+    </header>
+
+    <div class="app-corpo">
+      <div>
+        <h3 class="bloco-tit">Quanto dá no mês</h3>
+        <p class="bloco-sub">Dias no mês × horas por dia, ao valor que você escolher.</p>
+      </div>
+      <div class="campo">
+        <label class="rotulo" for="b-hora">Valor por hora</label>
+        <div class="linha-valor"><span class="prefixo">R$</span><input id="b-hora" inputmode="decimal" value="25,00" autocomplete="off"></div>
+      </div>
+      <div class="campo">
+        <span class="rotulo" id="b-h">Comparar o mínimo com</span>
+        <div class="horas" role="group" aria-labelledby="b-h">
+          <button class="chip" type="button" aria-pressed="false">1 h</button>
+          <button class="chip" type="button" aria-pressed="false">2 h</button>
+          <button class="chip" type="button" aria-pressed="false">3 h</button>
+          <button class="chip" type="button" aria-pressed="true">4 h</button>
+          <button class="chip" type="button" aria-pressed="false">5 h</button>
+          <button class="chip" type="button" aria-pressed="false">6 h</button>
+        </div>
+      </div>
+
+      <div class="rolavel" role="region" aria-labelledby="b-cap" tabindex="0">
+        <table class="comp">
+          <caption id="b-cap">Total do mês em R$, sem centavos, a <span class="dig">R$&nbsp;25,00</span>/h</caption>
+          <thead>
+            <tr><th scope="col" style="text-align:left;padding-left:10px">Dias</th><th scope="col">1 h</th><th scope="col">2 h</th><th scope="col">3 h</th><th scope="col" class="sel">4 h</th><th scope="col">5 h</th><th scope="col">6 h</th><th scope="col" class="min">Mín.<br>legal</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">8</th><td>200</td><td>400</td><td>600</td><td class="sel">800</td><td>1.000</td><td>1.200</td><td class="min">235,84</td></tr>
+            <tr><th scope="row">9</th><td>225</td><td>450</td><td>675</td><td class="sel">900</td><td>1.125</td><td>1.350</td><td class="min">265,32</td></tr>
+            <tr><th scope="row">10</th><td>250</td><td>500</td><td>750</td><td class="sel">1.000</td><td>1.250</td><td>1.500</td><td class="min">294,80</td></tr>
+            <tr><th scope="row">11</th><td>275</td><td>550</td><td>825</td><td class="sel">1.100</td><td>1.375</td><td>1.650</td><td class="min">324,28</td></tr>
+            <tr><th scope="row">12</th><td>300</td><td>600</td><td>900</td><td class="sel">1.200</td><td>1.500</td><td>1.800</td><td class="min">353,76</td></tr>
+            <tr><th scope="row">13</th><td>325</td><td>650</td><td>975</td><td class="sel">1.300</td><td>1.625</td><td>1.950</td><td class="min">383,24</td></tr>
+            <tr><th scope="row">14</th><td>350</td><td>700</td><td>1.050</td><td class="sel">1.400</td><td>1.750</td><td>2.100</td><td class="min">412,72</td></tr>
+            <tr><th scope="row">15</th><td>375</td><td>750</td><td>1.125</td><td class="sel">1.500</td><td>1.875</td><td>2.250</td><td class="min">442,20</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="nota-legal">Mínimo legal = R$&nbsp;7,37 por hora × 4 h × dias. <a href="https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2025/decreto/d12797.htm" target="_blank" rel="noopener">Decreto 12.797/2025<span class="sr"> (abre em nova aba)</span></a></p>
+      <div class="botoes-linha">
+        <button class="btn" type="button"><svg class="i"><use href="#i-tela"/></svg>Tela cheia</button>
+        <button class="btn" type="button"><svg class="i"><use href="#i-copiar"/></svg>Copiar</button>
+      </div>
+
+      <div>
+        <h3 class="bloco-tit">Salário mínimo</h3>
+        <p class="bloco-sub">Nacional, desde 01/01/2026</p>
+      </div>
+      <dl class="resumo">
+        <div><dt>Por mês</dt><dd>R$&nbsp;1.621,00</dd></div>
+        <div><dt>Por dia</dt><dd>R$&nbsp;54,04</dd></div>
+        <div><dt>Por hora</dt><dd>R$&nbsp;7,37</dd></div>
+        <div><dt>2027</dt><dd>R$&nbsp;1.741<span class="pilula">previsto</span></dd></div>
+      </dl>
+    </div>
+
+    <nav class="abas" aria-label="Abas do app (tela Tabela)">
+      <a href="#t1"><svg class="i" aria-hidden="true"><use href="#i-calc"/></svg>Calcular</a>
+      <a href="#t2" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-tab"/></svg>Tabela</a>
+      <a href="#t3"><svg class="i" aria-hidden="true"><use href="#i-salvos"/></svg>Salvos</a>
+      <a href="#t2"><svg class="i" aria-hidden="true"><use href="#i-leis"/></svg>Leis</a>
+      <a href="#t2"><svg class="i" aria-hidden="true"><use href="#i-mais"/></svg>Mais</a>
+    </nav>
+  </div>
+</section>
+
+<!-- ================= TELA 3: SALVOS ================= -->
+<section class="tela" aria-labelledby="t3">
+  <h2 id="t3"><b>3</b> Salvos</h2>
+  <div class="celular">
+    <div class="status" aria-hidden="true"><span>14:35</span><svg viewBox="0 0 34 12"><use href="#i-bateria"/></svg></div>
+    <header class="app-topo">
+      <div class="app-linha">
+        <p class="app-nome">Tabela de Ganhos</p>
+        <button class="icone-btn" type="button" aria-label="Trocar o tema do app"><svg class="i"><use href="#i-lua"/></svg></button>
+      </div>
+      <p class="selo">Valores de 2026 · conferidos em 20/11/2026</p>
+    </header>
+
+    <div class="app-corpo">
+      <div>
+        <h3 class="bloco-tit">Salvos</h3>
+        <p class="bloco-sub">Ficam só neste aparelho. Faça backup de vez em quando.</p>
+      </div>
+      <label class="busca"><svg class="i" aria-hidden="true"><use href="#i-busca"/></svg><span class="sr">Buscar nos salvos</span><input type="search" placeholder="Buscar por título, nota ou etiqueta"></label>
+      <div class="modos" role="group" aria-label="Filtrar por modo">
+        <button class="chip peq" type="button" aria-pressed="true">Todos</button>
+        <button class="chip peq" type="button" aria-pressed="false">Diarista</button>
+        <button class="chip peq" type="button" aria-pressed="false">Doméstico</button>
+        <button class="chip peq" type="button" aria-pressed="false">Por hora</button>
+      </div>
+      <p class="faixa-exemplo"><svg class="i p" aria-hidden="true"><use href="#i-info"/></svg>Estes 4 são exemplos para você ver como fica. Apague quando quiser.</p>
+
+      <ul class="lista-salvos">
+        <li class="salvo fixo">
+          <span class="salvo-margem" aria-hidden="true"></span>
+          <div class="salvo-corpo">
+            <div class="salvo-topo">
+              <h3><a href="#t1">Cuidadora do meu pai</a></h3>
+              <p class="salvo-valor" style="margin:0">R$&nbsp;2.249,23<small>por mês</small></p>
+            </div>
+            <div class="salvo-meta"><span class="ex">Exemplo</span><span class="etiqueta">Doméstico</span><span>03/11/2026</span><span class="fixado"><svg class="i p" aria-hidden="true"><use href="#i-fixo"/></svg>Fixado</span></div>
+            <p class="salvo-nota">Piso de SP, <span class="dig">R$&nbsp;1.874,36</span>. Perguntar sobre as noites: adicional de 20%.</p>
+          </div>
+        </li>
+        <li class="salvo">
+          <span class="salvo-margem" aria-hidden="true"></span>
+          <div class="salvo-corpo">
+            <div class="salvo-topo">
+              <h3><a href="#t1">Faxina às terças</a></h3>
+              <p class="salvo-valor" style="margin:0">R$&nbsp;720,00<small>por mês</small></p>
+            </div>
+            <div class="salvo-meta"><span class="ex">Exemplo</span><span class="etiqueta">Diarista</span><span>14/11/2026</span></div>
+            <p class="salvo-nota">Diária de <span class="dig">R$&nbsp;180,00</span>, 1 vez por semana. Se passar a 3 dias, pode virar emprego doméstico.</p>
+          </div>
+        </li>
+        <li class="salvo">
+          <span class="salvo-margem" aria-hidden="true"></span>
+          <div class="salvo-corpo">
+            <div class="salvo-topo">
+              <h3><a href="#t1">Aulas de violão</a></h3>
+              <p class="salvo-valor" style="margin:0">R$&nbsp;480,00<small>por mês</small></p>
+            </div>
+            <div class="salvo-meta"><span class="ex">Exemplo</span><span class="etiqueta">Por hora</span><span>28/10/2026</span></div>
+            <p class="salvo-nota"><span class="dig">R$&nbsp;60,00</span> por hora, 2 h por semana, 4 semanas.</p>
+          </div>
+        </li>
+        <li class="salvo">
+          <span class="salvo-margem" aria-hidden="true"></span>
+          <div class="salvo-corpo">
+            <div class="salvo-topo">
+              <h3><a href="#t1">Ajudante da reforma</a></h3>
+              <p class="salvo-valor" style="margin:0">R$&nbsp;1.440,00<small>no total</small></p>
+            </div>
+            <div class="salvo-meta"><span class="ex">Exemplo</span><span class="etiqueta">Por hora</span><span>12/10/2026</span></div>
+            <p class="salvo-nota"><span class="dig">R$&nbsp;30,00</span> por hora, 8 h por dia, 6 dias. Comparar com diária fechada.</p>
+          </div>
+        </li>
+      </ul>
+      <div class="botoes-linha">
+        <button class="btn" type="button"><svg class="i"><use href="#i-copiar"/></svg>Fazer backup</button>
+      </div>
+    </div>
+
+    <nav class="abas" aria-label="Abas do app (tela Salvos)">
+      <a href="#t1"><svg class="i" aria-hidden="true"><use href="#i-calc"/></svg>Calcular</a>
+      <a href="#t2"><svg class="i" aria-hidden="true"><use href="#i-tab"/></svg>Tabela</a>
+      <a href="#t3" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-salvos"/></svg>Salvos</a>
+      <a href="#t3"><svg class="i" aria-hidden="true"><use href="#i-leis"/></svg>Leis</a>
+      <a href="#t3"><svg class="i" aria-hidden="true"><use href="#i-mais"/></svg>Mais</a>
+    </nav>
+  </div>
+</section>
+</main>
+
+<p class="rodape">Proposta estática para escolha de visual. Os números seguem o PLANO.md (salário de R$&nbsp;1.621,00, tabelas de 2026). Os 4 salvos são exemplos inventados.</p>
+
+<script>
+(function () {
+  var root = document.documentElement, btn = document.getElementById('tema-btn');
+  var nomes = { auto: 'automático', light: 'claro', dark: 'escuro' };
+  var ordem = ['auto', 'light', 'dark'];
+  function atual() { return root.getAttribute('data-theme') || 'auto'; }
+  function mostrar() {
+    var t = atual();
+    btn.querySelector('span').textContent = 'Tema: ' + nomes[t];
+    var escuro = t === 'dark' || (t === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches);
+    btn.querySelector('use').setAttribute('href', escuro ? '#i-lua' : '#i-sol');
+  }
+  function definir(t) {
+    if (t === 'auto') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', t);
+    try { if (t === 'auto') localStorage.removeItem('tg-proposta-tema'); else localStorage.setItem('tg-proposta-tema', t); } catch (e) {}
+    mostrar();
+  }
+  btn.addEventListener('click', function () { definir(ordem[(ordem.indexOf(atual()) + 1) % 3]); });
+  document.querySelectorAll('.icone-btn').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var escuro = atual() === 'dark' || (atual() === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches);
+      definir(escuro ? 'light' : 'dark');
+    });
+  });
+  // chips: alterna o pressionado dentro do grupo (só para a proposta ficar viva)
+  document.querySelectorAll('[role="group"]').forEach(function (g) {
+    var chips = g.querySelectorAll('.chip');
+    chips.forEach(function (c) {
+      c.addEventListener('click', function () { chips.forEach(function (o) { o.setAttribute('aria-pressed', o === c ? 'true' : 'false'); }); });
+    });
+  });
+  mostrar();
+})();
+</script>
+</body>
+</html>

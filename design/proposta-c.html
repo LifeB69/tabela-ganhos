@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bobina da somadora</title>
+<meta name="description" content="Proposta C da Tabela de Ganhos: a tela é uma fita de máquina de somar, com cada conta impressa numa linha, descontos em vermelho e uma tecla amarela.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:wght@500;700&family=Red+Hat+Text:wght@400;500;700&display=swap" rel="stylesheet">
+<script>
+  try { var t = localStorage.getItem('tg-proposta-tema'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+</script>
+<style>
+:root {
+  --fundo: #F1F1EE;
+  --fita: #FFFFFF;
+  --tinta: #161616;
+  --tinta-2: #595959;
+  --vermelho: #B3122A;
+  --vermelho-fundo: #FCEDEF;
+  --total: #1D3FBF;
+  --tecla: #F2B705;
+  --sobre-tecla: #161616;
+  --ok: #1E7B45;
+  --aviso: #5C4400;
+  --aviso-fundo: #FFF3C4;
+  --picote: #767676;
+  --leve: #DADAD6;
+  --moldura: #DFDFDB;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fundo: #0F0F0F; --fita: #1A1A1A; --tinta: #EDEDED; --tinta-2: #A8A8A8; --vermelho: #FF7A7A;
+    --vermelho-fundo: #2A1517; --total: #9DB1FF; --ok: #6CD49A; --aviso: #F5D36B; --aviso-fundo: #2B2410;
+    --picote: #6B6B6B; --leve: #303030; --moldura: #262626; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --fundo: #0F0F0F; --fita: #1A1A1A; --tinta: #EDEDED; --tinta-2: #A8A8A8; --vermelho: #FF7A7A;
+  --vermelho-fundo: #2A1517; --total: #9DB1FF; --ok: #6CD49A; --aviso: #F5D36B; --aviso-fundo: #2B2410;
+  --picote: #6B6B6B; --leve: #303030; --moldura: #262626; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--fundo); color: var(--tinta); font-family: "Red Hat Text", system-ui, sans-serif; font-size: 16px; line-height: 1.45; font-variant-numeric: tabular-nums; }
+a { color: var(--total); text-underline-offset: 3px; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--total); outline-offset: 2px; }
+.mono { font-family: "Red Hat Mono", ui-monospace, monospace; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+svg.i { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+svg.i.p { width: 16px; height: 16px; }
+
+/* apresentação */
+.apres { max-width: 1260px; margin: 0 auto; padding: 24px 16px 4px; display: flex; flex-wrap: wrap; gap: 16px 32px; align-items: flex-end; justify-content: space-between; }
+.apres-txt { max-width: 660px; }
+.volta { display: inline-flex; min-height: 44px; align-items: center; font-weight: 500; }
+.apres h1 { font-family: "Red Hat Mono", monospace; font-weight: 700; font-size: clamp(28px, 5vw, 42px); line-height: 1.1; margin: 4px 0 10px; letter-spacing: -.02em; }
+.apres h1 span { background: var(--tecla); color: var(--sobre-tecla); padding: 0 8px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.apres p { margin: 0; color: var(--tinta-2); }
+.tema-btn { min-height: 44px; padding: 0 16px; border: 1.5px solid var(--tinta); border-radius: 0; background: var(--fita); display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 500; }
+
+.telas { max-width: 1260px; margin: 0 auto; padding: 16px 16px 56px; display: flex; flex-wrap: wrap; gap: 32px 24px; justify-content: center; align-items: flex-start; }
+.tela { flex: 0 1 390px; width: 390px; max-width: 100%; margin: 0; }
+.tela > h2 { font-family: "Red Hat Mono", monospace; font-weight: 500; font-size: 15px; margin: 0 0 10px; color: var(--tinta-2); text-transform: uppercase; letter-spacing: .04em; }
+.tela > h2 b { color: var(--tinta); }
+
+/* moldura */
+.celular { background: var(--fundo); border: 1px solid var(--picote); border-radius: 30px; overflow: hidden; box-shadow: 0 0 0 7px var(--moldura); display: flex; flex-direction: column; min-height: 820px; }
+.status { display: flex; justify-content: space-between; padding: 10px 24px 2px; font-size: 13px; font-weight: 700; }
+.status svg { width: 34px; height: 12px; }
+.app-topo { padding: 4px 16px 12px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 2px 8px; }
+.app-nome { font-weight: 700; font-size: 21px; margin: 0; letter-spacing: -.01em; }
+.icone-btn { width: 44px; height: 44px; display: grid; place-items: center; border: 1.5px solid var(--tinta); border-radius: 0; background: var(--fita); cursor: pointer; }
+.selo { flex-basis: 100%; margin: 0; font-family: "Red Hat Mono", monospace; font-weight: 500; font-size: 13px; color: var(--tinta-2); }
+.selo b { color: var(--ok); font-weight: 700; }
+
+.app-corpo { flex: 1; padding: 0 12px 20px; display: flex; flex-direction: column; gap: 14px; }
+
+/* chips sem raio, ativo invertido */
+.modos { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { min-height: 44px; padding: 0 14px; border: 1.5px solid var(--tinta); border-radius: 0; background: var(--fita); font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+.chip[aria-pressed="true"] { background: var(--tinta); color: var(--fita); font-weight: 700; }
+.link-btn { align-self: flex-start; min-height: 44px; padding: 0; border: 0; background: none; color: var(--total); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; margin: -8px 0 -6px; }
+
+/* a fita */
+.fita { background: var(--fita); position: relative; padding: 14px 14px 16px; margin: 8px 0; }
+.fita::before, .fita::after { content: ""; position: absolute; left: 0; right: 0; height: 8px;
+  background: linear-gradient(135deg, var(--fita) 4px, transparent 0) 0 0 / 8px 8px repeat-x, linear-gradient(-135deg, var(--fita) 4px, transparent 0) 0 0 / 8px 8px repeat-x; }
+.fita::before { top: -8px; transform: scaleY(-1); }
+.fita::after { bottom: -8px; }
+.cab-fita { display: flex; justify-content: space-between; gap: 8px; font-family: "Red Hat Mono", monospace; font-size: 12.5px; color: var(--tinta-2); text-transform: uppercase; padding-bottom: 8px; border-bottom: 1.5px dashed var(--picote); margin-bottom: 4px; }
+
+.ln { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 48px; border-bottom: 1px dotted var(--picote); }
+.ln label, .ln .rot { color: var(--tinta-2); font-weight: 500; }
+.ln input, .ln select { min-width: 0; width: 9.5em; text-align: right; border: 0; background: transparent; font-family: "Red Hat Mono", monospace; font-weight: 700; font-size: 19px; padding: 8px 0; outline: none; appearance: none; -webkit-appearance: none; text-align-last: right; }
+.ln:focus-within { border-bottom: 2px solid var(--total); }
+.ln .val { display: flex; align-items: center; gap: 4px; font-family: "Red Hat Mono", monospace; font-weight: 700; font-size: 19px; }
+.ln .val .pre { color: var(--tinta-2); font-weight: 500; font-size: 15px; }
+.seg { display: flex; }
+.seg .chip { min-height: 40px; padding: 0 10px; font-size: 15px; margin-left: -1.5px; }
+.seg .chip:first-child { margin-left: 0; }
+.passos { display: flex; align-items: center; gap: 4px; }
+.passos button { width: 44px; height: 44px; border: 1.5px solid var(--tinta); background: var(--fita); border-radius: 0; display: grid; place-items: center; cursor: pointer; }
+.passos output { width: 2ch; text-align: center; font-family: "Red Hat Mono", monospace; font-weight: 700; font-size: 19px; }
+
+.duplo { border: 0; border-top: 4px double var(--tinta); margin: 14px 0 6px; }
+.total-rot { margin: 0; font-weight: 700; font-size: 16px; display: flex; justify-content: space-between; align-items: baseline; }
+.total-rot span { font-family: "Red Hat Mono", monospace; font-weight: 500; font-size: 12.5px; color: var(--tinta-2); text-transform: uppercase; }
+.total { margin: 2px 0 8px; font-family: "Red Hat Mono", monospace; font-weight: 700; font-size: 42px; line-height: 1.05; letter-spacing: -.04em; color: var(--total); text-align: right; }
+.total small { font-size: 20px; letter-spacing: 0; margin-right: 6px; }
+.sub { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding: 8px 0; border-top: 1px dotted var(--picote); }
+.sub span:first-child { font-weight: 500; }
+.sub small { display: block; color: var(--tinta-2); font-size: 14px; font-weight: 400; }
+.sub .n { font-family: "Red Hat Mono", monospace; font-weight: 700; font-size: 20px; white-space: nowrap; }
+
+.teclas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+.tecla { min-height: 52px; border: 1.5px solid var(--sobre-tecla); background: var(--tecla); color: var(--sobre-tecla); border-radius: 6px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; box-shadow: inset 0 -4px 0 rgba(0,0,0,.22); }
+.tecla:active { box-shadow: inset 0 2px 0 rgba(0,0,0,.22); }
+.tecla.clara { background: var(--fita); color: var(--tinta); border-color: var(--tinta); box-shadow: inset 0 -4px 0 var(--leve); }
+
+/* alerta impresso */
+.alerta { border: 2px solid var(--vermelho); background: var(--vermelho-fundo); padding: 10px 12px 12px; }
+.alerta .tit { margin: 0 0 6px; font-family: "Red Hat Mono", monospace; font-weight: 700; color: var(--vermelho); font-size: 15px; text-transform: uppercase; letter-spacing: .02em; display: flex; align-items: center; gap: 6px; }
+.alerta p { margin: 0 0 6px; }
+.alerta .acoes { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: center; }
+.alerta .tecla { min-height: 44px; padding: 0 12px; background: var(--fita); color: var(--vermelho); border-color: var(--vermelho); box-shadow: none; border-radius: 0; }
+
+/* mostrar a conta = a própria fita */
+.conta summary { list-style: none; min-height: 48px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; font-weight: 700; border-bottom: 1.5px dashed var(--picote); }
+.conta summary::-webkit-details-marker { display: none; }
+.conta[open] summary svg { transform: rotate(180deg); }
+.conta ol { list-style: none; margin: 0; padding: 0; }
+.conta li { padding: 8px 0 6px; border-bottom: 1px dotted var(--picote); }
+.conta .l { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.conta .l .q { font-weight: 500; }
+.conta .l .n { font-family: "Red Hat Mono", monospace; font-weight: 700; font-size: 17px; white-space: nowrap; }
+.conta .menos .n { color: var(--vermelho); }
+.conta .f { font-family: "Red Hat Mono", monospace; font-size: 13px; color: var(--tinta-2); margin: 1px 0 0; }
+.conta .lei { display: inline-flex; align-items: center; gap: 4px; min-height: 32px; font-size: 14px; font-weight: 700; }
+.conta li.igual { border-top: 1.5px solid var(--tinta); }
+.conta li.igual .n { color: var(--total); font-size: 19px; }
+.dig { text-decoration: underline; text-decoration-style: dotted; text-decoration-color: var(--total); text-underline-offset: 3px; color: var(--tinta); font-weight: 700; }
+.legal { margin: 0; font-size: 14px; color: var(--tinta-2); }
+
+/* tabela */
+.rolavel { overflow-x: auto; }
+table.comp { border-collapse: collapse; width: 100%; font-family: "Red Hat Mono", monospace; font-size: 12.5px; letter-spacing: -.03em; }
+table.comp caption { caption-side: top; text-align: left; font-family: "Red Hat Text", sans-serif; font-size: 14px; color: var(--tinta-2); padding: 0 0 6px; }
+table.comp th, table.comp td { padding: 0 2px; height: 38px; text-align: right; white-space: nowrap; border-bottom: 1px dotted var(--picote); }
+table.comp thead th { font-weight: 700; border-bottom: 1.5px solid var(--tinta); height: 40px; color: var(--tinta-2); }
+table.comp tbody th { text-align: left; font-weight: 700; }
+table.comp .sel { font-weight: 700; color: var(--total); }
+table.comp thead .sel { color: var(--total); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 2px; }
+table.comp .min { color: var(--ok); font-weight: 700; padding-left: 5px; border-left: 1.5px dashed var(--picote); }
+.horas { display: grid; grid-template-columns: repeat(6, 1fr); }
+.horas .chip { margin-left: -1.5px; padding: 0; }
+.horas .chip:first-child { margin-left: 0; }
+.pil { font-family: "Red Hat Mono", monospace; font-weight: 700; font-size: 12px; text-transform: uppercase; background: var(--aviso-fundo); color: var(--aviso); padding: 1px 6px; margin-left: 6px; }
+.h3 { margin: 0; font-weight: 700; font-size: 19px; }
+.dica { margin: 4px 0 0; color: var(--tinta-2); font-size: 14px; }
+
+/* salvos: tiras de fita */
+.busca { display: flex; align-items: center; gap: 8px; min-height: 48px; border: 1.5px solid var(--tinta); background: var(--fita); padding: 0 12px; }
+.busca input { flex: 1; min-width: 0; border: 0; background: transparent; outline: none; font-size: 17px; padding: 10px 0; }
+.busca:focus-within { outline: 3px solid var(--total); outline-offset: 2px; }
+.exemplos { margin: 0; font-family: "Red Hat Mono", monospace; font-size: 13px; background: var(--aviso-fundo); color: var(--aviso); padding: 8px 10px; }
+.tiras { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 22px; }
+.tira { margin: 8px 0 0; padding: 10px 14px 12px; }
+.tira .topo { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+.tira h3 { margin: 0; font-size: 17px; font-weight: 700; }
+.tira h3 a { color: var(--tinta); }
+.tira .n { font-family: "Red Hat Mono", monospace; font-weight: 700; font-size: 18px; white-space: nowrap; }
+.tira .meta { font-family: "Red Hat Mono", monospace; font-size: 12.5px; color: var(--tinta-2); text-transform: uppercase; margin: 4px 0 6px; display: flex; flex-wrap: wrap; gap: 2px 10px; align-items: center; }
+.tira .meta .ex { background: var(--aviso-fundo); color: var(--aviso); padding: 0 5px; font-weight: 700; }
+.tira .meta .et { color: var(--tinta); font-weight: 700; border: 1px solid var(--tinta); padding: 0 5px; }
+.tira .meta .fx { color: var(--total); font-weight: 700; display: inline-flex; gap: 3px; align-items: center; }
+.tira p.nota { margin: 0; font-size: 15px; border-top: 1px dotted var(--picote); padding-top: 6px; }
+.tira.fixa { border-left: 4px solid var(--total); }
+
+/* barra inferior */
+.abas { display: grid; grid-template-columns: repeat(5, 1fr); background: var(--fita); border-top: 1.5px solid var(--tinta); padding-bottom: 14px; }
+.abas a { min-height: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--tinta-2); text-decoration: none; font-size: 13px; font-weight: 500; }
+.abas a span { border-bottom: 3px solid transparent; padding: 0 2px; }
+.abas a[aria-current="page"] { color: var(--tinta); font-weight: 700; }
+.abas a[aria-current="page"] span { border-bottom-color: var(--total); }
+
+.rodape { max-width: 1260px; margin: 0 auto; padding: 0 16px 40px; color: var(--tinta-2); font-size: 14.5px; }
+@media (max-width: 420px) {
+  .celular { border-radius: 22px; box-shadow: 0 0 0 4px var(--moldura); }
+  .total { font-size: 36px; }
+  .ln input, .ln select { width: 8em; font-size: 18px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+.conta .lei { min-height: 44px; }
+.tira h3 a { display: inline-flex; align-items: center; min-height: 44px; }
+.ln input, .ln select { min-height: 44px; }
+.seg .chip { min-height: 44px; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-calc" viewBox="0 0 24 24"><rect x="5" y="2.5" width="14" height="19" rx="2"/><rect x="8" y="5.5" width="8" height="4" rx=".6"/><path d="M8.6 13.2h.01M12 13.2h.01M15.4 13.2h.01M8.6 17h.01M12 17h.01M15.4 17h.01" stroke-width="2.4"/></symbol>
+  <symbol id="i-tab" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="M3 9h18M3 14.5h18M9 9v11M15 9v11"/></symbol>
+  <symbol id="i-salvos" viewBox="0 0 24 24"><path d="M6 3.5h12v15.5l-2-1.5-2 1.5-2-1.5-2 1.5-2-1.5-2 1.5z"/><path d="M9 8h6M9 11.5h6M9 15h3"/></symbol>
+  <symbol id="i-leis" viewBox="0 0 24 24"><path d="M12 3.5v16M7.5 20.5h9M5 6.5c2.2.9 4.6 1 7 0 2.4 1 4.8.9 7 0"/><path d="M2.6 13.5 5 7l2.4 6.5M16.6 13.5 19 7l2.4 6.5"/><path d="M2.4 13.5a2.6 2 0 0 0 5.2 0zM16.4 13.5a2.6 2 0 0 0 5.2 0z"/></symbol>
+  <symbol id="i-mais" viewBox="0 0 24 24"><path d="M4 7h9M17.5 7H20M4 17h3.5M12 17h8"/><circle cx="15.2" cy="7" r="2.2"/><circle cx="9.8" cy="17" r="2.2"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-8.5 8.5M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+  <symbol id="i-seta" viewBox="0 0 24 24"><path d="M6 9.5l6 6 6-6"/></symbol>
+  <symbol id="i-alerta" viewBox="0 0 24 24"><path d="M12 3.8 2.6 20h18.8z"/><path d="M12 10v4.6M12 17.4h.01"/></symbol>
+  <symbol id="i-fixo" viewBox="0 0 24 24"><path d="M9 3.5h6l-1 5.2 3 2.8v2H7v-2l3-2.8zM12 13.5V21"/></symbol>
+  <symbol id="i-busca" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.3"/><path d="M15.6 15.6l4.9 4.9"/></symbol>
+  <symbol id="i-menos" viewBox="0 0 24 24"><path d="M6 12h12"/></symbol>
+  <symbol id="i-mais-s" viewBox="0 0 24 24"><path d="M6 12h12M12 6v12"/></symbol>
+  <symbol id="i-comp" viewBox="0 0 24 24"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="5.8" r="2.5"/><circle cx="18" cy="18.2" r="2.5"/><path d="M8.3 10.8l7.4-3.8M8.3 13.2l7.4 3.8"/></symbol>
+  <symbol id="i-guardar" viewBox="0 0 24 24"><path d="M6 3.5h12v15.5l-2-1.5-2 1.5-2-1.5-2 1.5-2-1.5-2 1.5z"/><path d="M12 7.5v6M9 10.5h6"/></symbol>
+  <symbol id="i-sol" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.8v2M12 19.2v2M2.8 12h2M19.2 12h2M5.5 5.5l1.4 1.4M17.1 17.1l1.4 1.4M5.5 18.5l1.4-1.4M17.1 6.9l1.4-1.4"/></symbol>
+  <symbol id="i-lua" viewBox="0 0 24 24"><path d="M19.5 14.5A8 8 0 0 1 9.5 4.5a8 8 0 1 0 10 10z"/></symbol>
+  <symbol id="i-copiar" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="11.5" height="11.5" rx="1.5"/><path d="M15.5 8.5V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v9.5a1 1 0 0 0 1 1h3.5"/></symbol>
+  <symbol id="i-bateria" viewBox="0 0 34 12"><rect x="12.5" y="1" width="18" height="10" rx="2.5" fill="none" stroke="currentColor"/><rect x="14.5" y="3" width="11" height="6" rx="1" fill="currentColor"/><path d="M1 10.5h2v-2H1zM4.5 10.5h2v-4h-2zM8 10.5h2V4.5H8z" fill="currentColor"/></symbol>
+</svg>
+
+<header class="apres">
+  <div class="apres-txt">
+    <a class="volta" href="index.html">← As três propostas</a>
+    <h1>Proposta C · <span>Bobina da somadora</span></h1>
+    <p>A tela é uma fita de máquina de somar: cada entrada e cada conta é uma linha impressa, os descontos saem em vermelho e o total fica embaixo do traço duplo. O botão principal é uma tecla amarela.</p>
+  </div>
+  <button class="tema-btn" type="button" id="tema-btn" aria-live="polite"><svg class="i" aria-hidden="true"><use href="#i-sol"/></svg><span>Tema: automático</span></button>
+</header>
+
+<main class="telas">
+
+<!-- ================= TELA 1 ================= -->
+<section class="tela" aria-labelledby="t1">
+  <h2 id="t1"><b>1</b> · Calcular · Doméstico</h2>
+  <div class="celular">
+    <div class="status" aria-hidden="true"><span>14:32</span><svg viewBox="0 0 34 12"><use href="#i-bateria"/></svg></div>
+    <header class="app-topo">
+      <p class="app-nome">Tabela de Ganhos</p>
+      <button class="icone-btn" type="button" aria-label="Trocar o tema do app"><svg class="i"><use href="#i-lua"/></svg></button>
+      <p class="selo"><b>✓</b> Valores de 2026 · conferidos em 20/11/2026</p>
+    </header>
+    <div class="app-corpo">
+      <div class="modos" role="group" aria-label="Modo de cálculo">
+        <button class="chip" type="button" aria-pressed="false">Por hora</button>
+        <button class="chip" type="button" aria-pressed="false">Diarista</button>
+        <button class="chip" type="button" aria-pressed="true">Doméstico</button>
+      </div>
+      <button class="link-btn" type="button">Não sei qual é o meu</button>
+
+      <div class="fita">
+        <div class="cab-fita" aria-hidden="true"><span>Doméstico · nov/2026</span><span>20/11/2026 14:32</span></div>
+        <div class="ln"><span class="rot" id="c1-tipo">Contrato</span>
+          <div class="seg" role="group" aria-labelledby="c1-tipo"><button class="chip" type="button" aria-pressed="true">Mensalista</button><button class="chip" type="button" aria-pressed="false">Horista</button></div>
+        </div>
+        <div class="ln"><label for="c1-sal">Salário</label><span class="val"><span class="pre">R$</span><input id="c1-sal" inputmode="decimal" value="1.621,00" autocomplete="off"></span></div>
+        <div class="ln"><label for="c1-uf">Estado</label><span class="val"><select id="c1-uf" style="width:4em"><option>SP</option><option>RJ</option><option>MG</option><option>PR</option><option>RS</option><option>SC</option></select><svg class="i p" aria-hidden="true"><use href="#i-seta"/></svg></span></div>
+        <div class="ln"><span class="rot" id="c1-dep">Dependentes</span>
+          <div class="passos" role="group" aria-labelledby="c1-dep">
+            <button type="button" aria-label="Menos um dependente"><svg class="i"><use href="#i-menos"/></svg></button>
+            <output aria-live="polite">0</output>
+            <button type="button" aria-label="Mais um dependente"><svg class="i"><use href="#i-mais-s"/></svg></button>
+          </div>
+        </div>
+
+        <hr class="duplo">
+        <p class="total-rot" id="c1-res">Você paga por mês <span>total</span></p>
+        <p class="total" aria-labelledby="c1-res"><small>R$</small>1.945,20</p>
+        <div class="sub"><span>A pessoa recebe<small>líquido, já sem o INSS dela</small></span><span class="n">1.499,42</span></div>
+        <div class="sub"><span>Guia DAE<small>vence 18/12/2026 (dia 20 é domingo)</small></span><span class="n">445,78</span></div>
+        <div class="teclas">
+          <button class="tecla" type="button"><svg class="i"><use href="#i-guardar"/></svg>Salvar</button>
+          <button class="tecla clara" type="button"><svg class="i"><use href="#i-comp"/></svg>Compartilhar</button>
+        </div>
+      </div>
+
+      <aside class="alerta" aria-labelledby="c1-al">
+        <p class="tit" id="c1-al"><svg class="i p"><use href="#i-alerta"/></svg>Abaixo do piso de SP</p>
+        <p>Em São Paulo, o piso da doméstica é <strong>R$&nbsp;1.874,36</strong> desde 01/06/2026. Faltam <strong>R$&nbsp;253,36</strong> por mês.</p>
+        <div class="acoes">
+          <button class="tecla" type="button">Calcular com o piso</button>
+          <a href="https://www.al.sp.gov.br/repositorio/legislacao/lei/2026/lei-18471-27.05.2026.html" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:4px;min-height:44px;font-weight:700">Lei SP 18.471/2026 <svg class="i p" aria-hidden="true"><use href="#i-ext"/></svg><span class="sr">(abre em nova aba)</span></a>
+        </div>
+      </aside>
+
+      <details class="conta fita" open>
+        <summary>Mostrar a conta <svg class="i" aria-hidden="true"><use href="#i-seta"/></svg></summary>
+        <ol>
+          <li><div class="l"><span class="q">Salário</span><span class="n"><span class="dig">1.621,00</span></span></div><p class="f">digitado por você</p></li>
+          <li class="menos"><div class="l"><span class="q">INSS dela</span><span class="n">− 121,58</span></div><p class="f">7,5% × 1.621,00</p>
+            <a class="lei" href="https://www.gov.br/inss/pt-br/direitos-e-deveres/inscricao-e-contribuicao/tabela-de-contribuicao-mensal" target="_blank" rel="noopener">Portaria MPS/MF 13/2026 <svg class="i p" aria-hidden="true"><use href="#i-ext"/></svg><span class="sr">(abre em nova aba)</span></a></li>
+          <li class="menos"><div class="l"><span class="q">IR dela</span><span class="n">− 0,00</span></div><p class="f">base 1.499,42 &lt; 2.428,80: isento</p>
+            <a class="lei" href="https://www.gov.br/receitafederal/pt-br/assuntos/meu-imposto-de-renda/tabelas/2026" target="_blank" rel="noopener">Tabela do IRRF 2026 <svg class="i p" aria-hidden="true"><use href="#i-ext"/></svg><span class="sr">(abre em nova aba)</span></a></li>
+          <li class="igual"><div class="l"><span class="q">= Líquido dela</span><span class="n">1.499,42</span></div></li>
+          <li><div class="l"><span class="q">Sua parte</span><span class="n">+ 324,20</span></div><p class="f">20% × 1.621,00 = 8 + 0,8 + 8 + 3,2</p>
+            <a class="lei" href="https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp150.htm" target="_blank" rel="noopener">LC 150, arts. 22 e 34 <svg class="i p" aria-hidden="true"><use href="#i-ext"/></svg><span class="sr">(abre em nova aba)</span></a></li>
+          <li><div class="l"><span class="q">Guia DAE</span><span class="n">445,78</span></div><p class="f">324,20 + 121,58 · dia 20 do mês seguinte</p>
+            <a class="lei" href="https://www.gov.br/esocial/pt-br/noticias/mudanca-na-data-de-vencimento-do-dae" target="_blank" rel="noopener">eSocial: vencimento do DAE <svg class="i p" aria-hidden="true"><use href="#i-ext"/></svg><span class="sr">(abre em nova aba)</span></a></li>
+          <li class="igual"><div class="l"><span class="q">= Você paga</span><span class="n">1.945,20</span></div><p class="f">1.621,00 + 324,20</p></li>
+        </ol>
+      </details>
+      <p class="legal">Estimativa educativa. Não substitui contador, advogado nem a folha do eSocial.</p>
+    </div>
+    <nav class="abas" aria-label="Abas do app (tela Calcular)">
+      <a href="#t1" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-calc"/></svg><span>Calcular</span></a>
+      <a href="#t2"><svg class="i" aria-hidden="true"><use href="#i-tab"/></svg><span>Tabela</span></a>
+      <a href="#t3"><svg class="i" aria-hidden="true"><use href="#i-salvos"/></svg><span>Salvos</span></a>
+      <a href="#t1"><svg class="i" aria-hidden="true"><use href="#i-leis"/></svg><span>Leis</span></a>
+      <a href="#t1"><svg class="i" aria-hidden="true"><use href="#i-mais"/></svg><span>Mais</span></a>
+    </nav>
+  </div>
+</section>
+
+<!-- ================= TELA 2 ================= -->
+<section class="tela" aria-labelledby="t2">
+  <h2 id="t2"><b>2</b> · Tabela de comparação</h2>
+  <div class="celular">
+    <div class="status" aria-hidden="true"><span>14:33</span><svg viewBox="0 0 34 12"><use href="#i-bateria"/></svg></div>
+    <header class="app-topo">
+      <p class="app-nome">Tabela de Ganhos</p>
+      <button class="icone-btn" type="button" aria-label="Trocar o tema do app"><svg class="i"><use href="#i-lua"/></svg></button>
+      <p class="selo"><b>✓</b> Valores de 2026 · conferidos em 20/11/2026</p>
+    </header>
+    <div class="app-corpo">
+      <div class="fita">
+        <div class="cab-fita" aria-hidden="true"><span>Comparação · mês</span><span>dias × horas</span></div>
+        <div class="ln"><label for="c2-h">Valor por hora</label><span class="val"><span class="pre">R$</span><input id="c2-h" inputmode="decimal" value="25,00" autocomplete="off" style="width:5.5em"></span></div>
+        <p class="dica" id="c2-hh" style="margin:10px 0 6px">Horas por dia para comparar com o mínimo</p>
+        <div class="horas" role="group" aria-labelledby="c2-hh">
+          <button class="chip" type="button" aria-pressed="false">1 h</button>
+          <button class="chip" type="button" aria-pressed="false">2 h</button>
+          <button class="chip" type="button" aria-pressed="false">3 h</button>
+          <button class="chip" type="button" aria-pressed="true">4 h</button>
+          <button class="chip" type="button" aria-pressed="false">5 h</button>
+          <button class="chip" type="button" aria-pressed="false">6 h</button>
+        </div>
+        <div class="rolavel" role="region" aria-labelledby="c2-cap" tabindex="0" style="margin-top:12px">
+          <table class="comp">
+            <caption id="c2-cap">Total do mês em R$, sem centavos</caption>
+            <thead><tr><th scope="col" style="text-align:left">Dias</th><th scope="col">1h</th><th scope="col">2h</th><th scope="col">3h</th><th scope="col" class="sel">4h</th><th scope="col">5h</th><th scope="col">6h</th><th scope="col" class="min">Mín.</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">8</th><td>200</td><td>400</td><td>600</td><td class="sel">800</td><td>1.000</td><td>1.200</td><td class="min">235,84</td></tr>
+              <tr><th scope="row">9</th><td>225</td><td>450</td><td>675</td><td class="sel">900</td><td>1.125</td><td>1.350</td><td class="min">265,32</td></tr>
+              <tr><th scope="row">10</th><td>250</td><td>500</td><td>750</td><td class="sel">1.000</td><td>1.250</td><td>1.500</td><td class="min">294,80</td></tr>
+              <tr><th scope="row">11</th><td>275</td><td>550</td><td>825</td><td class="sel">1.100</td><td>1.375</td><td>1.650</td><td class="min">324,28</td></tr>
+              <tr><th scope="row">12</th><td>300</td><td>600</td><td>900</td><td class="sel">1.200</td><td>1.500</td><td>1.800</td><td class="min">353,76</td></tr>
+              <tr><th scope="row">13</th><td>325</td><td>650</td><td>975</td><td class="sel">1.300</td><td>1.625</td><td>1.950</td><td class="min">383,24</td></tr>
+              <tr><th scope="row">14</th><td>350</td><td>700</td><td>1.050</td><td class="sel">1.400</td><td>1.750</td><td>2.100</td><td class="min">412,72</td></tr>
+              <tr><th scope="row">15</th><td>375</td><td>750</td><td>1.125</td><td class="sel">1.500</td><td>1.875</td><td>2.250</td><td class="min">442,20</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="dica">Mín. = mínimo legal: R$&nbsp;7,37/h × 4 h × dias. <a href="https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2025/decreto/d12797.htm" target="_blank" rel="noopener">Decreto 12.797/2025<span class="sr"> (abre em nova aba)</span></a></p>
+        <div class="teclas"><button class="tecla clara" type="button" style="grid-column:1/-1"><svg class="i"><use href="#i-copiar"/></svg>Copiar para planilha</button></div>
+      </div>
+
+      <div class="fita conta">
+        <p class="h3">Salário mínimo nacional</p>
+        <ol>
+          <li><div class="l"><span class="q">Por mês</span><span class="n">1.621,00</span></div><p class="f">desde 01/01/2026</p></li>
+          <li><div class="l"><span class="q">Por dia</span><span class="n">54,04</span></div></li>
+          <li><div class="l"><span class="q">Por hora</span><span class="n">7,37</span></div></li>
+          <li><div class="l"><span class="q">2027<span class="pil">previsto</span></span><span class="n">1.741,00</span></div><p class="f">fora da conta até sair o decreto</p></li>
+        </ol>
+      </div>
+    </div>
+    <nav class="abas" aria-label="Abas do app (tela Tabela)">
+      <a href="#t1"><svg class="i" aria-hidden="true"><use href="#i-calc"/></svg><span>Calcular</span></a>
+      <a href="#t2" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-tab"/></svg><span>Tabela</span></a>
+      <a href="#t3"><svg class="i" aria-hidden="true"><use href="#i-salvos"/></svg><span>Salvos</span></a>
+      <a href="#t2"><svg class="i" aria-hidden="true"><use href="#i-leis"/></svg><span>Leis</span></a>
+      <a href="#t2"><svg class="i" aria-hidden="true"><use href="#i-mais"/></svg><span>Mais</span></a>
+    </nav>
+  </div>
+</section>
+
+<!-- ================= TELA 3 ================= -->
+<section class="tela" aria-labelledby="t3">
+  <h2 id="t3"><b>3</b> · Salvos</h2>
+  <div class="celular">
+    <div class="status" aria-hidden="true"><span>14:35</span><svg viewBox="0 0 34 12"><use href="#i-bateria"/></svg></div>
+    <header class="app-topo">
+      <p class="app-nome">Tabela de Ganhos</p>
+      <button class="icone-btn" type="button" aria-label="Trocar o tema do app"><svg class="i"><use href="#i-lua"/></svg></button>
+      <p class="selo"><b>✓</b> Valores de 2026 · conferidos em 20/11/2026</p>
+    </header>
+    <div class="app-corpo">
+      <label class="busca"><svg class="i" aria-hidden="true"><use href="#i-busca"/></svg><span class="sr">Buscar nos salvos</span><input type="search" placeholder="Buscar título, nota, etiqueta"></label>
+      <div class="modos" role="group" aria-label="Filtrar por modo">
+        <button class="chip" type="button" aria-pressed="true">Todos</button>
+        <button class="chip" type="button" aria-pressed="false">Diarista</button>
+        <button class="chip" type="button" aria-pressed="false">Doméstico</button>
+        <button class="chip" type="button" aria-pressed="false">Por hora</button>
+      </div>
+      <p class="exemplos">4 EXEMPLOS PARA VOCÊ VER COMO FICA. APAGUE QUANDO QUISER.</p>
+      <ul class="tiras">
+        <li class="fita tira fixa">
+          <div class="topo"><h3><a href="#t1">Cuidadora do meu pai</a></h3><span class="n">2.249,23</span></div>
+          <div class="meta"><span class="ex">Exemplo</span><span class="et">Doméstico</span><span>03/11/2026</span><span>por mês</span><span class="fx"><svg class="i p" aria-hidden="true"><use href="#i-fixo"/></svg>Fixado</span></div>
+          <p class="nota">Piso de SP, <span class="dig">R$&nbsp;1.874,36</span>. Perguntar sobre as noites: adicional de 20%.</p>
+        </li>
+        <li class="fita tira">
+          <div class="topo"><h3><a href="#t1">Faxina às terças</a></h3><span class="n">720,00</span></div>
+          <div class="meta"><span class="ex">Exemplo</span><span class="et">Diarista</span><span>14/11/2026</span><span>por mês</span></div>
+          <p class="nota">Diária de <span class="dig">R$&nbsp;180,00</span>, 1 vez por semana. Com 3 dias, pode virar emprego doméstico.</p>
+        </li>
+        <li class="fita tira">
+          <div class="topo"><h3><a href="#t1">Aulas de violão</a></h3><span class="n">480,00</span></div>
+          <div class="meta"><span class="ex">Exemplo</span><span class="et">Por hora</span><span>28/10/2026</span><span>por mês</span></div>
+          <p class="nota"><span class="dig">R$&nbsp;60,00</span> por hora, 2 h por semana, 4 semanas.</p>
+        </li>
+        <li class="fita tira">
+          <div class="topo"><h3><a href="#t1">Ajudante da reforma</a></h3><span class="n">1.440,00</span></div>
+          <div class="meta"><span class="ex">Exemplo</span><span class="et">Por hora</span><span>12/10/2026</span><span>no total</span></div>
+          <p class="nota"><span class="dig">R$&nbsp;30,00</span> por hora, 8 h por dia, 6 dias. Comparar com diária fechada.</p>
+        </li>
+      </ul>
+      <div class="teclas"><button class="tecla clara" type="button" style="grid-column:1/-1"><svg class="i"><use href="#i-copiar"/></svg>Fazer backup</button></div>
+    </div>
+    <nav class="abas" aria-label="Abas do app (tela Salvos)">
+      <a href="#t1"><svg class="i" aria-hidden="true"><use href="#i-calc"/></svg><span>Calcular</span></a>
+      <a href="#t2"><svg class="i" aria-hidden="true"><use href="#i-tab"/></svg><span>Tabela</span></a>
+      <a href="#t3" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-salvos"/></svg><span>Salvos</span></a>
+      <a href="#t3"><svg class="i" aria-hidden="true"><use href="#i-leis"/></svg><span>Leis</span></a>
+      <a href="#t3"><svg class="i" aria-hidden="true"><use href="#i-mais"/></svg><span>Mais</span></a>
+    </nav>
+  </div>
+</section>
+</main>
+
+<p class="rodape">Proposta estática para escolha de visual. Os números seguem o PLANO.md (salário de R$&nbsp;1.621,00, tabelas de 2026). Os 4 salvos são exemplos inventados. Valores em reais.</p>
+
+<script>
+(function () {
+  var root = document.documentElement, btn = document.getElementById('tema-btn');
+  var nomes = { auto: 'automático', light: 'claro', dark: 'escuro' }, ordem = ['auto', 'light', 'dark'];
+  function atual() { return root.getAttribute('data-theme') || 'auto'; }
+  function escuro() { var t = atual(); return t === 'dark' || (t === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches); }
+  function mostrar() { btn.querySelector('span').textContent = 'Tema: ' + nomes[atual()]; btn.querySelector('use').setAttribute('href', escuro() ? '#i-lua' : '#i-sol'); }
+  function definir(t) {
+    if (t === 'auto') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', t);
+    try { if (t === 'auto') localStorage.removeItem('tg-proposta-tema'); else localStorage.setItem('tg-proposta-tema', t); } catch (e) {}
+    mostrar();
+  }
+  btn.addEventListener('click', function () { definir(ordem[(ordem.indexOf(atual()) + 1) % 3]); });
+  document.querySelectorAll('.icone-btn').forEach(function (b) { b.addEventListener('click', function () { definir(escuro() ? 'light' : 'dark'); }); });
+  document.querySelectorAll('[role="group"]').forEach(function (g) {
+    var chips = g.querySelectorAll('.chip');
+    chips.forEach(function (c) { c.addEventListener('click', function () { chips.forEach(function (o) { o.setAttribute('aria-pressed', o === c ? 'true' : 'false'); }); }); });
+  });
+  mostrar();
+})();
+</script>
+</body>
+</html>
