@@ -131,6 +131,57 @@
   .legend { font-size: .85rem; color: var(--muted); margin: 10px 0 0; }
   .hint { font-size: .85rem; color: var(--muted); }
 
+  /* Tabela retrátil: no celular fica fechada e abre em tela cheia */
+  .back, .open-tbl { display: none; }
+  .table-head { display: flex; align-items: center; gap: 10px; }
+  .back svg, .open-tbl svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+  @media (max-width: 720px) {
+    .table-head h2 { margin: 0; }
+    .table-card:not(.open) .table-head { margin-bottom: 12px; }
+    .table-card:not(.open) .table-body { display: none; }
+    .open-tbl {
+      display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 12px;
+      font: inherit; text-align: left; color: var(--accent-ink); background: var(--accent);
+      border: 0; border-radius: 12px; padding: 14px 16px; min-height: 56px; cursor: pointer;
+    }
+    .open-tbl b { display: block; font-size: 1rem; }
+    .open-tbl small { display: block; font-size: .8rem; opacity: .85; }
+
+    body.tbl-open { overflow: hidden; }
+    .table-card.open {
+      position: fixed; inset: 0; z-index: 50; margin: 0; border: 0; border-radius: 0; box-shadow: none;
+      overflow-y: auto; overscroll-behavior: contain; background: var(--bg);
+      padding: 0 max(8px, env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px));
+    }
+    .table-card.open .open-tbl { display: none; }
+    .table-card.open .table-head {
+      position: sticky; top: 0; z-index: 3; background: var(--bg);
+      padding: calc(10px + env(safe-area-inset-top, 0px)) 4px 10px; margin-bottom: 4px;
+    }
+    .table-card.open .table-head h2 { font-size: 1rem; }
+    .table-card.open .back {
+      display: inline-flex; align-items: center; gap: 4px; flex: none;
+      font: inherit; font-weight: 600; color: var(--ink); background: var(--card);
+      border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px 6px 8px; min-height: 40px; cursor: pointer;
+    }
+    .table-card.open .toolbar { padding: 0 4px; }
+    .table-card.open .seg { width: 100%; }
+    .table-card.open .seg button { flex: 1 1 auto; padding: 8px 6px; font-size: .9rem; }
+    .table-card.open .copy-msg:empty { display: none; }
+    .table-card.open .legend { display: none; }
+
+    /* Tabela compacta: cabe inteira na largura, sem rolar para o lado */
+    table.compact { min-width: 0; table-layout: fixed; }
+    table.compact th, table.compact td { padding: 12px 2px; font-size: .86rem; text-align: center; }
+    table.compact thead th { font-size: .75rem; line-height: 1.25; }
+    table.compact thead th:first-child, table.compact tbody th { width: 40px; text-align: center; }
+    table.compact thead th small { font-size: .66rem; }
+    table.compact.multi td { padding: 5px 2px; }
+    table.compact td .line { font-size: .68rem; }
+    table.compact td .line.main { font-size: .8rem; }
+  }
+
   @media (max-width: 720px) {
     .calc-grid, .results, .goal-row { grid-template-columns: 1fr; }
     .tool-btn { margin-left: 0; }
@@ -178,8 +229,18 @@
     </div>
   </section>
 
-  <section class="card" aria-labelledby="tab-t">
-    <h2 id="tab-t">Tabela de comparação: total do mês</h2>
+  <section class="card table-card" id="table-card" aria-labelledby="tab-t">
+    <div class="table-head">
+      <button class="back" id="close-tbl" type="button" aria-label="Voltar para a calculadora">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Voltar
+      </button>
+      <h2 id="tab-t">Tabela de comparação: total do mês</h2>
+    </div>
+    <button class="open-tbl" id="open-tbl" type="button" aria-controls="table-body" aria-expanded="false">
+      <span><b>Ver tabela completa</b><small>8 a 15 dias × 1 a 6 horas por dia</small></span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
+    <div class="table-body" id="table-body">
     <div class="toolbar">
       <div class="seg" role="group" aria-label="Valor por hora" id="seg"></div>
       <button class="tool-btn" id="copy" type="button">Copiar tabela</button>
@@ -187,6 +248,7 @@
     </div>
     <div class="table-wrap"><table id="tbl"></table></div>
     <p class="legend">Cor mais forte = valor maior. Toque numa célula para levar os números para a calculadora. Embaixo de cada coluna de horas aparece o valor por dia. "Copiar tabela" copia as 144 combinações para colar no Excel ou no Google Planilhas.</p>
+    </div>
   </section>
 </main>
 
@@ -236,44 +298,99 @@
   // ---------- Tabela ----------
   const heat = value => `rgba(var(--heat), ${(0.06 + 0.5 * (value / MAX)).toFixed(3)})`;
 
+  const mobile = matchMedia('(max-width: 720px)');
+  const int = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 2 });
+
   function renderTable() {
     seg.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === view));
     const rates = view === 'todas' ? RATES : [+view];
     const multi = rates.length > 1;
-    let html = '<caption class="hint" style="caption-side:bottom;text-align:left;padding:8px 10px">' +
-      (multi ? 'Cada célula mostra o total do mês nos três valores por hora; R$ 12 em destaque.' : `Valor de R$ ${view} por hora.`) +
-      '</caption><thead><tr><th scope="col">Dias \\ Horas por dia</th>';
+    const compact = mobile.matches;
+    // No celular: sem "R$" e sem centavos em cada célula, para caber tudo na largura
+    const money = v => compact ? int.format(v) : brl.format(v);
+    const tbl = $('tbl');
+    tbl.classList.toggle('compact', compact);
+    tbl.classList.toggle('multi', multi);
+    let caption;
+    if (compact) caption = multi
+      ? 'Valores em R$. Em cada célula: R$ 10 em cima, R$ 12 no meio (destaque), R$ 15 embaixo. Toque numa célula para levar à calculadora.'
+      : `Valores em R$, a R$ ${view} por hora. Toque numa célula para levar à calculadora.`;
+    else caption = multi
+      ? 'Cada célula mostra o total do mês nos três valores por hora; R$ 12 em destaque.'
+      : `Valor de R$ ${view} por hora.`;
+    let html = `<caption class="hint" style="caption-side:bottom;text-align:left;padding:8px 10px">${caption}</caption>` +
+      `<thead><tr><th scope="col">${compact ? 'Dias' + (multi ? '<small>R$10<br>R$12<br>R$15</small>' : '') : 'Dias \\ Horas por dia'}</th>`;
     HOURS.forEach(h => {
-      const perDay = rates.map(r => (multi ? `R$${r}: ` : '') + brl.format(h * r)).join('<br>');
-      html += `<th scope="col">${h} h/dia<small class="num">${multi ? 'por dia<br>' + perDay : perDay + ' por dia'}</small></th>`;
+      let sub;
+      if (compact) sub = multi ? rates.map(r => int.format(h * r)).join('<br>') : int.format(h * rates[0]) + '/dia';
+      else {
+        const perDay = rates.map(r => (multi ? `R$${r}: ` : '') + brl.format(h * r)).join('<br>');
+        sub = multi ? 'por dia<br>' + perDay : perDay + ' por dia';
+      }
+      html += `<th scope="col">${h} h${compact ? '' : '/dia'}<small class="num">${sub}</small></th>`;
     });
     html += '</tr></thead><tbody>';
     DAYS.forEach(d => {
-      html += `<tr><th scope="row">${d} dias</th>`;
+      html += `<tr><th scope="row">${compact ? d : d + ' dias'}</th>`;
       HOURS.forEach(h => {
         const main = multi ? rates[1] : rates[0];
         const total = d * h * main;
         const attrs = `class="num" tabindex="0" data-d="${d}" data-h="${h}"${multi ? '' : ` data-r="${main}"`} style="background:${heat(total)}"`;
         if (!multi) {
-          html += `<td ${attrs} title="${d} dias × ${h} h × R$ ${main}">${brl.format(total)}</td>`;
+          html += `<td ${attrs} title="${d} dias × ${h} h × R$ ${main}">${money(total)}</td>`;
         } else {
           const lines = rates.map(r =>
-            `<span class="line${r === main ? ' main' : ''}"><i>R$${r}</i> ${brl.format(d * h * r)}</span>`).join('');
+            `<span class="line${r === main ? ' main' : ''}">${compact ? '' : `<i>R$${r}</i> `}${money(d * h * r)}</span>`).join('');
           html += `<td ${attrs} title="${d} dias × ${h} h">${lines}</td>`;
         }
       });
       html += '</tr>';
     });
-    $('tbl').innerHTML = html + '</tbody>';
+    tbl.innerHTML = html + '</tbody>';
     markSelected();
   }
+  mobile.addEventListener('change', () => { if (!mobile.matches) setOpen(false); renderTable(); });
+
+  // ---------- Abrir / fechar a tabela em tela cheia (celular) ----------
+  const card = $('table-card');
+  let pushedHash = false;
+  function setOpen(open) {
+    card.classList.toggle('open', open);
+    document.body.classList.toggle('tbl-open', open);
+    $('open-tbl').setAttribute('aria-expanded', open);
+    if (open) { card.scrollTop = 0; $('close-tbl').focus({ preventScroll: true }); }
+  }
+  // Abre e fecha na hora; o "#tabela" no endereço só serve para o botão voltar do celular fechar a tabela
+  function openTable() {
+    setOpen(true);
+    if (location.hash !== '#tabela') { pushedHash = true; location.hash = 'tabela'; }
+  }
+  function closeTable() {
+    if (!card.classList.contains('open')) return;
+    setOpen(false);
+    $('open-tbl').focus({ preventScroll: true });
+    if (pushedHash && location.hash === '#tabela') { pushedHash = false; history.back(); }
+    else { try { history.replaceState(null, '', location.pathname + location.search); } catch {} }
+  }
+  addEventListener('hashchange', () => {
+    const open = location.hash === '#tabela' && mobile.matches;
+    if (!open) pushedHash = false;
+    if (open !== card.classList.contains('open')) {
+      setOpen(open);
+      if (!open) $('open-tbl').focus({ preventScroll: true });
+    }
+  });
+  $('open-tbl').addEventListener('click', openTable);
+  $('close-tbl').addEventListener('click', closeTable);
+  addEventListener('keydown', e => { if (e.key === 'Escape') closeTable(); });
 
   function pick(td) {
     $('h').value = td.dataset.h;
     $('d').value = td.dataset.d;
     if (td.dataset.r) $('r').value = td.dataset.r;
     calc();
-    $('calc-t').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    const go = () => $('calc-t').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    if (card.classList.contains('open')) { closeTable(); setTimeout(go, 60); } else go();
   }
   $('tbl').addEventListener('click', e => { const td = e.target.closest('td'); if (td) pick(td); });
   $('tbl').addEventListener('keydown', e => {
@@ -381,6 +498,7 @@
   } catch {}
   renderTable();
   calc();
+  if (location.hash === '#tabela' && mobile.matches) setOpen(true);
 })();
 </script>
 
