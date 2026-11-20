@@ -177,7 +177,7 @@
     table.compact thead th { font-size: .75rem; line-height: 1.25; }
     table.compact thead th:first-child, table.compact tbody th { width: 40px; text-align: center; }
     table.compact thead th small { font-size: .66rem; }
-    table.compact.multi td { padding: 5px 2px; }
+    table.compact.multi td { padding: 4px 2px; }
     table.compact td .line { font-size: .68rem; }
     table.compact td .line.main { font-size: .8rem; }
   }
@@ -313,7 +313,7 @@
     tbl.classList.toggle('multi', multi);
     let caption;
     if (compact) caption = multi
-      ? 'Valores em R$. Em cada célula: R$ 10 em cima, R$ 12 no meio (destaque), R$ 15 embaixo. Toque numa célula para levar à calculadora.'
+      ? 'Valores em R$, na ordem R$ 10, R$ 12, R$ 15. Toque numa célula para levar à calculadora.'
       : `Valores em R$, a R$ ${view} por hora. Toque numa célula para levar à calculadora.`;
     else caption = multi
       ? 'Cada célula mostra o total do mês nos três valores por hora; R$ 12 em destaque.'
