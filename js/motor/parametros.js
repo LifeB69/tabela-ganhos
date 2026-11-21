@@ -1,7 +1,8 @@
 // Acesso aos parâmetros legais datados (dados/parametros.js).
-import PARAMETROS, { PARAMETROS_VERSAO, DATA_CONFERENCIA, FONTES } from '../../dados/parametros.js';
+// dados/parametros.js já entrega a lista mesclada com as vigências do robô (dados/parametros-auto.js).
+import PARAMETROS, { PARAMETROS_VERSAO, DATA_CONFERENCIA, DATA_ROBO, FONTES } from '../../dados/parametros.js';
 
-export { PARAMETROS, PARAMETROS_VERSAO, DATA_CONFERENCIA, FONTES };
+export { PARAMETROS, PARAMETROS_VERSAO, DATA_CONFERENCIA, DATA_ROBO, FONTES };
 
 const RE_DATA = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -145,4 +146,14 @@ export function getParamComReserva(chave, dataISO, overrides = {}) {
     r = { ...r, valor: overrides[chave], editado_por_usuario: true };
   }
   return r;
+}
+
+/**
+ * Ano dos valores em uso na data: o ano da vigência oficial do salário mínimo aplicável
+ * (ex.: 2027 a partir de 01/01/2027, se o mínimo de 2027 já estiver confirmado).
+ * Sem vigência na data, o ano de DATA_CONFERENCIA. Para o selo "Valores de AAAA".
+ */
+export function anoDosValores(dataISO) {
+  const p = dataValida(dataISO) ? getParam('salario_minimo', dataISO) : null;
+  return (p ? p.vigente_desde : DATA_CONFERENCIA).slice(0, 4);
 }

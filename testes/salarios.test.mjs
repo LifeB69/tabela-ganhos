@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { converterSalario, tabelaMinimo, tabelaPisos, tabelaComparacao, proximasMudancas } from '../js/motor/index.js';
+import { converterSalario, tabelaMinimo, tabelaPisos, tabelaComparacao, proximasMudancas, listarVigencias } from '../js/motor/index.js';
+import { PARAMETROS_MANUAIS } from '../dados/parametros.js';
 
 const D = '2026-11-20';
 
@@ -10,8 +11,15 @@ test('tabela do mínimo: mês, dia, hora e previsto de 2027', () => {
   assert.equal(r.diario, 5404);
   assert.equal(r.hora, 737);
   assert.equal(r.divisor, 220);
-  assert.equal(r.previstos[0].mensal, 174100);
-  assert.equal(r.previstos[0].status, 'previsto');
+  // 2027: 'previsto' à mão (PLN 24/2026), ou o que o robô gravou (projeção 'previsto' ou decreto 'vigente')
+  assert.equal(PARAMETROS_MANUAIS.find((p) => p.chave === 'salario_minimo').vigencias[1].valor.mensal, 174100);
+  const v27 = listarVigencias('salario_minimo').find((v) => v.vigente_desde === '2027-01-01');
+  if (v27.status === 'previsto') {
+    assert.equal(r.previstos[0].mensal, v27.valor.mensal);
+    assert.equal(r.previstos[0].status, 'previsto');
+  } else {
+    assert.equal(r.previstos.some((p) => p.vigente_desde === '2027-01-01'), false);
+  }
   const dez = tabelaMinimo('2026-12-16').resultado;
   assert.equal(dez.hora, 772);
   assert.equal(dez.hora_derivada, true);

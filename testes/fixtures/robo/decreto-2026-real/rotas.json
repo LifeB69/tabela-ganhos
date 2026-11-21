@@ -1,0 +1,21 @@
+{
+  "descricao": "Quadro de 2025 e Decreto 12.797/2025 (montados com o texto real).",
+  "rotas": [
+    {
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.1619/dados",
+      "arquivo": "../comum/bcb-ate-2026-real.json",
+      "prefixo": true,
+      "tipo": "application/json"
+    },
+    {
+      "url": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2025/decreto/_decretos2025.htm",
+      "arquivo": "../comum/quadro-2025.htm",
+      "tipo": "text/html"
+    },
+    {
+      "url": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2025/decreto/D12797.htm",
+      "arquivo": "../comum/decreto-12797-2026.htm",
+      "tipo": "text/html"
+    }
+  ]
+}

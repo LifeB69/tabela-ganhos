@@ -35,6 +35,7 @@ HTML, CSS e JavaScript puros, com módulos ES nativos. Não há build nem depend
 
 ```sh
 node --test testes/                                  # motor, dados, PWA (Node 22 ou mais novo)
+node robo/robo.js --seco                             # robô de valores: lê as fontes oficiais sem gravar nada
 python3 -m http.server 8800 --bind 127.0.0.1         # abra http://127.0.0.1:8800/
 ```
 
@@ -47,3 +48,7 @@ python3 -m http.server 8800 --bind 127.0.0.1         # abra http://127.0.0.1:880
 ## Aviso legal
 
 Estimativa educativa. Não substitui contador, advogado nem o eSocial. Este app não é do governo. Os valores da lei foram conferidos na data mostrada no topo do app; leis, pisos e convenções coletivas mudam, e a convenção coletiva da categoria pode valer mais que o piso usado aqui. Confira sempre na fonte oficial (cada conta traz o link) antes de decidir.
+
+## Robô de valores
+
+Um robô no GitHub Actions confere todo dia o decreto do salário mínimo, o Banco Central, o IBGE e as páginas do INSS. Quando um valor novo está confirmado em fonte oficial e os testes passam, ele publica sozinho em `dados/parametros-auto.js`. O IRRF e os pisos estaduais ele só vigia e, se mudarem, abre uma issue. Detalhes e como desligar: [docs/ROBO.md](docs/ROBO.md).

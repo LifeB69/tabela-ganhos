@@ -9,10 +9,25 @@
 //           'nao_verificado' = sem fonte primária: só informação ou opção desligada, com selo.
 // - Só entram números CONFIRMADOS/CORRIGIDOS na pesquisa (docs/PLANO.md, seção 5) e os pendentes
 //   fechados em 20/11/2026.
-// - Quando a lei mudar, troque só este arquivo e a constante PARAMETROS_VERSAO.
+// - Quando a lei mudar, troque só este arquivo e a constante PARAMETROS_VERSAO_MANUAL.
+// - O robô (robo/, docs/ROBO.md) grava vigências conferidas em fonte oficial em
+//   dados/parametros-auto.js. Elas são MESCLADAS aqui (mesclarAuto): nunca apagam nem trocam uma
+//   vigência oficial escrita à mão; só substituem uma 'previsto' ou 'nao_verificado' de mesma data.
 
-export const PARAMETROS_VERSAO = '2026-11-20';
-export const DATA_CONFERENCIA = '2026-11-20';
+import AUTO from './parametros-auto.js';
+
+const RE_ISO = /^\d{4}-\d{2}-\d{2}$/;
+const STATUS_AUTO = new Set(['vigente', 'previsto']);
+
+export const PARAMETROS_VERSAO_MANUAL = '2026-11-20';
+export const DATA_CONFERENCIA_MANUAL = '2026-11-20';
+
+/** Data (AAAA-MM-DD) da última vez que o robô mudou dados/parametros-auto.js, ou null. */
+export const DATA_ROBO = dataDoRobo(AUTO);
+
+/** Versão e data efetivas: a mais recente entre a conferência manual e a do robô. */
+export const PARAMETROS_VERSAO = maiorData(PARAMETROS_VERSAO_MANUAL, DATA_ROBO);
+export const DATA_CONFERENCIA = maiorData(DATA_CONFERENCIA_MANUAL, DATA_ROBO);
 
 const URL = {
   decreto12797: 'https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2025/decreto/d12797.htm',
@@ -726,4 +741,231 @@ const parametros = [
   },
 ];
 
-export default parametros;
+/** Lista escrita à mão, antes da mescla com o robô (o robô lê esta). */
+export const PARAMETROS_MANUAIS = parametros;
+
+// ───────────────────────── Mescla com o robô ─────────────────────────
+
+/** Data de hoje em Brasília (AAAA-MM-DD), ou null se o ambiente não souber fusos. */
+function hojeBrasilia(agora = new Date()) {
+  try {
+    return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit' }).format(agora);
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Data (de Brasília) da última gravação do robô. Usa gerado_em_brasilia; sem ela, converte gerado_em
+ * (UTC) para Brasília. Nunca devolve data depois de hoje (um relógio adiantado não vira selo no futuro).
+ */
+export function dataDoRobo(auto) {
+  if (!auto) return null;
+  let g = typeof auto.gerado_em_brasilia === 'string' && RE_ISO.test(auto.gerado_em_brasilia) ? auto.gerado_em_brasilia : null;
+  if (!g && typeof auto.gerado_em === 'string') {
+    const d = new Date(auto.gerado_em);
+    g = Number.isNaN(d.getTime()) ? null : hojeBrasilia(d);
+  }
+  if (!g || !RE_ISO.test(g)) return null;
+  const hoje = hojeBrasilia();
+  return hoje && g > hoje ? hoje : g;
+}
+
+function maiorData(a, b) {
+  if (!b) return a;
+  return b > a ? b : a;
+}
+
+function vespera(iso) {
+  const [a, m, d] = iso.split('-').map(Number);
+  return new Date(Date.UTC(a, m - 1, d - 1)).toISOString().slice(0, 10);
+}
+
+/** Só endereço de órgão público brasileiro (gov.br) serve de fonte para o robô. */
+const RE_FONTE_OFICIAL = /^https:\/\/([a-z0-9-]+\.)*gov\.br(\/|$)/i;
+
+/** Parâmetros que o robô pode gravar. Qualquer outra chave em parametros-auto.js é ignorada. */
+export const CHAVES_DO_ROBO = ['salario_minimo', 'inss_empregado', 'salario_familia', 'mei_das', 'autonomo', 'autonomo_retencao_empresa'];
+
+/** Aumento máximo aceito de um ano para o outro sem conferência humana (mesmo número de robo/config.js). */
+const AUMENTO_MAXIMO_AUTO_PCT = 15;
+const ALIQUOTAS_INSS_AUTO = [7.5, 9, 12, 14];
+
+/** Uma vigência do robô só entra se tiver o mínimo que o app exige de qualquer vigência. */
+export function vigenciaAutoValida(v) {
+  return !!v && typeof v === 'object'
+    && STATUS_AUTO.has(v.status)
+    && typeof v.vigente_desde === 'string' && RE_ISO.test(v.vigente_desde)
+    && (v.vigente_ate === null || v.vigente_ate === undefined || (RE_ISO.test(v.vigente_ate) && v.vigente_ate >= v.vigente_desde))
+    && v.valor !== undefined && v.valor !== null
+    && typeof v.lei === 'string' && v.lei.length > 0
+    && typeof v.fonte_url === 'string' && /^https:\/\//.test(v.fonte_url);
+}
+
+const inteiro = (x) => Number.isInteger(x) && x > 0;
+const mesmasChaves = (a, b) => !!a && !!b && typeof a === 'object' && typeof b === 'object'
+  && JSON.stringify(Object.keys(a).sort()) === JSON.stringify(Object.keys(b).sort());
+const subiuAte = (novo, antigo, max = AUMENTO_MAXIMO_AUTO_PCT) => inteiro(novo) && inteiro(antigo) && novo >= antigo && ((novo - antigo) / antigo) * 100 <= max;
+const oficialNa = (lista, data) => lista.filter((x) => x.status === 'vigente' && x.vigente_desde <= data)
+  .sort((a, b) => b.vigente_desde.localeCompare(a.vigente_desde))[0] || null;
+const oficialAntesDe = (lista, data) => lista.filter((x) => x.status === 'vigente' && x.vigente_desde < data)
+  .sort((a, b) => b.vigente_desde.localeCompare(a.vigente_desde))[0] || null;
+/** Vigência oficial que começa no mesmo ano de `data` (o robô só grava vigências de 1º de janeiro). */
+const oficialDoAno = (lista, data) => {
+  const v = oficialNa(lista, data);
+  return v && v.vigente_desde.slice(0, 4) === data.slice(0, 4) ? v : null;
+};
+
+/**
+ * Confere uma vigência do robô pelo formato e pelas regras do parâmetro (não só pelo formato geral).
+ * `lista(chave)` = vigências já mescladas. Devolve a lista de problemas (vazia = passa).
+ */
+function problemasDaVigencia(chave, v, lista) {
+  const p = [];
+  if (!CHAVES_DO_ROBO.includes(chave)) return [`o robô não grava "${chave}"`];
+  if (!vigenciaAutoValida(v)) return ['campos obrigatórios faltando ou inválidos'];
+  if (!RE_FONTE_OFICIAL.test(v.fonte_url)) p.push(`fonte fora do gov.br: ${v.fonte_url}`);
+  if (!v.vigente_desde.endsWith('-01-01')) p.push(`vigência ${v.vigente_desde} não é 1º de janeiro`);
+  const x = v.valor;
+  const desde = v.vigente_desde;
+  const ant = oficialAntesDe(lista(chave), desde);
+  if (!ant) return [...p, 'sem vigência oficial anterior para comparar'];
+  const a = ant.valor;
+  if (v.status === 'previsto') {
+    if (chave !== 'salario_minimo') p.push('o robô só grava projeção do salário mínimo');
+    else if (!mesmasChaves(x, { mensal: 0 }) || !(inteiro(x.mensal) && x.mensal > a.mensal && subiuAte(x.mensal, a.mensal))) p.push('projeção do mínimo fora do esperado');
+    return p;
+  }
+  const min = oficialDoAno(lista('salario_minimo'), desde);
+  const inss = oficialDoAno(lista('inss_empregado'), desde);
+  switch (chave) {
+    case 'salario_minimo': {
+      if (!mesmasChaves(x, { mensal: 0, diario: 0, horario: 0 })) { p.push('valor sem mensal/diario/horario'); break; }
+      if (!(inteiro(x.mensal) && x.mensal > a.mensal && subiuAte(x.mensal, a.mensal))) p.push(`mensal ${x.mensal} fora de (anterior ${a.mensal}, +${AUMENTO_MAXIMO_AUTO_PCT}%]`);
+      if (x.diario !== null && !(inteiro(x.diario) && x.diario >= Math.floor(x.mensal / 30) && x.diario <= Math.ceil(x.mensal / 30))) p.push(`diário ${x.diario} não é mensal ÷ 30`);
+      if (x.horario !== null && !(inteiro(x.horario) && x.horario >= Math.floor(x.mensal / 220) && x.horario <= Math.ceil(x.mensal / 220))) p.push(`horário ${x.horario} não é mensal ÷ 220`);
+      break;
+    }
+    case 'inss_empregado': {
+      if (!mesmasChaves(x, { faixas: 0, teto: 0 }) || !Array.isArray(x.faixas)) { p.push('valor sem faixas/teto'); break; }
+      const al = x.faixas.map((f) => f && f.aliquota_pct);
+      if (JSON.stringify(al) !== JSON.stringify(ALIQUOTAS_INSS_AUTO)) p.push(`alíquotas ${al.join('/')} (esperado ${ALIQUOTAS_INSS_AUTO.join('/')})`);
+      x.faixas.forEach((f, i) => {
+        if (!mesmasChaves(f, { ate: 0, aliquota_pct: 0 }) || !inteiro(f.ate)) p.push(`faixa ${i + 1} malformada`);
+        else if (i > 0 && !(f.ate > x.faixas[i - 1].ate)) p.push(`faixa ${i + 1} não é crescente`);
+      });
+      const ult = x.faixas[x.faixas.length - 1];
+      if (!ult || x.teto !== ult.ate) p.push('teto diferente do fim da última faixa');
+      if (!min) p.push('sem mínimo oficial do mesmo ano');
+      else if (!x.faixas[0] || x.faixas[0].ate !== min.valor.mensal) p.push('1ª faixa diferente do mínimo oficial do mesmo ano');
+      if (!subiuAte(x.teto, a.teto)) p.push(`teto ${x.teto} fora de [${a.teto}, +${AUMENTO_MAXIMO_AUTO_PCT}%]`);
+      break;
+    }
+    case 'salario_familia': {
+      if (!mesmasChaves(x, a)) { p.push('chaves diferentes das da vigência anterior'); break; }
+      for (const k of ['cota_por_filho', 'limite_remuneracao']) if (!subiuAte(x[k], a[k])) p.push(`${k} fora de [anterior, +${AUMENTO_MAXIMO_AUTO_PCT}%]`);
+      break;
+    }
+    case 'mei_das': {
+      if (!mesmasChaves(x, a)) { p.push('chaves diferentes das da vigência anterior'); break; }
+      if (!min) p.push('sem mínimo oficial do mesmo ano');
+      else if (x.inss !== Math.round((min.valor.mensal * 5) / 100)) p.push('INSS do MEI não é 5% do mínimo');
+      if (x.icms !== a.icms || x.iss !== a.iss) p.push('ICMS/ISS do MEI mudaram');
+      break;
+    }
+    case 'autonomo': {
+      if (!mesmasChaves(x, a)) { p.push('chaves diferentes das da vigência anterior'); break; }
+      for (const k of Object.keys(a)) if (k !== 'base_minima' && k !== 'base_maxima' && x[k] !== a[k]) p.push(`${k} mudou`);
+      if (!min || x.base_minima !== min.valor.mensal) p.push('base mínima diferente do mínimo oficial do mesmo ano');
+      if (!inss || x.base_maxima !== inss.valor.teto) p.push('base máxima diferente do teto do INSS do mesmo ano');
+      break;
+    }
+    case 'autonomo_retencao_empresa': {
+      if (!mesmasChaves(x, a)) { p.push('chaves diferentes das da vigência anterior'); break; }
+      for (const k of Object.keys(a)) if (k !== 'teto_base' && x[k] !== a[k]) p.push(`${k} mudou`);
+      if (!inss || x.teto_base !== inss.valor.teto) p.push('teto diferente do teto do INSS do mesmo ano');
+      break;
+    }
+    default:
+  }
+  return p;
+}
+
+/** Mescla sem conferência de regras (só os campos obrigatórios). */
+function mesclarBruto(manuais, extras) {
+  return manuais.map((def) => {
+    const lista = Array.isArray(extras[def.chave]) ? extras[def.chave] : [];
+    if (!lista.length) return def;
+    let vig = def.vigencias.map((v) => ({ ...v }));
+    for (const a of lista) {
+      if (!vigenciaAutoValida(a)) continue;
+      const novo = { ...a, vigente_ate: a.vigente_ate ?? null, origem: 'robo' };
+      const i = vig.findIndex((v) => v.vigente_desde === a.vigente_desde);
+      if (i < 0) { vig.push(novo); continue; }
+      const atual = vig[i];
+      if (atual.status === 'vigente' && atual.origem !== 'robo') continue;   // oficial à mão vence
+      if (novo.status === 'previsto' && atual.status === 'vigente') continue;
+      vig[i] = novo;
+    }
+    vig.sort((x, y) => x.vigente_desde.localeCompare(y.vigente_desde));
+    const oficiais = vig.filter((v) => v.status === 'vigente');
+    for (let i = 0; i < oficiais.length - 1; i++) {
+      const v = oficiais[i];
+      const prox = oficiais[i + 1];
+      if ((v.origem === 'robo' || prox.origem === 'robo') && (v.vigente_ate === null || v.vigente_ate >= prox.vigente_desde)) {
+        v.vigente_ate = vespera(prox.vigente_desde);
+      }
+    }
+    return { ...def, vigencias: vig };
+  });
+}
+
+/**
+ * Confere as vigências do robô e devolve { aceitas: { chave: [...] }, recusadas: [{ chave, vigente_desde, problemas }] }.
+ * Repete até estabilizar: se o mínimo de um ano é recusado, os derivados dele (MEI, autônomo, INSS) caem juntos.
+ */
+function conferirAuto(manuais, auto) {
+  const extras = (auto && auto.vigencias && typeof auto.vigencias === 'object') ? auto.vigencias : {};
+  const aceitas = {};
+  for (const [k, l] of Object.entries(extras)) if (Array.isArray(l)) aceitas[k] = [...l];
+  const recusadas = [];
+  for (let volta = 0; volta < 10; volta++) {
+    const mesclado = mesclarBruto(manuais, aceitas);
+    const lista = (chave) => (mesclado.find((p) => p.chave === chave) || { vigencias: [] }).vigencias;
+    let tirou = false;
+    for (const [chave, l] of Object.entries(aceitas)) {
+      if (!manuais.some((p) => p.chave === chave)) { recusadas.push({ chave, vigente_desde: null, problemas: ['parâmetro que não existe no app'] }); delete aceitas[chave]; tirou = true; continue; }
+      aceitas[chave] = l.filter((v) => {
+        const problemas = problemasDaVigencia(chave, v, lista);
+        if (!problemas.length) return true;
+        recusadas.push({ chave, vigente_desde: v && v.vigente_desde, problemas });
+        tirou = true;
+        return false;
+      });
+    }
+    if (!tirou) break;
+  }
+  return { aceitas, recusadas };
+}
+
+/** Vigências do robô que não passam nas regras do parâmetro (vazia = arquivo do robô em ordem). */
+export function problemasAuto(manuais, auto) {
+  return conferirAuto(manuais, auto).recusadas;
+}
+
+/**
+ * Mescla as vigências do robô (auto.vigencias = { chave: [vigência, ...] }) na lista manual.
+ * - Só entram vigências que passam na conferência por parâmetro (problemasAuto): fonte gov.br,
+ *   formato igual ao da vigência anterior, mínimo subindo até 15%, faixas do INSS 7,5/9/12/14 com
+ *   a 1ª igual ao mínimo do ano, MEI = 5% do mínimo etc. O resto é ignorado.
+ * - Chave que não existe na lista manual é ignorada (o robô não cria parâmetro novo).
+ * - Mesma vigente_desde: a do robô substitui uma 'previsto' ou 'nao_verificado'; uma 'vigente'
+ *   escrita à mão sempre fica. Uma 'previsto' do robô nunca troca uma 'vigente'.
+ * - A vigência oficial anterior a uma do robô é encerrada na véspera (vigente_ate), sem sobrepor.
+ * Não altera os objetos de entrada.
+ */
+export function mesclarAuto(manuais, auto) {
+  return mesclarBruto(manuais, conferirAuto(manuais, auto).aceitas);
+}
+
+export default mesclarAuto(parametros, AUTO);

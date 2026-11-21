@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { calcularDomestico, vencimentoDae } from '../js/motor/index.js';
+import { calcularDomestico, vencimentoDae, PARAMETROS_VERSAO } from '../js/motor/index.js';
 
 const D = '2026-11-20';
 
@@ -18,7 +18,7 @@ test('doméstico mensalista R$ 1.621,00: INSS, líquido, parte patronal e DAE', 
   assert.equal(x.dae, 44578);
   assert.equal(x.custo_mensal, 194520);
   assert.equal(x.dae_vencimento, '2026-12-18'); // 20/12/2026 é domingo
-  assert.equal(r.parametros_versao, '2026-11-20');
+  assert.equal(r.parametros_versao, PARAMETROS_VERSAO);   // 2026-11-20 ou a data da última atualização do robô
   assert.equal(r.data_referencia, D);
   assert.ok(r.passos.find((p) => p.id === 'inss_total').formula.includes('7,5% × R$ 1.621,00'));
   assert.ok(!r.alertas.some((a) => a.codigo === 'abaixo_minimo'));

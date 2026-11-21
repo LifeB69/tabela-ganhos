@@ -341,7 +341,7 @@ export function montarLegal(ctx) {
 
   desenhar();
 
-  const elemento = secao({ id: 'tabela-legal', titulo: 'Tabela legal', sub: `Valores de ${motor.PARAMETROS_VERSAO.slice(0, 4)}, conferidos em ${dataBR(motor.DATA_CONFERENCIA)}.` },
+  const elemento = secao({ id: 'tabela-legal', titulo: 'Tabela legal', sub: `Valores de ${motor.anoDosValores(ctx.hoje())}, conferidos em ${dataBR(motor.DATA_CONFERENCIA)}.` },
     grupoData, efeito,
     subtitulo('Valores principais'),
     h('p', { class: 'campo-dica' }, 'Edite só se você tiver certeza, como um valor de contrato ou de convenção coletiva. O que você muda fica marcado "editado por você" e pode voltar ao oficial a qualquer hora.'),

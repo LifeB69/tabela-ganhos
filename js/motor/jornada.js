@@ -60,7 +60,18 @@ export function obterMinimo(dataISO, overrides = {}) {
       `Há valor previsto (${previsto.lei}), ainda não oficial. O cálculo usa o último valor oficial, ${formatarBRL(p.valor.mensal)}.`,
       previsto.fonte_url));
   }
-  return { param: p, mensal: p.valor.mensal, diario: p.valor.diario, alertas };
+  // Sem o diário do decreto (o robô aplicou o mínimo só pela série do Banco Central): conta do app,
+  // mensal ÷ 30 no centavo mais próximo, com aviso. O governo não usa regra fixa de arredondamento.
+  let diario = p.valor.diario;
+  let diarioDerivado = false;
+  if (!Number.isInteger(diario)) {
+    diario = fracao(p.valor.mensal, 1, 30);
+    diarioDerivado = true;
+    alertas.push(alerta('info', 'minimo_diario_derivado', 'Mínimo por dia: conta do app',
+      `O valor diário oficial do mínimo ainda não foi conferido no decreto. Conta do app: ${formatarBRL(p.valor.mensal)} ÷ 30 = ${formatarBRL(diario)}. O decreto pode fixar um centavo a mais ou a menos.`,
+      p.fonte_url));
+  }
+  return { param: p, mensal: p.valor.mensal, diario, diario_derivado: diarioDerivado, alertas };
 }
 
 /**

@@ -1,0 +1,74 @@
+{
+  "descricao": "Tudo quebrado: JSON estranho, páginas vazias, HTML pela metade, 5xx e tempo esgotado.",
+  "rotas": [
+    {
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.1619/dados",
+      "arquivo": "../comum/bcb-formato-estranho.json",
+      "prefixo": true,
+      "tipo": "application/json"
+    },
+    {
+      "url": "https://apisidra.ibge.gov.br/values/t/1736/n1/all/v/2292/p/last%201",
+      "arquivo": "../comum/vazia.html",
+      "tipo": "application/json"
+    },
+    {
+      "url": "https://www.gov.br/inss/pt-br/direitos-e-deveres/inscricao-e-contribuicao/tabela-de-contribuicao-mensal",
+      "arquivo": "../comum/quebrada.html"
+    },
+    {
+      "url": "https://www.gov.br/inss/pt-br/direitos-e-deveres/salario-familia/valor-limite-para-direito-ao-salario-familia",
+      "arquivo": "../comum/vazia.html"
+    },
+    {
+      "url": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2026/decreto/_decretos2026.htm",
+      "arquivo": "../comum/quadro-2026-com-minimo-2027.htm",
+      "tipo": "text/html"
+    },
+    {
+      "url": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2026/decreto/D13250.htm",
+      "arquivo": "../comum/decreto-quebrado.htm",
+      "tipo": "text/html"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/meu-imposto-de-renda/tabelas/2026",
+      "arquivo": "../comum/vazia.html"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/meu-imposto-de-renda/tabelas/2027",
+      "arquivo": null,
+      "status": 503
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/meu-imposto-de-renda/tabelas",
+      "arquivo": null,
+      "erro": "tempo esgotado"
+    },
+    {
+      "url": "https://www.al.sp.gov.br/",
+      "arquivo": null,
+      "status": 500,
+      "prefixo": true
+    },
+    {
+      "url": "https://www.estado.rs.gov.br/",
+      "arquivo": "../comum/vazia.html",
+      "prefixo": true
+    },
+    {
+      "url": "https://portalelegis.alesc.sc.gov.br/",
+      "arquivo": "../comum/vazia.html",
+      "prefixo": true
+    },
+    {
+      "url": "https://www.parana.pr.gov.br/",
+      "arquivo": "../comum/vazia.html",
+      "prefixo": true
+    },
+    {
+      "url": "https://www.legisweb.com.br/",
+      "arquivo": "../comum/vazia.html",
+      "prefixo": true
+    }
+  ]
+}

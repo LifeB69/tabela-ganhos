@@ -74,6 +74,7 @@ export function tabelaMinimo(dataISO, opcoes = {}) {
   const resultado = {
     mensal: min.mensal,
     diario: min.diario,
+    diario_derivado: !!min.diario_derivado,
     hora: hm.valor,
     hora_derivada: hm.derivado,
     jornada_semanal: j.jornada,
@@ -85,7 +86,8 @@ export function tabelaMinimo(dataISO, opcoes = {}) {
   };
   const passos = [
     passo('minimo_mensal', 'Salário mínimo mensal', formatarBRL(min.mensal), min.mensal, min.param),
-    passo('minimo_diario', 'Salário mínimo por dia', formatarBRL(min.diario), min.diario, min.param),
+    passo('minimo_diario', min.diario_derivado ? 'Salário mínimo por dia (conta do app)' : 'Salário mínimo por dia',
+      min.diario_derivado ? `Conta do app: ${formatarBRL(min.mensal)} ÷ 30 = ${formatarBRL(min.diario)}` : formatarBRL(min.diario), min.diario, min.param),
     hm.passo,
   ];
   return montar({ entrada: { data }, resultado, passos, alertas, data });

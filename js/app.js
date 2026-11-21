@@ -237,8 +237,10 @@ function preencherSelo() {
   const [a, m, d] = iso.split('-');
   const t = document.querySelector('[data-data-conferencia]');
   if (t) { t.textContent = `${d}/${m}/${a}`; t.setAttribute('datetime', iso); }
+  // Ano dos valores em uso hoje (o do mínimo oficial aplicável); a data é a mais recente entre
+  // a conferência manual e a última atualização do robô (dados/parametros-auto.js).
   const ano = document.querySelector('[data-ano-valores]');
-  if (ano) ano.textContent = a;
+  if (ano) ano.textContent = motor.anoDosValores(hojeISO()) || a;
 }
 
 function ligarCasca() {

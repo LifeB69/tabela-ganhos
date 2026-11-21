@@ -1,7 +1,7 @@
 // Motor de cálculo da Tabela de Ganhos v2 — ponto único de importação.
 // Funções puras, dinheiro em centavos inteiros, sem acesso a tela, rede ou armazenamento.
 export {
-  PARAMETROS, PARAMETROS_VERSAO, DATA_CONFERENCIA, FONTES, UFS,
+  PARAMETROS, PARAMETROS_VERSAO, DATA_CONFERENCIA, DATA_ROBO, FONTES, UFS, anoDosValores,
   getParam, getParamComReserva, valorParam, listarParametros, listarVigencias, listarMudancasFuturas,
   dataValida, diasEntre,
 } from './parametros.js';

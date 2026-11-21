@@ -27,7 +27,7 @@ const FILES = [
   './js/motor/index.js', './js/motor/parametros.js', './js/motor/dinheiro.js', './js/motor/comum.js', './js/motor/jornada.js',
   './js/motor/inss.js', './js/motor/irrf.js', './js/motor/porHora.js', './js/motor/diarista.js', './js/motor/domestico.js',
   './js/motor/salarios.js', './js/motor/alertas.js',
-  './dados/parametros.js', './dados/leis.js',
+  './dados/parametros.js', './dados/parametros-auto.js', './dados/leis.js',
   // Telas
   './js/telas/calcular.js',
   './js/telas/calcular/util.js', './js/telas/calcular/porHora.js', './js/telas/calcular/diarista.js',

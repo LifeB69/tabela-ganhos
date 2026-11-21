@@ -14,6 +14,7 @@ formatarBRL(r.resultado.dae); // "R$ 445,78"
 
 | Arquivo | O que faz |
 |---|---|
+| `dados/parametros-auto.js` | Vigências gravadas pelo robô (docs/ROBO.md). `dados/parametros.js` as mescla com `mesclarAuto`: uma oficial escrita à mão nunca é trocada; a do robô substitui só uma 'previsto' de mesma data. `DATA_CONFERENCIA` e `PARAMETROS_VERSAO` passam a ser a data mais recente entre a manual e a do robô. |
 | `dados/parametros.js` | Todos os números legais, cada um com uma lista de vigências: valor, data de início e de fim, status, fonte e lei. Exporta `PARAMETROS_VERSAO`, `DATA_CONFERENCIA` e `FONTES`. |
 | `js/motor/parametros.js` | `getParam`, `getParamComReserva`, `listarVigencias` e `listarMudancasFuturas`, com tratamento de overrides. |
 | `js/motor/dinheiro.js` | `parseDinheiro`, `formatarBRL`, `porExtenso`, `aplicarPct`, `dividirArredondando` e `arredondarPara`. |
@@ -198,6 +199,7 @@ Alertas possíveis:
   - Método `legal` (padrão): mês = horas por semana × (divisor ÷ jornada), ou seja × 5, que inclui o repouso; dia = mês ÷ 30.
   - Método `calendario`: mês = semana × 52 ÷ 12; dia = um dia trabalhado.
 - `tabelaMinimo(data)` devolve mensal, diário e por hora, o divisor, a jornada e os `previstos` (o mínimo de R$ 1.741 de 2027, com selo, sem uso no cálculo).
+- Se a vigência do mínimo não tiver o diário (`diario: null`, como o robô grava quando só leu a série do Banco Central), `obterMinimo` usa a **conta do app** mensal ÷ 30 no centavo mais próximo, devolve `diario_derivado: true` e o alerta `minimo_diario_derivado`. O governo não tem regra fixa de arredondamento do diário (docs/ROBO.md).
 - `tabelaPisos(data)` devolve linhas de SP, RS, SC, PR e RJ, mais "demais", com `usado_no_calculo` (o maior entre piso e mínimo), `hora` (pelo divisor da data), status, fonte e lei.
 - `tabelaComparacao({ valoresHora: [...até 5], horasDia, dias }, data)` monta as colunas e acrescenta a coluna fixa "Mínimo legal".
 - `proximasMudancas(data, limite?)`.

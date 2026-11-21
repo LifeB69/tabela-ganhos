@@ -1,11 +1,16 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  PARAMETROS, PARAMETROS_VERSAO, DATA_CONFERENCIA, getParam, listarMudancasFuturas, dataValida, obterJornada, obterMinimo,
+  PARAMETROS, PARAMETROS_VERSAO, DATA_CONFERENCIA, getParam, listarMudancasFuturas, listarVigencias, dataValida, obterJornada, obterMinimo,
 } from '../js/motor/index.js';
+import { PARAMETROS_VERSAO_MANUAL, DATA_CONFERENCIA_MANUAL, DATA_ROBO } from '../dados/parametros.js';
 
 test('versão e data de conferência', () => {
-  assert.equal(PARAMETROS_VERSAO, '2026-11-20');
+  // Efetivas = a mais recente entre a conferência manual e a última atualização do robô.
+  const maior = (a, b) => (b && b > a ? b : a);
+  assert.equal(PARAMETROS_VERSAO_MANUAL, '2026-11-20');
+  assert.equal(PARAMETROS_VERSAO, maior(PARAMETROS_VERSAO_MANUAL, DATA_ROBO));
+  assert.equal(DATA_CONFERENCIA, maior(DATA_CONFERENCIA_MANUAL, DATA_ROBO));
   assert.ok(dataValida(DATA_CONFERENCIA));
 });
 
@@ -61,15 +66,18 @@ test('vigências: data antes e depois da troca', () => {
 });
 
 test('previsto e não verificado não entram no cálculo por padrão', () => {
-  assert.equal(getParam('salario_minimo', '2027-03-01').valor.mensal, 162100);
-  assert.equal(getParam('salario_minimo', '2027-03-01', {}, { incluirPrevistos: true }).valor.mensal, 174100);
+  // O mínimo de 2027 é 'previsto' à mão; se o robô já gravou o oficial ('vigente'), ele entra na conta.
+  const v27 = listarVigencias('salario_minimo').find((v) => v.vigente_desde === '2027-01-01');
+  const prev27 = v27.status === 'previsto';
+  assert.equal(getParam('salario_minimo', '2027-03-01').valor.mensal, prev27 ? 162100 : v27.valor.mensal);
+  assert.equal(getParam('salario_minimo', '2027-03-01', {}, { incluirPrevistos: true }).valor.mensal, v27.valor.mensal);
   assert.equal(getParam('piso_domestico_RJ', '2026-11-20'), null);
   assert.equal(getParam('piso_domestico_RJ', '2026-11-20', {}, { incluirNaoVerificados: true }).status, 'nao_verificado');
   assert.equal(getParam('mei_limite_anual', '2027-06-01'), null);
   assert.equal(getParam('mei_limite_anual', '2026-06-01').valor, 8100000);
   const m = obterMinimo('2027-03-01');
-  assert.equal(m.mensal, 162100);
-  assert.ok(m.alertas.some((a) => a.codigo === 'minimo_previsto'));
+  assert.equal(m.mensal, prev27 ? 162100 : v27.valor.mensal);
+  assert.equal(m.alertas.some((a) => a.codigo === 'minimo_previsto'), prev27);
 });
 
 test('overrides: valor editado e data da troca de jornada', () => {
@@ -100,7 +108,7 @@ test('mudanças futuras listadas em ordem', () => {
   assert.ok(chaves.includes('2027-01-01 salario_minimo'));
   assert.ok(chaves.includes('2027-12-16 jornada_semanal'));
   const minimo = m.find((x) => x.chave === 'salario_minimo');
-  assert.equal(minimo.status, 'previsto');
+  assert.equal(minimo.status, listarVigencias('salario_minimo').find((v) => v.vigente_desde === '2027-01-01').status);
   assert.deepEqual(m.map((x) => x.vigente_desde), m.map((x) => x.vigente_desde).slice().sort());
   assert.equal(listarMudancasFuturas('2026-11-20', '2026-12-31').some((x) => x.vigente_desde > '2026-12-31'), false);
 });
