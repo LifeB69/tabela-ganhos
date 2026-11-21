@@ -1,0 +1,123 @@
+/* Tabela de Ganhos v2 — tela Salvos. Todo seletor começa com [data-tela="salvos"]; só tokens.
+   As folhas (editar, mais ações, compartilhar) levam data-tela="salvos" no conteúdo. */
+
+/* ───── Avisos do topo ───── */
+[data-tela="salvos"] .salvos-aviso-temp:empty,
+[data-tela="salvos"] .salvos-lembrete:empty { display: none; }
+
+/* ───── Busca, filtros e ordem ───── */
+[data-tela="salvos"] .salvos-controles { gap: var(--espaco-3); min-width: 0; }
+[data-tela="salvos"] .salvos-filtros { display: flex; flex-direction: column; gap: var(--espaco-3); min-width: 0; }
+[data-tela="salvos"] .salvos-filtros:empty { display: none; }
+[data-tela="salvos"] .salvos-controles .chips > .chip { min-height: var(--alvo); }
+[data-tela="salvos"] .salvos-situacao { margin: 0; color: var(--cor-texto-2); font-size: var(--tam-1); }
+
+/* ───── Lista ───── */
+[data-tela="salvos"] .salvos-lista {
+  list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--cor-borda);
+}
+[data-tela="salvos"] .salvos-item {
+  display: flex; flex-direction: column; gap: var(--espaco-2);
+  padding: var(--espaco-4) var(--espaco-1); border-bottom: 1px solid var(--cor-borda); min-width: 0;
+}
+[data-tela="salvos"] .salvos-item--fixado {
+  background: var(--cor-acao-fundo);
+  padding-left: var(--espaco-3); padding-right: var(--espaco-3);
+  border-left: 4px solid var(--cor-acao);
+}
+[data-tela="salvos"] .salvos-item-topo {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--espaco-1) var(--espaco-3); align-items: start;
+}
+[data-tela="salvos"] .salvos-item-titulo {
+  margin: 0; font-family: var(--fonte-texto); font-size: var(--tam-3); font-weight: 600; line-height: 1.3;
+  color: var(--cor-texto); overflow-wrap: anywhere;
+}
+[data-tela="salvos"] .salvos-item-valor {
+  margin: 0; text-align: right; font-family: var(--fonte-numero); font-weight: var(--peso-numero, 700);
+  font-size: var(--tam-3); white-space: nowrap; color: var(--cor-total); font-variant-numeric: tabular-nums;
+}
+[data-tela="salvos"] .salvos-item-rotulo {
+  display: block; font-family: var(--fonte-texto); font-size: var(--tam-0); font-weight: 400;
+  color: var(--cor-texto-2); white-space: normal; max-width: 11rem; margin-left: auto;
+}
+[data-tela="salvos"] .salvos-item-semvalor { font-family: var(--fonte-texto); font-size: var(--tam-1); font-weight: 400; color: var(--cor-texto-2); }
+
+[data-tela="salvos"] .salvos-item-meta {
+  margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px var(--espaco-3);
+  font-size: var(--tam-1); color: var(--cor-texto-2);
+}
+[data-tela="salvos"] .salvos-modo {
+  font-weight: 600; color: var(--cor-texto);
+  font-family: var(--fonte-rotulo); text-transform: var(--rotulo-caixa); letter-spacing: var(--rotulo-espaco);
+}
+[data-tela="salvos"] .salvos-fixado { display: inline-flex; align-items: center; gap: 4px; font-weight: 600; color: var(--cor-acao); }
+
+[data-tela="salvos"] .salvos-etiquetas { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+[data-tela="salvos"] .salvos-etiqueta {
+  display: inline-block; padding: 2px 10px; border: 1px solid var(--cor-borda); border-radius: var(--raio-pilula);
+  font-size: var(--tam-0); color: var(--cor-texto); background: var(--cor-superficie); overflow-wrap: anywhere;
+}
+
+[data-tela="salvos"] .salvos-item-nota {
+  margin: 0; padding-left: var(--espaco-3); border-left: 3px solid var(--cor-borda-leve);
+  font-size: var(--tam-2); color: var(--cor-texto); overflow-wrap: anywhere;
+}
+[data-tela="salvos"] .salvos-item-versao {
+  margin: 0; display: flex; gap: 6px; align-items: flex-start; padding: var(--espaco-2) var(--espaco-3);
+  background: var(--cor-atencao-fundo); color: var(--cor-texto); border-radius: var(--raio); font-size: var(--tam-1);
+}
+[data-tela="salvos"] .salvos-item-versao .icone { color: var(--cor-atencao); flex: none; margin-top: 2px; }
+[data-tela="salvos"] .salvos-versao-palavra { font-weight: 700; }
+
+[data-tela="salvos"] .salvos-item-acoes { display: flex; flex-wrap: wrap; gap: var(--espaco-2); margin-top: var(--espaco-1); }
+[data-tela="salvos"] .salvos-item-acoes > .botao { flex: 1 1 5.5rem; padding-left: var(--espaco-2); padding-right: var(--espaco-2); }
+[data-tela="salvos"] .salvos-mais { margin-top: var(--espaco-3); }
+
+/* ───── Backup e planilha ───── */
+[data-tela="salvos"] .salvos-backup { margin-top: var(--espaco-3); }
+[data-tela="salvos"] .salvos-backup-texto { margin-top: 0; }
+[data-tela="salvos"] .salvos-exportar:empty { display: none; }
+[data-tela="salvos"] .salvos-backup .grupo-botoes > .botao { flex: 1 1 14rem; }
+[data-tela="salvos"] .salvos-importar-caixa:empty { display: none; }
+[data-tela="salvos"] .salvos-importar {
+  display: flex; flex-direction: column; gap: var(--espaco-3);
+  padding: var(--espaco-4); border: 2px solid var(--cor-acao); border-radius: var(--raio); background: var(--cor-superficie);
+}
+[data-tela="salvos"] .salvos-importar-titulo { margin: 0; font-size: var(--tam-3); }
+[data-tela="salvos"] .salvos-importar p { margin: 0; }
+[data-tela="salvos"] .salvos-previa { margin: 0; padding-left: 1.25rem; display: flex; flex-direction: column; gap: 4px; }
+[data-tela="salvos"] .salvos-previa[hidden] { display: none; }
+[data-tela="salvos"] .salvos-marcar { display: flex; align-items: flex-start; gap: var(--espaco-2); min-height: var(--alvo); }
+[data-tela="salvos"] .salvos-marcar-caixa { width: 24px; height: 24px; margin: 10px; flex: none; accent-color: var(--cor-acao); }
+[data-tela="salvos"] .salvos-marcar-rotulo { padding: 10px 0; cursor: pointer; }
+
+/* ───── Folhas ───── */
+.salvos-folha[data-tela="salvos"] { min-width: 0; }
+.salvos-menu[data-tela="salvos"] { display: flex; flex-direction: column; gap: var(--espaco-2); }
+.salvos-menu[data-tela="salvos"] .salvos-menu-sub { margin: 0 0 var(--espaco-1); color: var(--cor-texto-2); font-size: var(--tam-1); }
+.salvos-menu[data-tela="salvos"] .botao { justify-content: flex-start; }
+.salvos-folha[data-tela="salvos"] .grupo-botoes > .botao { flex: 1 1 10rem; }
+
+/* ───── Ajustes por visual ───── */
+/* A "Talão": salvo como canhoto, divisória picotada */
+[data-visual="a"] [data-tela="salvos"] .salvos-item { border-bottom-style: dashed; }
+/* C "Bobina": fita contínua, valores na fonte de máquina */
+[data-visual="c"] [data-tela="salvos"] .salvos-lista { border-top-style: dashed; }
+[data-visual="c"] [data-tela="salvos"] .salvos-item { border-bottom-style: dashed; }
+
+/* ───── Computador ───── */
+@media (min-width: 900px) {
+  [data-tela="salvos"] .salvos-item { padding-left: var(--espaco-3); padding-right: var(--espaco-3); }
+  [data-tela="salvos"] .salvos-item-acoes > .botao { flex: 0 0 auto; min-width: 8rem; }
+  [data-tela="salvos"] .salvos-item-valor { font-size: var(--tam-4); }
+}
+
+/* ───── Impressão: só a lista ───── */
+@media print {
+  [data-tela="salvos"] .salvos-controles,
+  [data-tela="salvos"] .salvos-item-acoes,
+  [data-tela="salvos"] .salvos-backup,
+  [data-tela="salvos"] .salvos-lembrete,
+  [data-tela="salvos"] .salvos-mais { display: none; }
+  [data-tela="salvos"] .salvos-item { break-inside: avoid; }
+}

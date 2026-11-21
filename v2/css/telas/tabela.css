@@ -1,0 +1,178 @@
+/* Tabela de Ganhos v2 — tela "Tabela". Todo seletor começa com [data-tela="tabela"]; só tokens. */
+
+/* ───────── Índice das partes ───────── */
+[data-tela="tabela"] .tab-indice-lista { display: flex; flex-wrap: wrap; gap: var(--espaco-2); margin: 0; padding: 0; list-style: none; }
+[data-tela="tabela"] .tab-indice-link {
+  display: inline-flex; align-items: center; min-height: var(--alvo); padding: 0 var(--espaco-3);
+  border: 1.5px solid var(--cor-borda); border-radius: var(--raio-pilula); background: var(--cor-superficie);
+  color: var(--cor-acao); font-weight: 600; font-size: var(--tam-1); text-decoration: none;
+  transition: background-color var(--dur);
+}
+[data-tela="tabela"] .tab-indice-link:hover { background: var(--cor-acao-fundo); }
+[data-visual="a"] [data-tela="tabela"] .tab-indice-link { border-radius: var(--raio-botao); font-family: var(--fonte-rotulo); letter-spacing: .03em; text-transform: uppercase; }
+[data-visual="c"] [data-tela="tabela"] .tab-indice-link { font-family: var(--fonte-numero); font-weight: 500; }
+
+/* ───────── Seções ───────── */
+[data-tela="tabela"] .tab-corpo { display: flex; flex-direction: column; gap: var(--espaco-5); }
+[data-tela="tabela"] .tab-secao { scroll-margin-top: var(--espaco-4); min-width: 0; }
+[data-tela="tabela"] .bloco-titulo:focus { outline: none; }
+[data-tela="tabela"] .bloco-titulo:focus-visible { outline: 3px solid var(--cor-foco); outline-offset: 2px; }
+[data-tela="tabela"] .tab-h3 { font-size: var(--tam-3); margin-top: var(--espaco-2); display: flex; flex-wrap: wrap; align-items: center; gap: var(--espaco-2); }
+[data-tela="tabela"] .tab-papel { display: flex; flex-direction: column; gap: var(--espaco-3); min-width: 0; }
+[data-tela="tabela"] .tab-obs { color: var(--cor-texto-2); font-size: var(--tam-1); }
+[data-tela="tabela"] .tab-nota { font-size: var(--tam-1); color: var(--cor-texto-2); }
+[data-tela="tabela"] .tab-fonte { font-size: var(--tam-1); color: var(--cor-texto-2); display: flex; flex-wrap: wrap; gap: 0 var(--espaco-1); align-items: baseline; }
+[data-tela="tabela"] .tab-fonte a { color: var(--cor-acao); }
+/* Links soltos (fonte, lei): área de toque de 44 px. */
+[data-tela="tabela"] .tab-fonte a, [data-tela="tabela"] .tab-link-alvo { display: inline-block; padding: 12px 0; color: var(--cor-acao); }
+[data-tela="tabela"] .tab-selos { display: flex; flex-wrap: wrap; gap: var(--espaco-1); }
+
+/* ───────── (1) Comparação ───────── */
+[data-tela="tabela"] .tab-ver .grupo-rotulo { font-weight: 600; }
+[data-tela="tabela"] .tab-abrir {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--espaco-3); width: 100%;
+  min-height: 3.5rem; padding: var(--espaco-2) var(--espaco-4); text-align: left;
+  font: inherit; color: var(--cor-texto); background: var(--cor-superficie);
+  border: 1.5px solid var(--cor-borda); border-radius: var(--raio); cursor: pointer;
+  transition: background-color var(--dur);
+}
+[data-tela="tabela"] .tab-abrir:hover { background: var(--cor-acao-fundo); }
+[data-tela="tabela"] .tab-abrir[hidden] { display: none; }
+[data-tela="tabela"] .tab-abrir-texto { display: flex; flex-direction: column; gap: 2px; }
+[data-tela="tabela"] .tab-abrir-texto strong { color: var(--cor-acao); font-size: var(--tam-3); }
+[data-tela="tabela"] .tab-abrir-texto small { color: var(--cor-texto-2); font-size: var(--tam-1); }
+[data-tela="tabela"] .tab-abrir .icone { color: var(--cor-acao); flex: none; }
+[data-tela="tabela"] .tab-grade:empty { display: none; }
+[data-tela="tabela"] .tab-grade { display: flex; flex-direction: column; gap: var(--espaco-2); min-width: 0; }
+[data-tela="tabela"] .tab-legenda { font-size: var(--tam-1); color: var(--cor-texto-2); }
+
+[data-tela="tabela"] .tab-comparacao th, [data-tela="tabela"] .tab-comparacao td { height: auto; }
+[data-tela="tabela"] .tab-comparacao thead th { vertical-align: bottom; padding-top: 6px; }
+[data-tela="tabela"] .tab-comparacao tbody th { font-weight: 600; padding: 0 10px; }
+[data-tela="tabela"] .tab-comparacao td.tab-calor { padding: 0; }
+[data-tela="tabela"] .tab-th-dias, [data-tela="tabela"] .tab-th-hora, [data-tela="tabela"] .tab-th-dia, [data-tela="tabela"] .tab-th-ordem { display: flex; flex-direction: column; }
+[data-tela="tabela"] .tab-th-hora { align-items: flex-end; gap: 2px; }
+[data-tela="tabela"] .tab-th-h { font-weight: 700; }
+[data-tela="tabela"] .tab-th-dia { align-items: flex-end; font-weight: 400; font-size: .8125rem; }
+[data-tela="tabela"] .tab-th-ordem { font-weight: 400; font-size: .75rem; margin-top: 4px; }
+[data-tela="tabela"] .tab-linha { display: block; white-space: nowrap; }
+[data-tela="tabela"] .tab-linha-rotulo { font-family: var(--fonte-texto); font-weight: 400; color: inherit; opacity: .85; font-size: .8125rem; }
+/* A série do mínimo: sublinhada e em itálico (não depende só de cor). */
+[data-tela="tabela"] .tab-linha--minimo { font-style: italic; text-decoration: underline dotted; text-underline-offset: 3px; }
+
+[data-tela="tabela"] .tab-celula {
+  display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 1px;
+  width: 100%; min-width: var(--alvo); min-height: var(--alvo); padding: 6px 8px;
+  font: inherit; color: var(--cor-texto); background: transparent; border: 0; border-radius: 0; cursor: pointer;
+  text-align: right; font-family: var(--fonte-numero); font-weight: var(--peso-numero); font-variant-numeric: tabular-nums;
+}
+[data-tela="tabela"] .tab-celula:hover { box-shadow: inset 0 0 0 2px var(--cor-acao); }
+[data-tela="tabela"] .tab-celula:focus-visible { outline: 3px solid var(--cor-foco); outline-offset: -3px; }
+[data-tela="tabela"] .tab-comparacao--multi .tab-celula .tab-linha:not(:first-child) { font-size: .9em; }
+
+/* Intensidade: mistura da cor de ação com o papel (texto continua com contraste AA). */
+[data-tela="tabela"] .tab-calor-0 { background: var(--cor-superficie); }
+[data-tela="tabela"] .tab-calor-1 { background: color-mix(in srgb, var(--cor-acao) 5%, var(--cor-superficie)); }
+[data-tela="tabela"] .tab-calor-2 { background: color-mix(in srgb, var(--cor-acao) 10%, var(--cor-superficie)); }
+[data-tela="tabela"] .tab-calor-3 { background: color-mix(in srgb, var(--cor-acao) 15%, var(--cor-superficie)); }
+[data-tela="tabela"] .tab-calor-4 { background: color-mix(in srgb, var(--cor-acao) 21%, var(--cor-superficie)); }
+[data-tela="tabela"] .tab-calor-5 { background: color-mix(in srgb, var(--cor-acao) 27%, var(--cor-superficie)); }
+[data-contraste="alto"] [data-tela="tabela"] .tab-calor { background: var(--cor-superficie); }
+
+/* Formato compacto (celular, tela cheia): cabe em 360 px sem rolar de lado. */
+[data-tela="tabela"] .tab-comparacao--compacta { table-layout: fixed; font-size: .8125rem; letter-spacing: -.01em; }
+[data-tela="tabela"] .tab-comparacao--compacta thead th:first-child { width: 3.1em; }
+[data-tela="tabela"] .tab-comparacao--compacta th, [data-tela="tabela"] .tab-comparacao--compacta td { padding-left: 3px; padding-right: 3px; }
+[data-tela="tabela"] .tab-comparacao--compacta tbody th { padding: 0 4px; }
+[data-tela="tabela"] .tab-comparacao--compacta td.tab-calor { padding: 0; }
+[data-tela="tabela"] .tab-comparacao--compacta .tab-celula { min-width: 0; padding: 6px 4px; }
+[data-tela="tabela"] .tab-comparacao--compacta .tab-th-dia { font-size: .75rem; }
+[data-visual="c"] [data-tela="tabela"] .tab-comparacao--compacta { font-size: .78rem; letter-spacing: -.03em; }
+
+/* Ajustes */
+[data-tela="tabela"] .tab-ajustes, [data-tela="tabela"] .tab-detalhes {
+  border: 1.5px solid var(--cor-borda); border-radius: var(--raio); background: var(--cor-superficie);
+}
+[data-tela="tabela"] .tab-ajustes-resumo, [data-tela="tabela"] .tab-detalhes-resumo {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--espaco-2);
+  min-height: var(--alvo); padding: var(--espaco-2) var(--espaco-4); cursor: pointer; list-style: none;
+  font-weight: 600; color: var(--cor-acao);
+}
+[data-tela="tabela"] .tab-ajustes-resumo::-webkit-details-marker, [data-tela="tabela"] .tab-detalhes-resumo::-webkit-details-marker { display: none; }
+[data-tela="tabela"] .tab-ajustes-resumo .icone, [data-tela="tabela"] .tab-detalhes-resumo .icone { flex: none; transition: transform var(--dur); }
+[data-tela="tabela"] details[open] > .tab-ajustes-resumo .icone, [data-tela="tabela"] details[open] > .tab-detalhes-resumo .icone { transform: rotate(180deg); }
+[data-tela="tabela"] .tab-ajustes-resumo:focus-visible, [data-tela="tabela"] .tab-detalhes-resumo:focus-visible { outline: 3px solid var(--cor-foco); outline-offset: 2px; }
+[data-tela="tabela"] .tab-ajustes-corpo { display: flex; flex-direction: column; gap: var(--espaco-4); padding: 0 var(--espaco-4) var(--espaco-4); }
+[data-tela="tabela"] .tab-valores, [data-tela="tabela"] .tab-faixas { display: flex; flex-direction: column; gap: var(--espaco-3); }
+[data-tela="tabela"] .tab-valor { display: flex; align-items: flex-end; gap: var(--espaco-2); }
+[data-tela="tabela"] .tab-valor > .campo { flex: 1 1 auto; min-width: 0; }
+[data-tela="tabela"] .tab-valor > .botao { flex: none; margin-bottom: 2px; }
+
+/* Tela cheia (celular) */
+[data-tela="tabela"] .tab-cheia {
+  position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0;
+  border: 0; background: var(--cor-fundo); color: var(--cor-texto); overflow-y: auto; overflow-x: hidden;
+}
+[data-tela="tabela"] .tab-cheia::backdrop { background: var(--cor-fundo); }
+[data-tela="tabela"] .tab-cheia-cab {
+  position: sticky; top: 0; z-index: 3; display: flex; align-items: center; gap: var(--espaco-2);
+  padding: var(--espaco-1) var(--espaco-2); background: var(--cor-superficie); border-bottom: 1px solid var(--cor-borda);
+}
+[data-tela="tabela"] .tab-cheia-titulo { font-size: var(--tam-3); margin: 0; }
+[data-tela="tabela"] .tab-voltar { min-height: var(--alvo); flex: none; }
+[data-tela="tabela"] .tab-cheia-corpo { display: flex; flex-direction: column; gap: var(--espaco-3); padding: var(--espaco-3) var(--espaco-2) var(--espaco-6); }
+
+/* ───────── (2) Mínimo ───────── */
+[data-tela="tabela"] .tab-previsto { display: flex; flex-direction: column; gap: var(--espaco-1); padding: var(--espaco-3) var(--espaco-4); border: 1.5px dashed var(--cor-borda); border-radius: var(--raio); background: var(--cor-superficie); }
+[data-tela="tabela"] .tab-previsto-titulo { display: flex; flex-wrap: wrap; align-items: center; gap: var(--espaco-2); }
+[data-tela="tabela"] .tab-previsto-valor { font-size: var(--tam-3); }
+[data-tela="tabela"] .tab-mudancas { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+[data-tela="tabela"] .tab-mudanca { display: grid; grid-template-columns: 6.5em 1fr; gap: var(--espaco-3); padding: var(--espaco-3) 0; border-top: 1px solid var(--cor-borda-leve); }
+[data-tela="tabela"] .tab-mudanca:first-child { border-top: 0; }
+[data-tela="tabela"] .tab-mudanca-data { font-weight: 700; }
+[data-tela="tabela"] .tab-mudanca-corpo { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+
+/* ───────── (3) Pisos ───────── */
+[data-tela="tabela"] .tab-piso-mes { display: inline-flex; flex-direction: column; align-items: flex-end; }
+[data-tela="tabela"] .tab-piso-usado { font-family: var(--fonte-texto); font-weight: 400; font-size: .8125rem; color: var(--cor-texto-2); white-space: normal; }
+[data-tela="tabela"] .tab-uf { font-weight: 700; }
+[data-tela="tabela"] .tab-seu { font-weight: 600; color: var(--cor-acao); }
+[data-tela="tabela"] .tab-tr-seu > * { background: var(--cor-acao-fundo); }
+[data-tela="tabela"] .tabela--zebra .tab-tr-seu > * { background: var(--cor-acao-fundo); }
+[data-tela="tabela"] .tab-tr-seu > :first-child { box-shadow: inset 4px 0 0 var(--cor-acao); }
+[data-tela="tabela"] .tab-fontes { list-style: none; margin: 0; padding: 0 var(--espaco-4) var(--espaco-4); display: flex; flex-direction: column; gap: var(--espaco-3); }
+[data-tela="tabela"] .tab-fontes li { display: flex; flex-direction: column; gap: 2px; padding-top: var(--espaco-3); border-top: 1px solid var(--cor-borda-leve); }
+[data-tela="tabela"] .tab-fontes li:first-child { border-top: 0; padding-top: 0; }
+[data-tela="tabela"] .tab-grupos { display: flex; flex-direction: column; gap: var(--espaco-2); }
+
+/* ───────── (4) Conversor ───────── */
+[data-tela="tabela"] .tab-premissa { font-size: var(--tam-1); color: var(--cor-texto-2); }
+[data-tela="tabela"] .tab-conv-resultado .resumo-linha--grande .resumo-valor { font-size: var(--tam-4); }
+
+/* ───────── (5) Tabelas oficiais ───────── */
+[data-tela="tabela"] .tab-oficial .tab-h3 { margin-top: 0; }
+[data-tela="tabela"] .tab-total { font-weight: 700; }
+[data-tela="tabela"] .tab-futuros { margin: 0; padding-left: 1.1em; display: flex; flex-direction: column; gap: var(--espaco-2); }
+
+/* Computador: seções lado a lado onde couber */
+@media (min-width: 900px) {
+  [data-tela="tabela"] .tab-mudanca { grid-template-columns: 8em 1fr; }
+}
+
+/* Impressão: sem os controles */
+@media print {
+  [data-tela="tabela"] .tab-indice, [data-tela="tabela"] .tab-ajustes, [data-tela="tabela"] .tab-abrir, [data-tela="tabela"] .tab-acoes-comp, [data-tela="tabela"] .tab-ver { display: none; }
+}
+
+/* Tabelas de 2 colunas: a 1ª coluna quebra linha em vez de rolar. */
+[data-tela="tabela"] .tab-tabela-quebra th, [data-tela="tabela"] .tab-tabela-quebra td { white-space: normal; padding-top: 8px; padding-bottom: 8px; }
+[data-tela="tabela"] .tab-tabela-quebra td.num { white-space: nowrap; }
+/* Tabela empilhada no celular: a legenda ocupa a largura toda. */
+@media (max-width: 480px) {
+  [data-tela="tabela"] .tabela--empilhada caption { display: block; width: auto; }
+}
+/* Textos longos no lugar do valor (fórmula do redutor) quebram linha. */
+[data-tela="tabela"] .tab-oficial .resumo-valor { white-space: normal; min-width: 0; text-align: right; }
+[data-tela="tabela"] .tab-oficial .resumo-linha { min-width: 0; }
+/* Selo "Em vigor" com fundo de papel: contraste igual em linha alternada ou destacada. */
+[data-tela="tabela"] .tabela .selo--ok { background: var(--cor-superficie); }

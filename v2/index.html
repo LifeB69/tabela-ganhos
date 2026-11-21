@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-BR" data-visual="a" data-tema="auto" data-letra="normal" data-contraste="normal" data-movimento="auto">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; form-action 'none'; base-uri 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Tabela de Ganhos</title>
+<meta name="description" content="Quanto custa pagar alguém por hora, por dia ou por mês no Brasil: diarista, doméstica e trabalho por hora, com a conta aberta e o link da lei. Grátis, sem cadastro; os dados ficam no seu aparelho.">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1A201C" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Ganhos">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<script src="js/pre-tema.js"></script>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/componentes.css">
+<link rel="stylesheet" href="css/impressao.css" media="print">
+<script type="module" src="js/app.js"></script>
+</head>
+<body>
+<a class="pular" href="#tela">Pular para o conteúdo</a>
+<div class="casca">
+  <header class="topo">
+    <div class="topo-linha">
+      <p class="marca"><a href="#calcular">Tabela de Ganhos</a></p>
+      <button class="topo-botao" type="button" id="botao-tema" aria-label="Trocar para o tema escuro">
+        <svg class="icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19.5 14.5A8 8 0 0 1 9.5 4.5a8 8 0 1 0 10 10z"/></svg>
+      </button>
+    </div>
+    <p class="selo-conferido" id="selo-conferido"><span>Valores de <span data-ano-valores>2026</span> · conferidos em <time data-data-conferencia datetime="2026-11-20">20/11/2026</time></span></p>
+  </header>
+
+  <nav class="abas" aria-label="Seções do app">
+    <ul class="abas-lista">
+      <li><a class="aba" href="#calcular" data-aba="calcular">
+        <span class="aba-icone"><svg class="icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="5" y="2.5" width="14" height="19" rx="2"/><rect x="8" y="5.5" width="8" height="4" rx=".6"/><path d="M8.6 13.2h.01M12 13.2h.01M15.4 13.2h.01M8.6 17h.01M12 17h.01M15.4 17h.01" stroke-width="2.4"/></svg></span>
+        <span class="aba-rotulo">Calcular</span></a></li>
+      <li><a class="aba" href="#tabela" data-aba="tabela">
+        <span class="aba-icone"><svg class="icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="M3 9h18M3 14.5h18M9 9v11M15 9v11"/></svg></span>
+        <span class="aba-rotulo">Tabela</span></a></li>
+      <li><a class="aba" href="#salvos" data-aba="salvos">
+        <span class="aba-icone"><svg class="icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6.5 3.5h11v17l-5.5-3.8-5.5 3.8z"/><path d="M9.5 8h5"/></svg></span>
+        <span class="aba-rotulo">Salvos</span></a></li>
+      <li><a class="aba" href="#leis" data-aba="leis">
+        <span class="aba-icone"><svg class="icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3.5v16M7.5 20.5h9M5 6.5c2.2.9 4.6 1 7 0 2.4 1 4.8.9 7 0"/><path d="M2.6 13.5 5 7l2.4 6.5M16.6 13.5 19 7l2.4 6.5"/><path d="M2.4 13.5a2.6 2 0 0 0 5.2 0zM16.4 13.5a2.6 2 0 0 0 5.2 0z"/></svg></span>
+        <span class="aba-rotulo">Leis</span></a></li>
+      <li><a class="aba" href="#mais" data-aba="mais">
+        <span class="aba-icone"><svg class="icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h9M17.5 7H20M4 17h3.5M12 17h8"/><circle cx="15.2" cy="7" r="2.2"/><circle cx="9.8" cy="17" r="2.2"/></svg></span>
+        <span class="aba-rotulo">Mais</span></a></li>
+    </ul>
+  </nav>
+
+  <div class="conteudo">
+    <main id="tela" tabindex="-1">
+      <p class="carregando">Abrindo…</p>
+      <noscript><p class="sem-js">Este app precisa de JavaScript ligado para fazer as contas. Nenhum dado sai do seu aparelho.</p></noscript>
+    </main>
+    <footer class="aviso-legal">
+      <p>Estimativa educativa; não substitui contador, advogado nem o eSocial.</p>
+      <p>Este app não é do governo. Os dados ficam só no seu aparelho.</p>
+    </footer>
+  </div>
+</div>
+<div class="sr" id="anuncio" role="status" aria-live="polite" aria-atomic="true"></div>
+<div class="toasts" id="toasts" aria-live="polite" aria-atomic="false"></div>
+</body>
+</html>

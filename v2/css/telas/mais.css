@@ -1,0 +1,227 @@
+/* Tabela de Ganhos v2 — tela Mais (Configurações). Todo seletor começa com [data-tela="mais"]
+   (ou com um ajuste de aparência do <html> antes dele). Só tokens, menos nas mini-prévias dos visuais:
+   cada prévia mostra as cores do OUTRO visual, que não estão nos tokens do visual atual. */
+
+/* ───────────── Índice da tela ───────────── */
+[data-tela="mais"] .mais-indice ul { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; }
+[data-tela="mais"] .mais-indice a {
+  min-height: var(--alvo); display: inline-flex; align-items: center; padding: 0 var(--espaco-3);
+  border: 1.5px solid var(--cor-borda); border-radius: var(--raio-pilula); background: var(--cor-superficie);
+  color: var(--cor-texto); font-size: var(--tam-1); font-weight: 600; text-decoration: none;
+  transition: background-color var(--dur), border-color var(--dur);
+}
+[data-tela="mais"] .mais-indice a:hover { border-color: var(--cor-acao); background: var(--cor-acao-fundo); }
+
+/* ───────────── Seções ───────────── */
+[data-tela="mais"] .mais-secao { scroll-margin-top: var(--espaco-4); }
+[data-tela="mais"] .mais-secao .bloco-titulo:focus { outline: none; }
+[data-tela="mais"] .mais-secao .bloco-titulo:focus-visible { outline: 3px solid var(--cor-foco); outline-offset: 4px; }
+[data-tela="mais"] .mais-h3 { font-size: var(--tam-3); margin-top: var(--espaco-3); line-height: 1.25; }
+[data-tela="mais"] .mais-secao > .mais-h3:first-of-type { margin-top: var(--espaco-1); }
+[data-tela="mais"] .mais-fieldset { border: 0; margin: 0; padding: 0; min-width: 0; display: flex; flex-direction: column; gap: var(--espaco-2); }
+[data-tela="mais"] .mais-fieldset > legend { padding: 0; margin-bottom: var(--espaco-2); }
+[data-tela="mais"] .mais-status { min-height: 1.5em; font-size: var(--tam-1); color: var(--cor-texto-2); }
+[data-tela="mais"] .mais-arred .segmentos--igual { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+[data-tela="mais"] .mais-exemplo { font-size: var(--tam-1); color: var(--cor-texto-2); }
+[data-tela="mais"] .mais-exemplo strong { color: var(--cor-texto); }
+[data-tela="mais"] .mais-texto { display: flex; flex-direction: column; gap: var(--espaco-2); }
+[data-tela="mais"] .mais-ok { display: flex; align-items: center; gap: 6px; color: var(--cor-ok); font-weight: 600; }
+
+/* ───────────── Visual: cartões com mini-prévia ───────────── */
+[data-tela="mais"] .mais-visuais { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--espaco-2); }
+[data-tela="mais"] .mais-visual {
+  display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: var(--espaco-3); align-items: center;
+  min-height: var(--alvo); padding: var(--espaco-2); cursor: pointer;
+  border: 1.5px solid var(--cor-borda); border-radius: var(--raio); background: var(--cor-superficie);
+  transition: border-color var(--dur), background-color var(--dur), box-shadow var(--dur);
+}
+[data-tela="mais"] .mais-visual:hover { border-color: var(--cor-acao); }
+[data-tela="mais"] .mais-visual:has(input:checked) { border-color: var(--cor-acao); box-shadow: inset 0 0 0 1.5px var(--cor-acao); background: var(--cor-acao-fundo); }
+[data-tela="mais"] .mais-visual:has(input:focus-visible) { outline: 3px solid var(--cor-foco); outline-offset: 2px; }
+[data-tela="mais"] .mais-visual-textos { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+[data-tela="mais"] .mais-visual-linha { display: flex; align-items: center; gap: 8px; }
+[data-tela="mais"] .mais-visual-nome { font-weight: 700; font-size: var(--tam-2); min-width: 0; }
+[data-tela="mais"] .mais-visual-padrao {
+  font-size: var(--tam-0); font-weight: 600; color: var(--cor-texto-2); border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-pilula); padding: 0 6px; line-height: 1.5; align-self: flex-start;
+}
+[data-tela="mais"] .mais-visual-desc { font-size: var(--tam-1); color: var(--cor-texto-2); }
+[data-tela="mais"] .mais-visual-radio,
+[data-tela="mais"] .mais-radio {
+  appearance: none; -webkit-appearance: none; flex: none; width: 44px; height: 44px; margin: -11px; padding: 0; border: 0; cursor: pointer;
+  border-radius: 50%; background: radial-gradient(circle closest-side, transparent 0 8.5px, var(--cor-borda) 9px 11px, transparent 11.5px);
+}
+[data-tela="mais"] .mais-visual-radio:checked,
+[data-tela="mais"] .mais-radio:checked {
+  background: radial-gradient(circle closest-side, var(--cor-acao) 0 5px, transparent 5.5px 8.5px, var(--cor-acao) 9px 11px, transparent 11.5px);
+}
+[data-tela="mais"] .mais-visual-radio:focus-visible,
+[data-tela="mais"] .mais-radio:focus-visible { outline: none; }
+
+/* Mini-prévias: só caixas (aria-hidden). Cores tiradas de css/tokens.css de cada visual. */
+[data-tela="mais"] .mais-mini {
+  position: relative; display: block; height: 4.25rem; overflow: hidden; border-radius: 3px;
+  background: var(--m-fundo); border: 1px solid var(--m-borda);
+}
+[data-tela="mais"] .mais-mini > span { position: absolute; display: block; }
+[data-tela="mais"] .mais-mini-numero { font-variant-numeric: tabular-nums; line-height: 1; color: var(--m-numero); }
+
+[data-tela="mais"] .mais-mini--a { --m-fundo: #F6F7F2; --m-papel: #FFFFFF; --m-faixa: #2E6B4E; --m-linha: #D3D9D4; --m-numero: #1C2320; --m-selo: #5A3E9B; --m-borda: #D3D9D4; }
+[data-tela="mais"] .mais-mini--a .mais-mini-topo { inset: 0 0 auto 0; height: 100%; background: var(--m-papel); border-left: 4px solid var(--m-faixa); left: 6px; right: 6px; top: 6px; }
+[data-tela="mais"] .mais-mini--a .mais-mini-linha { left: 18px; right: 40%; top: 16px; height: 3px; background: var(--m-linha); }
+[data-tela="mais"] .mais-mini--a .mais-mini-linha--curta { top: 24px; right: 60%; }
+[data-tela="mais"] .mais-mini--a .mais-mini-numero { left: 18px; bottom: 8px; font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 1.375rem; }
+[data-tela="mais"] .mais-mini--a .mais-mini-selo {
+  right: 12px; top: 12px; padding: 1px 4px; border: 1.5px solid var(--m-selo); color: var(--m-selo); border-radius: 3px;
+  font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: .625rem; letter-spacing: .06em; transform: rotate(-6deg);
+}
+
+[data-tela="mais"] .mais-mini--b { --m-fundo: #FFFFFF; --m-topo: #1D2F55; --m-pagina: #F2F6F9; --m-numero: #0F1B2D; --m-botao: #1F5FAD; --m-borda: #D6DEE8; }
+[data-tela="mais"] .mais-mini--b .mais-mini-topo { left: 0; right: 0; top: 0; height: 14px; background: var(--m-topo); }
+[data-tela="mais"] .mais-mini--b .mais-mini-pagina { left: 0; right: 0; top: 14px; height: 12px; background: var(--m-pagina); }
+[data-tela="mais"] .mais-mini--b .mais-mini-numero { left: 8px; bottom: 9px; font-family: "Noto Sans", sans-serif; font-weight: 600; font-size: 1.25rem; }
+[data-tela="mais"] .mais-mini--b .mais-mini-botao { right: 8px; bottom: 9px; width: 30%; height: 14px; border-radius: 2px; background: var(--m-botao); }
+
+[data-tela="mais"] .mais-mini--c { --m-fundo: #F1F1EE; --m-fita: #FFFFFF; --m-numero: #1D3FBF; --m-picote: #767676; --m-tecla: #F2B705; --m-tecla-borda: #161616; --m-borda: #DADAD6; }
+[data-tela="mais"] .mais-mini--c .mais-mini-fita { left: 16%; right: 16%; top: 0; bottom: 0; background: var(--m-fita); }
+[data-tela="mais"] .mais-mini--c .mais-mini-numero { position: absolute; right: 8px; top: 10px; font-family: "Red Hat Mono", monospace; font-weight: 700; font-size: 1.0625rem; }
+[data-tela="mais"] .mais-mini--c .mais-mini-picote { position: absolute; left: 6px; right: 6px; top: 32px; border-top: 2px dashed var(--m-picote); }
+[data-tela="mais"] .mais-mini--c .mais-mini-tecla { right: 22%; bottom: 7px; width: 28%; height: 14px; border-radius: 3px; background: var(--m-tecla); border: 1.5px solid var(--m-tecla-borda); box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .22); }
+
+/* Prévias no escuro (o mesmo par de cores que o visual usa no tema escuro). */
+[data-tema="escuro"] [data-tela="mais"] .mais-mini--a { --m-fundo: #121613; --m-papel: #1A201C; --m-faixa: #6FC79A; --m-linha: #2C3530; --m-numero: #E8EDE9; --m-selo: #C5B0FF; --m-borda: #2C3530; }
+[data-tema="escuro"] [data-tela="mais"] .mais-mini--b { --m-fundo: #0D1522; --m-topo: #152033; --m-pagina: #1A2A44; --m-numero: #E6ECF4; --m-botao: #8FB4FF; --m-borda: #24324A; }
+[data-tema="escuro"] [data-tela="mais"] .mais-mini--c { --m-fundo: #0F0F0F; --m-fita: #1A1A1A; --m-numero: #9DB1FF; --m-picote: #7A7A7A; --m-tecla: #F2B705; --m-tecla-borda: #F2B705; --m-borda: #303030; }
+@media (prefers-color-scheme: dark) {
+  [data-tema="auto"] [data-tela="mais"] .mais-mini--a { --m-fundo: #121613; --m-papel: #1A201C; --m-faixa: #6FC79A; --m-linha: #2C3530; --m-numero: #E8EDE9; --m-selo: #C5B0FF; --m-borda: #2C3530; }
+  [data-tema="auto"] [data-tela="mais"] .mais-mini--b { --m-fundo: #0D1522; --m-topo: #152033; --m-pagina: #1A2A44; --m-numero: #E6ECF4; --m-botao: #8FB4FF; --m-borda: #24324A; }
+  [data-tema="auto"] [data-tela="mais"] .mais-mini--c { --m-fundo: #0F0F0F; --m-fita: #1A1A1A; --m-numero: #9DB1FF; --m-picote: #7A7A7A; --m-tecla: #F2B705; --m-tecla-borda: #F2B705; --m-borda: #303030; }
+}
+
+/* ───────────── Interruptor (checkbox com role=switch) ───────────── */
+[data-tela="mais"] .mais-lista-switch { display: flex; flex-direction: column; }
+[data-tela="mais"] .mais-switch {
+  position: relative; display: flex; align-items: center; justify-content: space-between; gap: var(--espaco-3);
+  min-height: 56px; padding: var(--espaco-2) 0; cursor: pointer; border-bottom: 1px solid var(--cor-borda-leve);
+}
+[data-tela="mais"] .mais-switch:last-child { border-bottom: 0; }
+[data-tela="mais"] .mais-switch-textos { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+[data-tela="mais"] .mais-switch-rotulo { font-weight: 600; }
+[data-tela="mais"] .mais-switch-dica { font-size: var(--tam-1); color: var(--cor-texto-2); }
+[data-tela="mais"] .mais-switch-input { position: absolute; right: 0; top: 50%; width: 52px; height: 32px; margin: -16px 0 0; opacity: 0; cursor: pointer; }
+[data-tela="mais"] .mais-switch-trilho {
+  flex: none; position: relative; width: 52px; height: 32px; border-radius: 999px;
+  border: 2px solid var(--cor-borda); background: var(--cor-superficie); transition: background-color var(--dur), border-color var(--dur);
+}
+[data-tela="mais"] .mais-switch-bola {
+  position: absolute; top: 4px; left: 4px; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--cor-borda); transition: transform var(--dur), background-color var(--dur);
+}
+[data-tela="mais"] .mais-switch-input:checked + .mais-switch-trilho { background: var(--cor-ativo); border-color: var(--cor-ativo); }
+[data-tela="mais"] .mais-switch-input:checked + .mais-switch-trilho .mais-switch-bola { transform: translateX(20px); background: var(--cor-sobre-ativo); }
+[data-tela="mais"] .mais-switch-input:focus-visible + .mais-switch-trilho { outline: 3px solid var(--cor-foco); outline-offset: 2px; }
+[data-tela="mais"] .mais-switch-input:disabled + .mais-switch-trilho { opacity: .55; }
+
+/* ───────────── Opções em rádio (data de referência) ───────────── */
+[data-tela="mais"] .mais-opcoes { display: flex; flex-direction: column; gap: var(--espaco-2); }
+[data-tela="mais"] .mais-opcao {
+  display: flex; align-items: flex-start; gap: var(--espaco-3); min-height: var(--alvo); padding: var(--espaco-2) var(--espaco-3);
+  border: 1.5px solid var(--cor-borda); border-radius: var(--raio); background: var(--cor-superficie); cursor: pointer;
+}
+[data-tela="mais"] .mais-opcao:has(input:checked) { border-color: var(--cor-acao); box-shadow: inset 0 0 0 1.5px var(--cor-acao); }
+[data-tela="mais"] .mais-opcao:has(input:focus-visible) { outline: 3px solid var(--cor-foco); outline-offset: 2px; }
+[data-tela="mais"] .mais-opcao .mais-radio { margin-top: -10px; }
+[data-tela="mais"] .mais-opcao-textos { display: flex; flex-direction: column; gap: 2px; }
+[data-tela="mais"] .mais-opcao-nome { font-weight: 600; }
+[data-tela="mais"] .mais-opcao-dica { font-size: var(--tam-1); color: var(--cor-texto-2); }
+[data-tela="mais"] .mais-data-fixa { padding-left: calc(22px + var(--espaco-3)); }
+[data-tela="mais"] input[type="date"].campo-input { font-size: var(--tam-3); color: var(--cor-digitado); }
+
+/* ───────────── Piso usado (Local) ───────────── */
+[data-tela="mais"] .mais-piso { display: flex; flex-direction: column; gap: 2px; padding: var(--espaco-3); border-left: 4px solid var(--cor-acao); background: var(--cor-superficie-2); }
+[data-tela="mais"] .mais-piso:empty { display: none; }
+[data-tela="mais"] .mais-piso-rotulo { font-size: var(--tam-1); color: var(--cor-texto-2); }
+[data-tela="mais"] .mais-piso-valor { font-size: var(--tam-5); line-height: 1.1; color: var(--cor-total); }
+[data-tela="mais"] .mais-piso-mes { font-family: var(--fonte-texto); font-size: var(--tam-2); font-weight: 400; color: var(--cor-texto-2); }
+[data-tela="mais"] .mais-piso-origem { font-size: var(--tam-1); }
+
+/* ───────────── Parâmetros (Tabela legal) ───────────── */
+[data-tela="mais"] .mais-params { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; border-top: 1px solid var(--cor-borda-leve); }
+[data-tela="mais"] .mais-param { display: flex; flex-direction: column; gap: 4px; padding: var(--espaco-3) 0; border-bottom: 1px solid var(--cor-borda-leve); }
+[data-tela="mais"] .mais-param--editado { border-left: 4px solid var(--cor-acao); padding-left: var(--espaco-3); }
+[data-tela="mais"] .mais-param-cab { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+[data-tela="mais"] .mais-param-rotulo { font-size: var(--tam-2); font-weight: 700; font-family: var(--fonte-texto); line-height: 1.3; }
+[data-tela="mais"] .mais-param-selos { display: inline-flex; flex-wrap: wrap; gap: 4px; }
+[data-tela="mais"] .mais-param-valor { font-size: var(--tam-4); color: var(--cor-total); line-height: 1.2; }
+[data-tela="mais"] .mais-param-unid { font-family: var(--fonte-texto); font-size: var(--tam-1); font-weight: 400; color: var(--cor-texto-2); }
+[data-tela="mais"] .mais-param-extra { font-size: var(--tam-1); }
+[data-tela="mais"] .mais-param-meta { font-size: var(--tam-1); color: var(--cor-texto-2); overflow-wrap: anywhere; }
+[data-tela="mais"] .mais-fonte-linha { display: block; }
+[data-tela="mais"] .mais-fonte-link,
+[data-tela="mais"] .mais-link-solto { display: inline-flex; align-items: center; gap: 6px; min-height: var(--alvo); min-width: var(--alvo); font-weight: 600; }
+[data-tela="mais"] .mais-link-solto { align-self: flex-start; }
+[data-tela="mais"] .mais-param-acoes { margin-top: var(--espaco-1); }
+[data-tela="mais"] .mais-param-acoes > .botao { flex: 0 1 auto; }
+[data-tela="mais"] .mais-etapas { list-style: none; margin: 0; padding: 0; font-size: var(--tam-1); display: flex; flex-direction: column; gap: 2px; }
+[data-tela="mais"] .mais-etapas li { font-variant-numeric: tabular-nums; }
+[data-tela="mais"] .mais-nv-estado { display: flex; align-items: center; gap: 4px; font-size: var(--tam-1); font-weight: 600; color: var(--cor-texto-2); }
+[data-tela="mais"] .mais-tudo-oficial { display: flex; }
+
+/* ───────────── Dados ───────────── */
+[data-tela="mais"] .mais-apagar { display: flex; flex-direction: column; gap: var(--espaco-3); padding: var(--espaco-3); border: 1.5px solid var(--cor-risco); border-left-width: 6px; border-radius: var(--raio); background: var(--cor-superficie); }
+[data-tela="mais"] .mais-apagar .botao--perigo { align-self: flex-start; }
+[data-tela="mais"] .mais-apagar .botao[aria-disabled="true"] { opacity: 1; border-style: dashed; }
+[data-tela="mais"] .mais-resumo-backup { list-style: none; margin: 0 0 var(--espaco-3); padding: var(--espaco-3); background: var(--cor-superficie-2); display: flex; flex-direction: column; gap: 4px; }
+
+/* ───────────── Instalar ───────────── */
+[data-tela="mais"] .mais-instalar-estado:empty { display: none; }
+[data-tela="mais"] .mais-passos-grade { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: var(--espaco-3) var(--espaco-5); }
+[data-tela="mais"] .mais-passos { display: flex; flex-direction: column; gap: var(--espaco-2); }
+[data-tela="mais"] .mais-passos .mais-h3 { margin-top: 0; }
+[data-tela="mais"] .mais-ol { list-style: decimal; margin: 0; padding-left: 1.4em; display: flex; flex-direction: column; gap: 4px; }
+
+/* ───────────── Sobre ───────────── */
+[data-tela="mais"] .mais-ficha { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; border-top: 1px solid var(--cor-borda-leve); }
+[data-tela="mais"] .mais-ficha > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 12px; padding: var(--espaco-2) 0; border-bottom: 1px solid var(--cor-borda-leve); }
+[data-tela="mais"] .mais-ficha dt { color: var(--cor-texto-2); }
+[data-tela="mais"] .mais-ficha dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+[data-tela="mais"] .mais-detalhes > summary {
+  min-height: var(--alvo); display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 600; color: var(--cor-acao);
+  list-style: none; border: 1.5px solid var(--cor-acao); border-radius: var(--raio-botao); padding: 0 var(--espaco-4); width: fit-content; max-width: 100%;
+}
+[data-tela="mais"] .mais-detalhes > summary::-webkit-details-marker { display: none; }
+[data-tela="mais"] .mais-detalhes > summary::before { content: "+"; font-weight: 700; width: 1em; text-align: center; }
+[data-tela="mais"] .mais-detalhes[open] > summary::before { content: "−"; }
+[data-tela="mais"] .mais-detalhes[open] > summary { margin-bottom: var(--espaco-2); }
+[data-tela="mais"] .mais-fontes { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+[data-tela="mais"] .mais-fontes a {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: var(--alvo);
+  padding: 4px 0; border-bottom: 1px solid var(--cor-borda-leve); overflow-wrap: anywhere;
+}
+[data-tela="mais"] .mais-fontes a .icone { flex: none; }
+
+/* ───────────── Ajustes por visual ───────────── */
+/* C: fita estreita, cartões de visual mais secos */
+[data-visual="c"] [data-tela="mais"] .mais-visual { border-radius: 0; }
+[data-visual="c"] [data-tela="mais"] .mais-indice a { border-radius: 0; }
+/* A: rótulo do índice em caixa-alta condensada, como o resto do talão */
+[data-visual="a"] [data-tela="mais"] .mais-indice a { font-family: var(--fonte-rotulo); text-transform: uppercase; letter-spacing: .06em; font-size: var(--tam-1); }
+[data-visual="a"] [data-tela="mais"] .mais-param-valor { font-family: var(--fonte-numero); }
+
+/* Celular estreito: os 7 dias precisam de 44 px cada; a linha dos dias avança um pouco sobre a margem do bloco. */
+@media (max-width: 430px) {
+  [data-visual="a"] [data-tela="mais"] .segmentos--dias,
+  [data-visual="c"] [data-tela="mais"] .segmentos--dias { margin-inline: calc(-1 * var(--espaco-3)); gap: 1px; }
+}
+
+/* ───────────── Computador ───────────── */
+@media (min-width: 700px) {
+  [data-tela="mais"] .mais-visuais { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  [data-tela="mais"] .mais-visual { grid-template-columns: minmax(0, 1fr); align-items: start; padding: var(--espaco-3); }
+  [data-tela="mais"] .mais-mini { height: 5.5rem; }
+}
+
+/* Impressão: a tela de configurações não precisa de botões nem do índice. */
+@media print {
+  [data-tela="mais"] .mais-indice, [data-tela="mais"] .botao, [data-tela="mais"] .mais-apagar { display: none !important; }
+}

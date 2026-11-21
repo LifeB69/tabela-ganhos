@@ -1,0 +1,167 @@
+/* Tabela de Ganhos v2 — tela "Leis". Todo seletor começa com [data-tela="leis"]; só tokens. */
+
+[data-tela="leis"] .leis { min-width: 0; }
+[data-tela="leis"] .leis-nota { color: var(--cor-texto-2); font-size: var(--tam-1); }
+[data-tela="leis"] .leis-h-pequeno { font-size: var(--tam-3); }
+[data-tela="leis"] .leis-voltar { align-self: flex-start; margin: calc(-1 * var(--espaco-2)) 0 0 calc(-1 * var(--espaco-3)); }
+
+/* Links soltos: área de toque de 44 px. */
+[data-tela="leis"] .leis-link-alvo,
+.folha .leis-link-alvo {
+  display: inline-flex; align-items: center; gap: 6px; min-height: var(--alvo);
+  color: var(--cor-acao); font-weight: 600; text-underline-offset: 3px;
+}
+
+/* ───────── Busca ───────── */
+[data-tela="leis"] .leis-buscar .campo { max-width: 40rem; }
+[data-tela="leis"] .leis-resultados { display: flex; flex-direction: column; gap: var(--espaco-3); }
+[data-tela="leis"] .leis-resultados[hidden], [data-tela="leis"] .leis-indice[hidden] { display: none; }
+[data-tela="leis"] .leis-resultados-cab { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--espaco-2); }
+[data-tela="leis"] .leis-resultados-cab .bloco-titulo { overflow-wrap: anywhere; }
+[data-tela="leis"] .leis-tipo {
+  align-self: flex-start; font-size: var(--tam-0); font-weight: 700; color: var(--cor-texto-2);
+  font-family: var(--fonte-rotulo); text-transform: var(--rotulo-caixa); letter-spacing: var(--rotulo-espaco);
+}
+[data-tela="leis"] .leis-tipo--salvo { color: var(--cor-acao); }
+[data-tela="leis"] .leis-indice { display: flex; flex-direction: column; gap: var(--espaco-5); }
+
+/* ───────── Listas de links (resumos, resultados) ───────── */
+[data-tela="leis"] .leis-lista { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--cor-borda-leve); }
+[data-tela="leis"] .leis-lista > li { border-bottom: 1px solid var(--cor-borda-leve); }
+[data-tela="leis"] .leis-item {
+  display: flex; align-items: center; gap: var(--espaco-3); min-height: 3.5rem;
+  padding: var(--espaco-3) var(--espaco-1); color: var(--cor-texto); text-decoration: none;
+  transition: background-color var(--dur);
+}
+[data-tela="leis"] .leis-item:hover { background: var(--cor-acao-fundo); }
+[data-tela="leis"] .leis-item--curto { min-height: var(--alvo); padding-block: var(--espaco-2); }
+[data-tela="leis"] .leis-item-texto { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+[data-tela="leis"] .leis-item-titulo { font-weight: 600; color: var(--cor-acao); overflow-wrap: anywhere; }
+[data-tela="leis"] .leis-item--curto .leis-item-titulo { flex: 1; }
+[data-tela="leis"] .leis-item-resumo { color: var(--cor-texto-2); font-size: var(--tam-1); overflow-wrap: anywhere; }
+[data-tela="leis"] .leis-seta { flex: none; color: var(--cor-texto-2); }
+
+/* ───────── Consultas rápidas ───────── */
+[data-tela="leis"] .leis-atalhos { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--espaco-2); grid-template-columns: 1fr; }
+[data-tela="leis"] .leis-atalho {
+  display: flex; align-items: center; gap: var(--espaco-3); min-height: 4rem; height: 100%;
+  padding: var(--espaco-3); border: 1.5px solid var(--cor-borda); border-radius: var(--raio);
+  background: var(--cor-superficie); color: var(--cor-texto); text-decoration: none;
+  transition: background-color var(--dur);
+}
+[data-tela="leis"] .leis-atalho:hover { background: var(--cor-acao-fundo); }
+[data-tela="leis"] .leis-atalho-icone {
+  flex: none; display: inline-flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem;
+  border-radius: var(--raio-pilula); background: var(--cor-acao-fundo); color: var(--cor-acao);
+}
+[data-tela="leis"] .leis-atalho-texto { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+[data-tela="leis"] .leis-atalho-titulo { font-weight: 700; color: var(--cor-acao); }
+[data-tela="leis"] .leis-atalho-detalhe { font-size: var(--tam-1); color: var(--cor-texto-2); overflow-wrap: anywhere; }
+@media (min-width: 600px) {
+  [data-tela="leis"] .leis-atalhos { grid-template-columns: 1fr 1fr; }
+}
+
+/* ───────── Um resumo ───────── */
+[data-tela="leis"] .leis-meta { display: flex; align-items: flex-start; gap: 6px; color: var(--cor-texto-2); font-size: var(--tam-1); }
+[data-tela="leis"] .leis-meta .icone { margin-top: 2px; flex: none; }
+[data-tela="leis"] .leis-artigo { gap: var(--espaco-3); max-width: 46rem; }
+[data-tela="leis"] .leis-p { line-height: 1.55; }
+[data-tela="leis"] .leis-h2 { font-size: var(--tam-3); margin-top: var(--espaco-2); }
+[data-tela="leis"] .leis-ul { list-style: disc; margin: 0; padding-left: 1.25rem; display: flex; flex-direction: column; gap: var(--espaco-2); line-height: 1.5; }
+[data-tela="leis"] .leis-ul > li::marker { color: var(--cor-acao); }
+[data-tela="leis"] .leis-valor { font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
+[data-tela="leis"] .leis-valor--previsto,
+[data-tela="leis"] .leis-valor--nao-verificado,
+[data-tela="leis"] .leis-valor--fora-da-vigencia { white-space: normal; }
+[data-tela="leis"] .leis-valor-num { white-space: nowrap; }
+[data-tela="leis"] .leis-valor--falta { color: var(--cor-texto-2); font-weight: 400; font-style: italic; white-space: normal; }
+[data-tela="leis"] .leis-termo { text-decoration: underline dotted; text-underline-offset: 3px; text-decoration-color: var(--cor-acao); }
+[data-tela="leis"] .leis-acoes { display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--espaco-3); }
+[data-tela="leis"] .leis-lei { display: flex; flex-direction: column; gap: 4px; }
+[data-tela="leis"] .leis-lei-nome { font-size: var(--tam-0); color: var(--cor-texto-2); }
+[data-tela="leis"] .leis-usar { gap: 8px; }
+[data-tela="leis"] .leis-termos { display: flex; flex-direction: column; gap: var(--espaco-2); }
+[data-tela="leis"] .leis-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--espaco-2); }
+[data-tela="leis"] .leis-chip { border-radius: var(--raio-pilula); min-width: var(--alvo); color: var(--cor-acao); font-weight: 600; }
+[data-tela="leis"] .leis-fontes { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+[data-tela="leis"] .leis-fontes .leis-link-alvo { font-weight: 500; }
+
+/* Folha do glossário (vive no <body>, fora da raiz da tela) */
+.folha .leis-folha-texto { line-height: 1.55; }
+.folha .leis-folha-links { list-style: none; margin: var(--espaco-2) 0 0; padding: 0; }
+
+/* ───────── Glossário ───────── */
+[data-tela="leis"] .leis-glossario { margin: 0; display: flex; flex-direction: column; }
+[data-tela="leis"] .leis-verbete { padding: var(--espaco-3) 0; border-bottom: 1px solid var(--cor-borda-leve); scroll-margin-top: var(--espaco-4); }
+[data-tela="leis"] .leis-verbete:last-child { border-bottom: 0; }
+[data-tela="leis"] .leis-verbete:focus { outline: none; }
+[data-tela="leis"] .leis-verbete:focus-visible { outline: 3px solid var(--cor-foco); outline-offset: 2px; }
+[data-tela="leis"] .leis-verbete--alvo { background: var(--cor-acao-fundo); padding-inline: var(--espaco-2); border-radius: var(--raio); }
+[data-tela="leis"] .leis-verbete dt { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px var(--espaco-2); }
+[data-tela="leis"] .leis-verbete-termo { font-family: var(--fonte-titulo); font-weight: var(--peso-titulo); font-size: var(--tam-4); }
+[data-tela="leis"] .leis-verbete-nome { color: var(--cor-texto-2); font-size: var(--tam-1); }
+[data-tela="leis"] .leis-verbete dd { margin: 4px 0 0; line-height: 1.5; }
+
+/* ───────── Perguntas ───────── */
+[data-tela="leis"] .leis-perguntas { display: flex; flex-direction: column; gap: var(--espaco-2); max-width: 46rem; }
+[data-tela="leis"] .leis-pergunta {
+  border: 1.5px solid var(--cor-borda); border-radius: var(--raio); background: var(--cor-superficie);
+  scroll-margin-top: var(--espaco-4);
+}
+[data-tela="leis"] .leis-pergunta > summary {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--espaco-3);
+  min-height: 3.5rem; padding: var(--espaco-2) var(--espaco-4); cursor: pointer; list-style: none;
+  font-weight: 600; color: var(--cor-texto);
+}
+[data-tela="leis"] .leis-pergunta > summary::-webkit-details-marker { display: none; }
+[data-tela="leis"] .leis-pergunta-seta { flex: none; transition: transform var(--dur); color: var(--cor-acao); }
+[data-tela="leis"] .leis-pergunta[open] .leis-pergunta-seta { transform: rotate(180deg); }
+[data-tela="leis"] .leis-resposta { padding: 0 var(--espaco-4) var(--espaco-3); display: flex; flex-direction: column; gap: var(--espaco-2); line-height: 1.55; }
+[data-tela="leis"] .leis-resposta-links { display: flex; flex-wrap: wrap; gap: 0 var(--espaco-4); }
+
+/* ───────── Prazos e mudanças ───────── */
+[data-tela="leis"] .leis-prazos,
+[data-tela="leis"] .leis-mudancas { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--espaco-3); max-width: 46rem; }
+[data-tela="leis"] .leis-prazo {
+  display: flex; gap: var(--espaco-3); padding: var(--espaco-3);
+  border: 1.5px solid var(--cor-borda); border-radius: var(--raio); background: var(--cor-superficie);
+}
+[data-tela="leis"] .leis-prazo-data {
+  flex: none; width: 4rem; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+  padding: var(--espaco-2) 0; border-radius: var(--raio); background: var(--cor-acao-fundo); color: var(--cor-texto);
+  align-self: flex-start;
+}
+[data-tela="leis"] .leis-prazo-dia { font-family: var(--fonte-numero); font-weight: var(--peso-numero); font-size: var(--tam-5); line-height: 1.1; }
+[data-tela="leis"] .leis-prazo-mes { font-size: var(--tam-0); color: var(--cor-texto-2); }
+[data-tela="leis"] .leis-prazo-corpo { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; }
+[data-tela="leis"] .leis-prazo-titulo { font-size: var(--tam-3); }
+[data-tela="leis"] .leis-prazo-quando { font-size: var(--tam-1); color: var(--cor-texto-2); }
+[data-tela="leis"] .leis-prazo-texto { line-height: 1.5; }
+[data-tela="leis"] .leis-prazo-rodape { display: flex; flex-wrap: wrap; align-items: center; gap: var(--espaco-1) var(--espaco-3); }
+[data-tela="leis"] .leis-mudanca { display: flex; flex-direction: column; gap: 4px; padding: 0 0 var(--espaco-3); border-bottom: 1px solid var(--cor-borda-leve); }
+[data-tela="leis"] .leis-mudanca-data { font-weight: 700; color: var(--cor-acao); font-family: var(--fonte-numero); }
+[data-tela="leis"] .leis-mudanca-corpo { display: flex; flex-direction: column; gap: 4px; line-height: 1.5; }
+[data-tela="leis"] .leis-mudanca-titulo { font-size: var(--tam-3); }
+
+/* ───────── Ajustes por visual ───────── */
+/* A: talão — rótulos condensados em caixa-alta, data em carimbo */
+[data-visual="a"] [data-tela="leis"] .leis-atalho-titulo,
+[data-visual="a"] [data-tela="leis"] .leis-mudanca-data { font-family: var(--fonte-rotulo); letter-spacing: .02em; }
+[data-visual="a"] [data-tela="leis"] .leis-prazo-data { background: transparent; border: 2px solid var(--cor-selo); color: var(--cor-selo); }
+[data-visual="a"] [data-tela="leis"] .leis-prazo-mes { color: var(--cor-selo); }
+/* B: carteira — cartões claros sem borda pesada */
+[data-visual="b"] [data-tela="leis"] .leis-atalho,
+[data-visual="b"] [data-tela="leis"] .leis-pergunta,
+[data-visual="b"] [data-tela="leis"] .leis-prazo { border-color: var(--cor-borda); }
+/* C: bobina — números em mono, sem raios */
+[data-visual="c"] [data-tela="leis"] .leis-atalho-icone { border-radius: var(--raio); }
+[data-visual="c"] [data-tela="leis"] .leis-valor { font-family: var(--fonte-numero); font-weight: 600; }
+
+@media (min-width: 900px) {
+  [data-tela="leis"] .leis-indice > .bloco { max-width: 52rem; }
+}
+
+@media print {
+  [data-tela="leis"] .leis-buscar, [data-tela="leis"] .leis-voltar, [data-tela="leis"] .leis-usar, [data-tela="leis"] .leis-termos { display: none; }
+  [data-tela="leis"] .leis-pergunta:not([open]) .leis-resposta { display: block; }
+}
