@@ -93,3 +93,18 @@ Sem `GITHUB_TOKEN`, as issues só aparecem impressas na tela.
 - O diário do mínimo não tem regra fixa de arredondamento. Mensal ÷ 30 arredondado para cima reproduz 2025 e 2026, mas não 2017 (Decreto 8.948/2016: R$ 937 → R$ 31,23) nem 2020 (MP 919/2020: R$ 1.045 → R$ 34,83). Arredondado para o mais próximo erra 2026 (R$ 54,03 em vez de R$ 54,04). Por isso o robô só grava o diário que leu no decreto.
 - Os quadros e o decreto de 2026 nos testes foram montados com o texto real, e não baixados.
 - As páginas de piso do RS e do PR são notícias, e a do RJ é do LegisWeb (não é oficial). Por isso, o aviso de mudança nelas é só uma pista para conferir.
+
+## O que o GitHub alcança (primeira execução, 21/11/2026 05:18 UTC)
+
+| Fonte | Dos servidores do GitHub |
+|---|---|
+| Banco Central (série 1619 do salário mínimo) | funciona |
+| IBGE (INPC) | funciona |
+| Páginas dos pisos estaduais | funcionam |
+| Planalto (texto do decreto) | recusa a conexão |
+| gov.br: INSS, salário-família, Receita (IRRF) | recusa a conexão |
+
+Consequências:
+- O salário mínimo do ano novo entra pela série do Banco Central. O diário e o horário ficam com a conta do app (mensal ÷ 30 e mensal ÷ divisor), marcados "conta do app", até alguém ler o decreto.
+- A tabela do INSS e o salário-família de janeiro **não** entram sozinhos pelo GitHub. Precisam ser lidos de uma máquina no Brasil (o robô roda igual em qualquer computador: `node robo/robo.js`) ou atualizados à mão.
+- A publicação do GitHub Pages dispara sozinha depois do commit do robô (conferido: o commit `robô: estado das fontes` gerou a publicação).
