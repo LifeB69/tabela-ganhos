@@ -1,6 +1,6 @@
 {
   "formato": 1,
-  "ultima_execucao": "2026-11-21T05:18:28.281Z",
+  "ultima_execucao": "2026-11-21T17:57:57.728Z",
   "ultimo_batimento": null,
   "fontes": {
     "piso_SP": {
@@ -37,6 +37,39 @@
       "status": 200,
       "lido_em": "2026-11-21",
       "mudou_em": null
+    },
+    "inss": {
+      "url": "https://www.gov.br/inss/pt-br/direitos-e-deveres/inscricao-e-contribuicao/tabela-de-contribuicao-mensal",
+      "hash": "9cc0a77426bb966f8b3444cd6d352d0e7a2a909b5aa81470accd8e7f9cb0c875",
+      "status": 200,
+      "lido_em": "2026-11-21"
+    },
+    "salario_familia": {
+      "url": "https://www.gov.br/inss/pt-br/direitos-e-deveres/salario-familia/valor-limite-para-direito-ao-salario-familia",
+      "hash": "a74a87f7df051666eef3911171165ce59229ba171c64f29740b302d639d3145e",
+      "status": 200,
+      "lido_em": "2026-11-21"
+    },
+    "irrf_2026": {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/meu-imposto-de-renda/tabelas/2026",
+      "hash": "7ea68af4a1a3511518b01ea4c2fd3f969b8a987ed94e1d65bc0761c364eecc75",
+      "status": 200,
+      "lido_em": "2026-11-21",
+      "mudou_em": null
+    },
+    "irrf_2027": {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/meu-imposto-de-renda/tabelas/2027",
+      "hash": "59b46d3c46fac56fd888824fd29738bcf59d07bc5d23207371e1ee9d69b7630d",
+      "status": 404,
+      "lido_em": "2026-11-21",
+      "mudou_em": null
+    },
+    "irrf_indice": {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/meu-imposto-de-renda/tabelas",
+      "hash": "5755ec176c5b864d26e0fc7c2d0a494e949a62696281cadb154a83a2a536df44",
+      "status": 200,
+      "lido_em": "2026-11-21",
+      "mudou_em": null
     }
   },
   "valores": {
@@ -47,36 +80,38 @@
     "inpc_12m": {
       "periodo": "202610",
       "pct": 4.49
+    },
+    "inss": {
+      "ano": 2026,
+      "teto": 847555,
+      "faixas": [
+        [
+          162100,
+          7.5
+        ],
+        [
+          290284,
+          9
+        ],
+        [
+          435427,
+          12
+        ],
+        [
+          847555,
+          14
+        ]
+      ]
+    },
+    "salario_familia": {
+      "vigente_desde": "2026-01-01",
+      "cota": 6754,
+      "limite": 198038
     }
   },
   "erros": [
     {
       "onde": "planalto_quadro_2026",
-      "erro": "ECONNRESET",
-      "em": "2026-11-21"
-    },
-    {
-      "onde": "inss",
-      "erro": "ECONNRESET",
-      "em": "2026-11-21"
-    },
-    {
-      "onde": "salario_familia",
-      "erro": "ECONNRESET",
-      "em": "2026-11-21"
-    },
-    {
-      "onde": "irrf_2026",
-      "erro": "ECONNRESET",
-      "em": "2026-11-21"
-    },
-    {
-      "onde": "irrf_2027",
-      "erro": "ECONNRESET",
-      "em": "2026-11-21"
-    },
-    {
-      "onde": "irrf_indice",
       "erro": "ECONNRESET",
       "em": "2026-11-21"
     }
