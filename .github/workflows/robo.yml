@@ -1,0 +1,105 @@
+# Robô de valores: confere as fontes oficiais todo dia e publica sozinho o que estiver confirmado.
+# Explicação em português simples e como desligar: docs/ROBO.md.
+name: Robô de valores
+
+on:
+  schedule:
+    - cron: '17 11 * * *'   # todo dia às 11:17 UTC (08:17 em Brasília); minuto quebrado para fugir da fila cheia
+  workflow_dispatch:
+
+# Só o necessário. Sem pages: write: o token que roda o robô (que lê páginas de terceiros) não
+# mexe no GitHub Pages. Veja "GitHub Pages" em docs/ROBO.md.
+permissions:
+  contents: write   # gravar dados/parametros-auto.js e robo/estado.json na main
+  issues: write     # abrir issue quando algo não bate
+
+concurrency:
+  group: robo-de-valores
+  cancel-in-progress: false
+
+jobs:
+  robo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Baixar o repositório (main)
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: main
+          fetch-depth: 0   # histórico inteiro: o robô mede a idade do último commit e o rebase precisa da base
+
+      - name: Node 22
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22'
+
+      - name: Rodar o robô
+        id: robo
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node robo/robo.js
+
+      - name: Rodar os testes (só se houver algo para publicar)
+        id: testes
+        if: steps.robo.outputs.publicar == 'true'
+        run: node --test testes/
+
+      # Publica só o que foi testado. Se a main andou desde o checkout (alguém empurrou no meio
+      # tempo), refaz o commit em cima dela e roda os testes DE NOVO antes do push. Conflito,
+      # teste falhando depois do rebase ou push recusado fazem o passo falhar, e o passo
+      # seguinte abre issue.
+      - name: Publicar na main
+        id: publicar
+        if: steps.robo.outputs.publicar == 'true' && steps.testes.outcome == 'success'
+        env:
+          MOTIVO: ${{ steps.robo.outputs.motivo }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'tabela-ganhos-robo'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add dados/parametros-auto.js robo/estado.json
+          if git diff --cached --quiet; then echo 'Nada para publicar.'; exit 0; fi
+          base="$(git rev-parse HEAD)"
+          git commit -m "robô: $MOTIVO"
+          git fetch origin main
+          if [ "$(git rev-parse origin/main)" != "$base" ]; then
+            echo "A main andou desde o checkout ($base → $(git rev-parse origin/main)): refaço em cima dela e testo de novo."
+            git rebase origin/main
+            node --test testes/
+          fi
+          git push origin HEAD:main
+
+      - name: Testes falharam → não publica e abre issue
+        if: failure() && steps.testes.outcome == 'failure'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MOTIVO: ${{ steps.robo.outputs.motivo }}
+        run: |
+          git checkout -- dados/parametros-auto.js robo/estado.json 2>/dev/null || true
+          node robo/abrir-issue.js "Robô: testes falharam, nada foi publicado" \
+            "O robô achou valores novos ($MOTIVO), mas node --test testes/ falhou. Nada foi publicado. Veja a execução: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+        shell: bash
+        continue-on-error: true
+
+      - name: Publicação falhou → abre issue
+        if: failure() && steps.publicar.outcome == 'failure'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MOTIVO: ${{ steps.robo.outputs.motivo }}
+        run: |
+          git rebase --abort 2>/dev/null || true
+          git checkout -f "$GITHUB_SHA" -- robo/ 2>/dev/null || true
+          node robo/abrir-issue.js "Robô: não consegui publicar (conflito, testes ou push)" \
+            "O robô achou valores novos ($MOTIVO) e os testes passaram, mas a publicação na main falhou: conflito no rebase, testes falhando depois do rebase ou push recusado. Nada foi publicado; a próxima rodada tenta de novo. Veja a execução: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+        shell: bash
+        continue-on-error: true
+
+      - name: Robô quebrou → abre issue
+        if: failure() && steps.robo.outcome == 'failure'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          node robo/abrir-issue.js "Robô: a execução falhou" \
+            "O robô parou com erro e não gravou nada. Veja a execução: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+        continue-on-error: true

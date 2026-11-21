@@ -1,0 +1,67 @@
+{
+  "descricao": "Página de piso só mudou a data \"Atualizado em\", espaços e scripts.",
+  "rotas": [
+    {
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.1619/dados",
+      "arquivo": "../comum/bcb-ate-2026-real.json",
+      "prefixo": true,
+      "tipo": "application/json"
+    },
+    {
+      "url": "https://apisidra.ibge.gov.br/values/t/1736/n1/all/v/2292/p/last%201",
+      "arquivo": "../comum/inpc-2026-10-real.json",
+      "tipo": "application/json"
+    },
+    {
+      "url": "https://www.gov.br/inss/pt-br/direitos-e-deveres/inscricao-e-contribuicao/tabela-de-contribuicao-mensal",
+      "arquivo": "../comum/inss-2026-real.html"
+    },
+    {
+      "url": "https://www.gov.br/inss/pt-br/direitos-e-deveres/salario-familia/valor-limite-para-direito-ao-salario-familia",
+      "arquivo": "../comum/salario-familia-2026-real.html"
+    },
+    {
+      "url": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2026/decreto/_decretos2026.htm",
+      "arquivo": null,
+      "erro": "ECONNRESET"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/meu-imposto-de-renda/tabelas/2026",
+      "arquivo": "../comum/irrf-2026-real.html"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/meu-imposto-de-renda/tabelas/2027",
+      "arquivo": null,
+      "status": 404
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/meu-imposto-de-renda/tabelas",
+      "arquivo": "../comum/irrf-indice-real.html"
+    },
+    {
+      "url": "https://www.al.sp.gov.br/",
+      "arquivo": "../comum/piso-sp-real.html",
+      "prefixo": true
+    },
+    {
+      "url": "https://www.estado.rs.gov.br/",
+      "arquivo": "../comum/piso-generico-so-data.html",
+      "prefixo": true
+    },
+    {
+      "url": "https://portalelegis.alesc.sc.gov.br/",
+      "arquivo": "../comum/piso-generico-so-data.html",
+      "prefixo": true
+    },
+    {
+      "url": "https://www.parana.pr.gov.br/",
+      "arquivo": "../comum/piso-generico-so-data.html",
+      "prefixo": true
+    },
+    {
+      "url": "https://www.legisweb.com.br/",
+      "arquivo": "../comum/piso-generico-so-data.html",
+      "prefixo": true
+    }
+  ]
+}
