@@ -1,0 +1,84 @@
+{
+  "formato": 1,
+  "ultima_execucao": "2026-11-21T05:18:28.281Z",
+  "ultimo_batimento": null,
+  "fontes": {
+    "piso_SP": {
+      "url": "https://www.al.sp.gov.br/repositorio/legislacao/lei/2026/lei-18471-27.05.2026.html",
+      "hash": "62d78a173253eb0a66a96f7282f92d3c1836b0ab6e0f1094bde13c5d4d6fa54b",
+      "status": 200,
+      "lido_em": "2026-11-21",
+      "mudou_em": null
+    },
+    "piso_RS": {
+      "url": "https://www.estado.rs.gov.br/reajuste-do-piso-salarial-regional-ja-esta-em-vigor-apos-publicacao-no-diario-oficial-do-estado-nesta-quinta-21",
+      "hash": "46a2d1902c8f6a430a10955193fd783a913671e7750def98f08667c0c3691117",
+      "status": 200,
+      "lido_em": "2026-11-21",
+      "mudou_em": null
+    },
+    "piso_SC": {
+      "url": "https://portalelegis.alesc.sc.gov.br/documentos/djwp6",
+      "hash": "691d3f2fb143fdb7450cba949ccd4086f0afba094376d9c6b50c2db15c4bbb6b",
+      "status": 200,
+      "lido_em": "2026-11-21",
+      "mudou_em": null
+    },
+    "piso_PR": {
+      "url": "https://www.parana.pr.gov.br/Audio/Parana-renova-piso-salarial-para-ate-R-24-mil-e-deve-manter-maior-valor-do-Brasil-em-2026",
+      "hash": "3f39e677a8539f0c57f4c872e54915d2817ef3b3ce7e9274a6fe42f2aaef8d93",
+      "status": 200,
+      "lido_em": "2026-11-21",
+      "mudou_em": null
+    },
+    "piso_RJ": {
+      "url": "https://www.legisweb.com.br/legislacao/?id=375749",
+      "hash": "ab47ce8405f5c97e21cb3983a382cbc0ffd3bb9216a9143a8e57f79273defa57",
+      "status": 200,
+      "lido_em": "2026-11-21",
+      "mudou_em": null
+    }
+  },
+  "valores": {
+    "bcb_minimo": {
+      "2025": 151800,
+      "2026": 162100
+    },
+    "inpc_12m": {
+      "periodo": "202610",
+      "pct": 4.49
+    }
+  },
+  "erros": [
+    {
+      "onde": "planalto_quadro_2026",
+      "erro": "ECONNRESET",
+      "em": "2026-11-21"
+    },
+    {
+      "onde": "inss",
+      "erro": "ECONNRESET",
+      "em": "2026-11-21"
+    },
+    {
+      "onde": "salario_familia",
+      "erro": "ECONNRESET",
+      "em": "2026-11-21"
+    },
+    {
+      "onde": "irrf_2026",
+      "erro": "ECONNRESET",
+      "em": "2026-11-21"
+    },
+    {
+      "onde": "irrf_2027",
+      "erro": "ECONNRESET",
+      "em": "2026-11-21"
+    },
+    {
+      "onde": "irrf_indice",
+      "erro": "ECONNRESET",
+      "em": "2026-11-21"
+    }
+  ]
+}
