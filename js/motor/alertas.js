@@ -71,9 +71,9 @@ export function alertasSalarioMensal(salario, dataISO, { uf = null, overrides = 
   const alertas = [...piso.alertas];
   const exigido = Math.round(piso.valor * proporcao);
   if (salario !== null && salario < exigido) {
-    const nome = piso.origem === 'piso_uf' ? `o piso de ${piso.uf}` : 'o salário mínimo';
+    const nome = piso.origem === 'piso_uf' ? `do piso de ${piso.uf}` : 'do salário mínimo';
     alertas.push(alerta('risco', piso.origem === 'piso_uf' ? 'abaixo_piso' : 'abaixo_minimo', `Salário abaixo d${piso.origem === 'piso_uf' ? 'o piso estadual' : 'o mínimo'}`,
-      `${formatarBRL(salario)} fica abaixo de ${nome}${proporcao < 1 ? ' proporcional às horas' : ''}: ${formatarBRL(exigido)} por mês.`,
+      `${formatarBRL(salario)} fica abaixo ${nome}${proporcao < 1 ? ' proporcional às horas' : ''}: ${formatarBRL(exigido)} por mês.`,
       piso.param.fonte_url, { valor_referencia: exigido }));
   }
   return { alertas, piso };
@@ -82,22 +82,24 @@ export function alertasSalarioMensal(salario, dataISO, { uf = null, overrides = 
 /**
  * Aviso de mudança de jornada próxima (janela em dias) e, depois da troca, lembrete da liminar do STF.
  */
-export function alertasMudancaJornada(dataISO, overrides = {}, janelaDias = 60) {
+export function alertasMudancaJornada(dataISO, overrides = {}, janelaDias = 60, { comVinculo = true } = {}) {
   const alertas = [];
   const datas = datasJornada(overrides);
+  const OFICIAL = datasJornada({});
+  const divisorEm = (d) => getParam('divisor_hora', d, overrides.jornada_datas ? { jornada_datas: overrides.jornada_datas } : {})?.valor;
   for (const [marco, horas] of [['jornada_42', 42], ['jornada_40', 40]]) {
     const d = datas[marco];
     if (!d) continue;
     const faltam = diasEntre(dataISO, d);
     if (faltam > 0 && faltam <= janelaDias) {
       alertas.push(alerta('info', `mudanca_${marco}`, `Jornada cai para ${horas} h em ${formatarDataBR(d)}`,
-        `Faltam ${faltam} dias. A partir de ${formatarDataBR(d)}, a jornada máxima passa a ${horas} h por semana${horas === 42 ? ', com 2 dias de repouso semanal remunerado' : ''}, e o divisor do salário-hora muda para ${horas === 42 ? 210 : 200} (EC 141/2026, arts. 6º e 10; Decreto 13.173/2026, art. 5º). O salário mensal não pode ser reduzido. Há quem conte a data a partir de 17/12/2026; você pode mudar a data nas configurações.`,
+        `Faltam ${faltam} dias. A partir de ${formatarDataBR(d)}, a jornada máxima passa a ${horas} h por semana${horas === 42 ? ', com 2 dias de repouso semanal remunerado' : ''}, e o divisor do salário-hora muda para ${divisorEm(d)} (EC 141/2026, arts. 6º e 10; Decreto 13.173/2026, art. 5º).${comVinculo ? ' O salário mensal não pode ser reduzido.' : ' Para quem presta serviço sem vínculo, isso muda o mínimo por hora usado como referência, não o valor combinado.'}${d === OFICIAL[marco] && marco === 'jornada_42' ? ' Há quem conte a data a partir de 17/12/2026; você pode mudar a data nas configurações.' : ''}`,
         FONTES.ec141, { data_mudanca: d }));
     }
   }
   if (datas.jornada_42 && dataISO >= datas.jornada_42 && (!datas.jornada_40 || dataISO < datas.jornada_40)) {
     alertas.push(alerta('info', 'jornada_42_liminar', 'Jornada de 42 h: liminar do STF pendente de referendo',
-      'A data de 16/12/2026 segue a liminar parcial do STF nas ADIs 8041 e 8042, ainda pendente de referendo do Plenário. Sem acordo ou convenção, a jornada pode ter até 8h24 por dia em 5 dias, e os 24 minutos não são pagos como extra até 15/12/2027.',
+      `A data de ${formatarDataBR(datas.jornada_42)} segue a liminar parcial do STF nas ADIs 8041 e 8042, ainda pendente de referendo do Plenário. Sem acordo ou convenção, a jornada pode ter até 8h24 por dia em 5 dias, e os 24 minutos não são pagos como extra até 15/12/2027.`,
       FONTES.stfLiminar));
   }
   return alertas;

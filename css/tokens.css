@@ -1,0 +1,270 @@
+/* Tabela de Ganhos v2 — tokens de cor, tipo e forma.
+   Três visuais no <html data-visual="a|b|c">, cada um com claro e escuro:
+     data-tema="auto"   -> segue o aparelho (@media prefers-color-scheme)
+     data-tema="claro"  -> sempre claro
+     data-tema="escuro" -> sempre escuro
+   Ajustes: data-letra="grande", data-contraste="alto", data-movimento="reduzido".
+   As telas usam SÓ os nomes --cor-*, --fonte-*, --raio-* etc. abaixo; nunca cores soltas. */
+
+/* ───────────── Fontes hospedadas (subconjunto latin, OFL; ver fontes/LICENCAS.md) ───────────── */
+@font-face { font-family: "Barlow"; font-style: normal; font-weight: 400; font-display: swap; src: url("../fontes/barlow-400.woff2") format("woff2"); }
+@font-face { font-family: "Barlow"; font-style: normal; font-weight: 500; font-display: swap; src: url("../fontes/barlow-500.woff2") format("woff2"); }
+@font-face { font-family: "Barlow"; font-style: normal; font-weight: 600 700; font-display: swap; src: url("../fontes/barlow-600.woff2") format("woff2"); }
+@font-face { font-family: "Barlow Condensed"; font-style: normal; font-weight: 600; font-display: swap; src: url("../fontes/barlow-condensed-600.woff2") format("woff2"); }
+@font-face { font-family: "Barlow Condensed"; font-style: normal; font-weight: 700 800; font-display: swap; src: url("../fontes/barlow-condensed-700.woff2") format("woff2"); }
+@font-face { font-family: "Libre Franklin"; font-style: normal; font-weight: 700 800; font-display: swap; src: url("../fontes/libre-franklin-var.woff2") format("woff2"); }
+@font-face { font-family: "Noto Sans"; font-style: normal; font-weight: 400 700; font-stretch: 100%; font-display: swap; src: url("../fontes/noto-sans-var.woff2") format("woff2"); }
+@font-face { font-family: "Red Hat Mono"; font-style: normal; font-weight: 500 700; font-display: swap; src: url("../fontes/red-hat-mono-var.woff2") format("woff2"); }
+@font-face { font-family: "Red Hat Text"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("../fontes/red-hat-text-var.woff2") format("woff2"); }
+
+/* ───────────── Comuns a todos os visuais ───────────── */
+:root {
+  --dur: 160ms;                 /* duração padrão de transição; vira 0 com "menos animação" */
+  --alvo: 44px;                 /* alvo de toque mínimo */
+  --alvo-campo: 48px;           /* altura mínima de campo */
+  --altura-abas: 64px;          /* barra inferior (sem a área segura) */
+  --largura-menu: 15rem;        /* menu lateral no computador */
+  --espaco-1: 4px; --espaco-2: 8px; --espaco-3: 12px; --espaco-4: 16px; --espaco-5: 24px; --espaco-6: 32px;
+  --tam-0: .8125rem;  /* 13 px: rótulo da aba, notas mínimas */
+  --tam-1: .875rem;   /* 14 px: dica, meta */
+  --tam-2: 1rem;      /* 16 px: texto */
+  --tam-3: 1.125rem;  /* 18 px */
+  --tam-4: 1.25rem;   /* 20 px: título de bloco */
+  --tam-5: 1.625rem;  /* 26 px: título da tela */
+  --tam-campo: 1.25rem; /* valor digitado (>= 16 px: o iPhone não dá zoom) */
+  --linha: 1.5;
+}
+
+/* ═════════════ A · Talão e carimbo (padrão) ═════════════ */
+:root[data-visual="a"] {
+  --fonte-texto: "Barlow", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --fonte-titulo: "Barlow Condensed", "Barlow", system-ui, sans-serif;
+  --fonte-numero: "Barlow Condensed", "Barlow", system-ui, sans-serif;
+  --fonte-rotulo: "Barlow Condensed", "Barlow", system-ui, sans-serif;
+  --peso-titulo: 700; --peso-numero: 700; --peso-marca: 700;
+  --rotulo-caixa: uppercase; --rotulo-espaco: .08em; --rotulo-tamanho: .875rem; --rotulo-peso: 600;
+  --tam-numero: 3.125rem; --tam-numero-celular: 2.75rem;
+  --raio: 4px; --raio-botao: 4px; --raio-campo: 0; --raio-pilula: 3px;
+  --largura-conteudo: 44rem;
+  --linha: 1.45;
+
+  --cor-fundo: #F6F7F2;          /* página */
+  --cor-superficie: #FFFFFF;     /* papel: cartões, campos, barra */
+  --cor-superficie-2: #E4EFE8;   /* realce, linha selecionada */
+  --cor-texto: #1C2320;
+  --cor-texto-2: #55605A;
+  --cor-rotulo: #55605A;
+  --cor-topo: #FFFFFF; --cor-sobre-topo: #1C2320; --cor-sobre-topo-2: #55605A; --cor-faixa-topo: #2E6B4E;
+  --cor-acao: #2E6B4E; --cor-sobre-acao: #FFFFFF; --cor-acao-fundo: #E4EFE8;
+  --cor-primario: #2E6B4E; --cor-sobre-primario: #FFFFFF;
+  --cor-ativo: #2E6B4E; --cor-sobre-ativo: #FFFFFF;
+  --cor-indicador: #E4EFE8;
+  --cor-digitado: #1F3F99;       /* caneta: o que a pessoa digitou */
+  --cor-total: #1C2320;
+  --cor-desconto: #1C2320;
+  --cor-selo: #5A3E9B;           /* carimbo "conferido" e "previsto" */
+  --cor-ok: #1E7B45;
+  --cor-info: #2E6B4E; --cor-info-fundo: #E4EFE8;
+  --cor-atencao: #5C4400; --cor-atencao-fundo: #FFF3C4;
+  --cor-risco: #B42318; --cor-risco-fundo: #FDF0EE;
+  --cor-borda: #7E8A82;          /* bordas que precisam ser vistas (>= 3:1) */
+  --cor-borda-leve: #D3D9D4;     /* divisórias decorativas */
+  --cor-foco: #1F3F99;
+  --cor-sombra: rgba(28, 35, 32, .18);
+  --cor-veu: rgba(18, 22, 19, .55);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-visual="a"][data-tema="auto"] {
+    --cor-fundo: #121613; --cor-superficie: #1A201C; --cor-superficie-2: #203328;
+    --cor-texto: #E8EDE9; --cor-texto-2: #A3AFA7; --cor-rotulo: #A3AFA7;
+    --cor-topo: #1A201C; --cor-sobre-topo: #E8EDE9; --cor-sobre-topo-2: #A3AFA7; --cor-faixa-topo: #6FC79A;
+    --cor-acao: #6FC79A; --cor-sobre-acao: #0B1A12; --cor-acao-fundo: #203328;
+    --cor-primario: #6FC79A; --cor-sobre-primario: #0B1A12;
+    --cor-ativo: #6FC79A; --cor-sobre-ativo: #0B1A12; --cor-indicador: #203328;
+    --cor-digitado: #9DB5FF; --cor-total: #E8EDE9; --cor-desconto: #E8EDE9; --cor-selo: #C5B0FF;
+    --cor-ok: #6CD49A; --cor-info: #6FC79A; --cor-info-fundo: #203328;
+    --cor-atencao: #F5D36B; --cor-atencao-fundo: #2B2410; --cor-risco: #FF8A7A; --cor-risco-fundo: #2A1714;
+    --cor-borda: #5E6D64; --cor-borda-leve: #2C3530; --cor-foco: #9DB5FF;
+    --cor-sombra: rgba(0, 0, 0, .5); --cor-veu: rgba(0, 0, 0, .65);
+    color-scheme: dark;
+  }
+}
+:root[data-visual="a"][data-tema="escuro"] {
+  --cor-fundo: #121613; --cor-superficie: #1A201C; --cor-superficie-2: #203328;
+  --cor-texto: #E8EDE9; --cor-texto-2: #A3AFA7; --cor-rotulo: #A3AFA7;
+  --cor-topo: #1A201C; --cor-sobre-topo: #E8EDE9; --cor-sobre-topo-2: #A3AFA7; --cor-faixa-topo: #6FC79A;
+  --cor-acao: #6FC79A; --cor-sobre-acao: #0B1A12; --cor-acao-fundo: #203328;
+  --cor-primario: #6FC79A; --cor-sobre-primario: #0B1A12;
+  --cor-ativo: #6FC79A; --cor-sobre-ativo: #0B1A12; --cor-indicador: #203328;
+  --cor-digitado: #9DB5FF; --cor-total: #E8EDE9; --cor-desconto: #E8EDE9; --cor-selo: #C5B0FF;
+  --cor-ok: #6CD49A; --cor-info: #6FC79A; --cor-info-fundo: #203328;
+  --cor-atencao: #F5D36B; --cor-atencao-fundo: #2B2410; --cor-risco: #FF8A7A; --cor-risco-fundo: #2A1714;
+  --cor-borda: #5E6D64; --cor-borda-leve: #2C3530; --cor-foco: #9DB5FF;
+  --cor-sombra: rgba(0, 0, 0, .5); --cor-veu: rgba(0, 0, 0, .65);
+  color-scheme: dark;
+}
+
+/* ═════════════ B · Carteira azul ═════════════ */
+:root[data-visual="b"] {
+  --fonte-texto: "Noto Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --fonte-titulo: "Libre Franklin", "Noto Sans", system-ui, sans-serif;  /* sem tnum: nunca em valores */
+  --fonte-numero: "Noto Sans", system-ui, sans-serif;
+  --fonte-rotulo: "Noto Sans", system-ui, sans-serif;
+  --peso-titulo: 700; --peso-numero: 600; --peso-marca: 800;
+  --rotulo-caixa: none; --rotulo-espaco: 0; --rotulo-tamanho: 1rem; --rotulo-peso: 600;
+  --tam-numero: 2.75rem; --tam-numero-celular: 2.375rem;
+  --raio: 2px; --raio-botao: 2px; --raio-campo: 2px; --raio-pilula: 999px;
+  --largura-conteudo: 46rem;
+
+  --cor-fundo: #FFFFFF;
+  --cor-superficie: #FFFFFF;
+  --cor-superficie-2: #F2F6F9;   /* "página": blocos e linhas alternadas */
+  --cor-texto: #0F1B2D;
+  --cor-texto-2: #4A5A6E;
+  --cor-rotulo: #0F1B2D;
+  --cor-topo: #1D2F55; --cor-sobre-topo: #FFFFFF; --cor-sobre-topo-2: #C9D4E6; --cor-faixa-topo: #1D2F55;
+  --cor-acao: #1F5FAD; --cor-sobre-acao: #FFFFFF; --cor-acao-fundo: #E8F0FA;
+  --cor-primario: #1F5FAD; --cor-sobre-primario: #FFFFFF;
+  --cor-ativo: #1D2F55; --cor-sobre-ativo: #FFFFFF;
+  --cor-indicador: #DCE6F4;
+  --cor-digitado: #1F5FAD;
+  --cor-total: #0F1B2D;
+  --cor-desconto: #0F1B2D;
+  --cor-selo: #C9D4E6;
+  --cor-ok: #1E7B45;
+  --cor-info: #1F5FAD; --cor-info-fundo: #E8F0FA;
+  --cor-atencao: #5C4400; --cor-atencao-fundo: #FFF4CC;
+  --cor-risco: #A4330F; --cor-risco-fundo: #FBEEE9;
+  --cor-borda: #7D8DA1;
+  --cor-borda-leve: #D6DEE8;
+  --cor-foco: #1F5FAD;
+  --cor-foco-topo: #8FB4FF;   /* foco sobre o cabeçalho marinho (#1D2F55): cerca de 7:1 */
+  --cor-sombra: rgba(15, 27, 45, .18);
+  --cor-veu: rgba(13, 21, 34, .55);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-visual="b"][data-tema="auto"] {
+    --cor-fundo: #0D1522; --cor-superficie: #0D1522; --cor-superficie-2: #152033;
+    --cor-texto: #E6ECF4; --cor-texto-2: #9EADC2; --cor-rotulo: #E6ECF4;
+    --cor-topo: #152033; --cor-sobre-topo: #E6ECF4; --cor-sobre-topo-2: #9EADC2; --cor-faixa-topo: #5B6E8A;
+    --cor-acao: #8FB4FF; --cor-sobre-acao: #0D1522; --cor-acao-fundo: #1A2A44;
+    --cor-primario: #8FB4FF; --cor-sobre-primario: #0D1522;
+    --cor-ativo: #8FB4FF; --cor-sobre-ativo: #0D1522; --cor-indicador: #26385C;
+    --cor-digitado: #8FB4FF; --cor-total: #E6ECF4; --cor-desconto: #E6ECF4; --cor-selo: #9EADC2;
+    --cor-ok: #6CD49A; --cor-info: #8FB4FF; --cor-info-fundo: #1A2A44;
+    --cor-atencao: #F5D36B; --cor-atencao-fundo: #2B2410; --cor-risco: #FF9C7A; --cor-risco-fundo: #2A1812;
+    --cor-borda: #5B6E8A; --cor-borda-leve: #24324A; --cor-foco: #8FB4FF;
+    --cor-sombra: rgba(0, 0, 0, .5); --cor-veu: rgba(0, 0, 0, .65);
+    color-scheme: dark;
+  }
+}
+:root[data-visual="b"][data-tema="escuro"] {
+  --cor-fundo: #0D1522; --cor-superficie: #0D1522; --cor-superficie-2: #152033;
+  --cor-texto: #E6ECF4; --cor-texto-2: #9EADC2; --cor-rotulo: #E6ECF4;
+  --cor-topo: #152033; --cor-sobre-topo: #E6ECF4; --cor-sobre-topo-2: #9EADC2; --cor-faixa-topo: #5B6E8A;
+  --cor-acao: #8FB4FF; --cor-sobre-acao: #0D1522; --cor-acao-fundo: #1A2A44;
+  --cor-primario: #8FB4FF; --cor-sobre-primario: #0D1522;
+  --cor-ativo: #8FB4FF; --cor-sobre-ativo: #0D1522; --cor-indicador: #26385C;
+  --cor-digitado: #8FB4FF; --cor-total: #E6ECF4; --cor-desconto: #E6ECF4; --cor-selo: #9EADC2;
+  --cor-ok: #6CD49A; --cor-info: #8FB4FF; --cor-info-fundo: #1A2A44;
+  --cor-atencao: #F5D36B; --cor-atencao-fundo: #2B2410; --cor-risco: #FF9C7A; --cor-risco-fundo: #2A1812;
+  --cor-borda: #5B6E8A; --cor-borda-leve: #24324A; --cor-foco: #8FB4FF;
+  --cor-sombra: rgba(0, 0, 0, .5); --cor-veu: rgba(0, 0, 0, .65);
+  color-scheme: dark;
+}
+
+/* ═════════════ C · Bobina da somadora ═════════════ */
+:root[data-visual="c"] {
+  --fonte-texto: "Red Hat Text", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --fonte-titulo: "Red Hat Text", system-ui, sans-serif;
+  --fonte-numero: "Red Hat Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --fonte-rotulo: "Red Hat Text", system-ui, sans-serif;
+  --peso-titulo: 700; --peso-numero: 700; --peso-marca: 700;
+  --rotulo-caixa: none; --rotulo-espaco: 0; --rotulo-tamanho: 1rem; --rotulo-peso: 500;
+  --tam-numero: 2.625rem; --tam-numero-celular: 2.25rem;
+  --raio: 0; --raio-botao: 6px; --raio-campo: 0; --raio-pilula: 0;
+  --largura-conteudo: 32rem;     /* a fita é estreita até no computador */
+  --linha: 1.45;
+
+  --cor-fundo: #F1F1EE;          /* atrás da fita */
+  --cor-superficie: #FFFFFF;     /* a fita */
+  --cor-superficie-2: #F1F1EE;
+  --cor-texto: #161616;
+  --cor-texto-2: #595959;
+  --cor-rotulo: #595959;
+  --cor-topo: #F1F1EE; --cor-sobre-topo: #161616; --cor-sobre-topo-2: #595959; --cor-faixa-topo: #161616;
+  --cor-acao: #1D3FBF; --cor-sobre-acao: #FFFFFF; --cor-acao-fundo: #EEF1FB;
+  --cor-primario: #F2B705; --cor-sobre-primario: #161616;   /* tecla amarela */
+  --cor-borda-primario: #161616;  /* borda escura: a tecla amarela some no fundo claro sem ela */
+  --cor-ativo: #161616; --cor-sobre-ativo: #FFFFFF;           /* chip ativo invertido */
+  --cor-indicador: #EEF1FB;
+  --cor-digitado: #161616;
+  --cor-total: #1D3FBF;
+  --cor-desconto: #B3122A;
+  --cor-selo: #595959;
+  --cor-ok: #1E7B45;
+  --cor-info: #1D3FBF; --cor-info-fundo: #EEF1FB;
+  --cor-atencao: #5C4400; --cor-atencao-fundo: #FFF3C4;
+  --cor-risco: #B3122A; --cor-risco-fundo: #FCEDEF;
+  --cor-borda: #767676;
+  --cor-borda-leve: #DADAD6;
+  --cor-foco: #1D3FBF;
+  --cor-sombra: rgba(0, 0, 0, .18);
+  --cor-veu: rgba(15, 15, 15, .55);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-visual="c"][data-tema="auto"] {
+    --cor-fundo: #0F0F0F; --cor-superficie: #1A1A1A; --cor-superficie-2: #0F0F0F;
+    --cor-texto: #EDEDED; --cor-texto-2: #A8A8A8; --cor-rotulo: #A8A8A8;
+    --cor-topo: #0F0F0F; --cor-sobre-topo: #EDEDED; --cor-sobre-topo-2: #A8A8A8; --cor-faixa-topo: #EDEDED;
+    --cor-acao: #9DB1FF; --cor-sobre-acao: #0F0F0F; --cor-acao-fundo: #1C2235;
+    --cor-primario: #F2B705; --cor-sobre-primario: #161616; --cor-borda-primario: #F2B705;
+    --cor-ativo: #EDEDED; --cor-sobre-ativo: #1A1A1A; --cor-indicador: #1C2235;
+    --cor-digitado: #EDEDED; --cor-total: #9DB1FF; --cor-desconto: #FF7A7A; --cor-selo: #A8A8A8;
+    --cor-ok: #6CD49A; --cor-info: #9DB1FF; --cor-info-fundo: #1C2235;
+    --cor-atencao: #F5D36B; --cor-atencao-fundo: #2B2410; --cor-risco: #FF7A7A; --cor-risco-fundo: #2A1517;
+    --cor-borda: #7A7A7A; --cor-borda-leve: #303030; --cor-foco: #9DB1FF;
+    --cor-sombra: rgba(0, 0, 0, .6); --cor-veu: rgba(0, 0, 0, .7);
+    color-scheme: dark;
+  }
+}
+:root[data-visual="c"][data-tema="escuro"] {
+  --cor-fundo: #0F0F0F; --cor-superficie: #1A1A1A; --cor-superficie-2: #0F0F0F;
+  --cor-texto: #EDEDED; --cor-texto-2: #A8A8A8; --cor-rotulo: #A8A8A8;
+  --cor-topo: #0F0F0F; --cor-sobre-topo: #EDEDED; --cor-sobre-topo-2: #A8A8A8; --cor-faixa-topo: #EDEDED;
+  --cor-acao: #9DB1FF; --cor-sobre-acao: #0F0F0F; --cor-acao-fundo: #1C2235;
+  --cor-primario: #F2B705; --cor-sobre-primario: #161616; --cor-borda-primario: #F2B705;
+  --cor-ativo: #EDEDED; --cor-sobre-ativo: #1A1A1A; --cor-indicador: #1C2235;
+  --cor-digitado: #EDEDED; --cor-total: #9DB1FF; --cor-desconto: #FF7A7A; --cor-selo: #A8A8A8;
+  --cor-ok: #6CD49A; --cor-info: #9DB1FF; --cor-info-fundo: #1C2235;
+  --cor-atencao: #F5D36B; --cor-atencao-fundo: #2B2410; --cor-risco: #FF7A7A; --cor-risco-fundo: #2A1517;
+  --cor-borda: #7A7A7A; --cor-borda-leve: #303030; --cor-foco: #9DB1FF;
+  --cor-sombra: rgba(0, 0, 0, .6); --cor-veu: rgba(0, 0, 0, .7);
+  color-scheme: dark;
+}
+
+/* ───────────── Ajustes de acessibilidade (valem para os 3 visuais) ───────────── */
+
+/* Letra grande: tudo em rem cresce junto (16 px -> 19 px). */
+:root[data-letra="grande"] { font-size: 118.75%; --altura-abas: 70px; }
+
+/* Alto contraste: texto secundário vira texto principal e as bordas ficam na cor do texto.
+   O seletor repete [data-visual][data-tema] para vencer a especificidade dos blocos acima. */
+:root[data-contraste="alto"][data-visual][data-tema] {
+  --cor-texto-2: var(--cor-texto);
+  --cor-rotulo: var(--cor-texto);
+  --cor-sobre-topo-2: var(--cor-sobre-topo);
+  --cor-selo: var(--cor-texto);
+  --cor-borda: var(--cor-texto);
+  --cor-borda-leve: var(--cor-texto-2);
+  --cor-digitado: var(--cor-texto);
+}
+
+/* Menos animação: pelo aparelho (auto) ou à força (reduzido). */
+@media (prefers-reduced-motion: reduce) {
+  :root[data-movimento="auto"] { --dur: 0ms; }
+}
+:root[data-movimento="reduzido"] { --dur: 0ms; }

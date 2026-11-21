@@ -66,7 +66,7 @@ export function calcularPorHora(entrada = {}, dataISO, opcoes = {}) {
     alertas.push(alerta('info', 'acima_8h', 'Mais de 8 horas por dia',
       'Para empregados, a jornada normal é de até 8 h por dia; o que passar é hora extra (pelo menos 50% a mais).', null));
   }
-  alertas.push(...alertasMudancaJornada(data, overrides));
+  alertas.push(...alertasMudancaJornada(data, overrides, 60, { comVinculo: false }));
   return montar({ entrada, resultado, passos, alertas, data });
 }
 

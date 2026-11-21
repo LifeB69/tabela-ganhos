@@ -111,7 +111,12 @@ export function calcularDiarista(entrada = {}, dataISO, opcoes = {}) {
 
   // sem 13º, férias, DSR, FGTS e VT: explicação
   const pVinc = getParam('vinculo_domestico', data);
-  passos.push(passo('sem_direitos_clt', 'Sem 13º, férias, DSR, FGTS e vale-transporte',
+  const limiteVinc = pVinc?.valor?.dias_semana_a_partir_de ?? 3;
+  if (entrada.mesmaResidencia !== false && diasSemana >= limiteVinc) {
+    passos.push(passo('direitos_dependem', 'Direitos dependem do enquadramento',
+      `Com ${limiteVinc} dias ou mais por semana na mesma casa, pode ser emprego doméstico (LC 150, art. 1º), com 13º, férias, FGTS e guia DAE. Veja o modo Doméstico. Quem decide o vínculo é a Justiça.`,
+      null, pVinc || { fonte_url: FONTES.lc150, lei: 'LC 150, art. 1º' }));
+  } else passos.push(passo('sem_direitos_clt', 'Sem 13º, férias, DSR, FGTS e vale-transporte',
     'A LC 150, art. 1º, só considera empregado doméstico quem trabalha na mesma residência por mais de 2 dias por semana. Até 2 dias, a diarista fica fora da LC 150 e, por essa lei, não há 13º, férias, DSR, FGTS nem vale-transporte: paga-se a diária combinada.',
     0, pVinc || { fonte_url: FONTES.lc150, lei: 'LC 150, art. 1º' }));
 

@@ -1,0 +1,93 @@
+/* Tabela de Ganhos v2 — tela Calcular. Todo seletor começa com [data-tela="calcular"]; só tokens.
+   As folhas (salvar, compartilhar, questionário) também levam data-tela="calcular" no conteúdo. */
+
+/* ───── Topo: modo, "não sei", exemplos ───── */
+[data-tela="calcular"] .calc-topo { gap: var(--espaco-2); }
+[data-tela="calcular"] .calc-naosei { align-self: flex-start; padding: 0 2px; }
+[data-tela="calcular"] .calc-exemplo-nota {
+  display: block; padding: var(--espaco-2) var(--espaco-3); border-left: 3px solid var(--cor-borda);
+  background: var(--cor-superficie); color: var(--cor-texto); font-size: var(--tam-1);
+}
+[data-tela="calcular"] .calc-exemplo-nota .selo { margin-right: 2px; }
+
+/* "Mais opções" e "Exemplos": details com resumo de 44 px */
+[data-tela="calcular"] .calc-mais { border-top: 1px solid var(--cor-borda-leve); border-bottom: 1px solid var(--cor-borda-leve); }
+[data-tela="calcular"] .calc-mais-resumo {
+  list-style: none; min-height: var(--alvo); display: flex; align-items: center; justify-content: space-between; gap: var(--espaco-2);
+  cursor: pointer; font-weight: 600; color: var(--cor-acao);
+}
+[data-tela="calcular"] .calc-mais-resumo::-webkit-details-marker { display: none; }
+[data-tela="calcular"] .calc-mais-resumo .icone { transition: transform var(--dur); }
+[data-tela="calcular"] details[open] > .calc-mais-resumo .icone { transform: rotate(180deg); }
+[data-tela="calcular"] .calc-mais-corpo { padding: var(--espaco-1) 0 var(--espaco-4); }
+[data-tela="calcular"] .calc-exemplos { margin-top: var(--espaco-1); }
+
+/* ───── Campos ───── */
+[data-tela="calcular"] .calc-campos { display: flex; flex-direction: column; gap: var(--espaco-4); min-width: 0; }
+[data-tela="calcular"] .calc-dados { min-width: 0; }
+
+/* ───── Resultado ───── */
+[data-tela="calcular"] .calc-saida { display: flex; flex-direction: column; gap: var(--espaco-4); min-width: 0; }
+[data-tela="calcular"] .calc-resultado { min-width: 0; }
+/* Sem número ainda: o pedido ("Preencha o salário") em tamanho de texto, não de total */
+[data-tela="calcular"] .calc-resultado--vazio .resultado-numero {
+  font-family: var(--fonte-texto); font-size: var(--tam-3); font-weight: 600; color: var(--cor-texto-2); letter-spacing: 0;
+}
+[data-tela="calcular"] .calc-resultado .resultado-acoes > .botao { flex: 1 1 9rem; }
+[data-tela="calcular"] .calc-selos { display: flex; flex-wrap: wrap; align-items: center; gap: 6px var(--espaco-2); margin-top: calc(-1 * var(--espaco-2)); }
+[data-tela="calcular"] .calc-selos .selo { white-space: normal; text-align: left; }
+[data-tela="calcular"] .calc-selos-botao { font-size: var(--tam-1); }
+[data-tela="calcular"] .calc-extras:empty, [data-tela="calcular"] .calc-selos:empty { display: none; }
+[data-tela="calcular"] .calc-nota { margin-top: var(--espaco-2); font-size: var(--tam-1); color: var(--cor-texto-2); }
+[data-tela="calcular"] .calc-inverso-resultado { min-width: 0; }
+
+/* Resumo fixo acima das abas (só quando o cartão do resultado está fora da tela, mais abaixo) */
+[data-tela="calcular"] .calc-resumo-fixo {
+  position: fixed; z-index: 19; left: calc(var(--espaco-3) + env(safe-area-inset-left, 0px)); right: calc(var(--espaco-3) + env(safe-area-inset-right, 0px));
+  bottom: calc(var(--altura-abas) + env(safe-area-inset-bottom, 0px) + var(--espaco-2));
+  display: flex; align-items: center; justify-content: space-between; gap: var(--espaco-2);
+  min-height: var(--alvo); padding: 6px var(--espaco-3); text-align: left;
+  background: var(--cor-ativo); color: var(--cor-sobre-ativo); border: 1px solid var(--cor-ativo); border-radius: var(--raio);
+  box-shadow: 0 4px 14px var(--cor-sombra); font: inherit; font-size: var(--tam-1);
+}
+[data-tela="calcular"] .calc-resumo-fixo-valor { min-width: 0; overflow-wrap: anywhere; }
+[data-tela="calcular"] .calc-resumo-fixo-valor strong { font-family: var(--fonte-numero); font-size: var(--tam-2); white-space: nowrap; }
+[data-tela="calcular"] .calc-resumo-fixo-ver { display: inline-flex; align-items: center; gap: 4px; font-weight: 600; white-space: nowrap; text-decoration: underline; text-underline-offset: 3px; }
+[data-tela="calcular"] .calc-resumo-fixo:focus-visible { outline-color: var(--cor-foco); outline-offset: 3px; }
+/* Com o resumo à mostra, o foco do teclado também não pode ficar escondido atrás dele */
+html.tg-resumo-fixo { scroll-padding-bottom: calc(var(--altura-abas) + env(safe-area-inset-bottom, 0px) + var(--alvo) + 40px); }
+@media (min-width: 900px) {
+  [data-tela="calcular"] .calc-resumo-fixo { left: auto; right: var(--espaco-5); bottom: var(--espaco-4); max-width: 26rem; }
+  html.tg-resumo-fixo { scroll-padding-bottom: calc(var(--alvo) + 40px); }
+}
+[data-visual="a"] [data-tela="calcular"] .calc-resumo-fixo { border-radius: 2px; }
+[data-visual="c"] [data-tela="calcular"] .calc-resumo-fixo { border-radius: 0; border: 1.5px solid var(--cor-texto); }
+
+/* ───── Folhas (salvar, compartilhar, questionário) ───── */
+[data-tela="calcular"].calc-folha, [data-tela="calcular"].calc-quest { display: flex; flex-direction: column; gap: var(--espaco-4); }
+[data-tela="calcular"] .calc-botao-link { flex: 1 1 100%; }
+[data-tela="calcular"] .calc-texto {
+  margin: 0; padding: var(--espaco-3); white-space: pre-wrap; overflow-wrap: anywhere;
+  font-family: var(--fonte-texto); font-size: var(--tam-1); background: var(--cor-superficie-2); color: var(--cor-texto); border-radius: var(--raio);
+}
+[data-tela="calcular"] .calc-quest-resultado { display: flex; flex-direction: column; gap: var(--espaco-2); padding-top: var(--espaco-3); border-top: 1px solid var(--cor-borda-leve); }
+[data-tela="calcular"] .calc-quest-sugestao { font-size: var(--tam-3); }
+[data-tela="calcular"] .calc-quest-falta { color: var(--cor-atencao); font-weight: 600; }
+
+/* ───── Ajustes por visual ───── */
+/* B: o resultado é a "página" cinza de largura total, como na proposta */
+[data-visual="b"] [data-tela="calcular"] .calc-resultado .resultado { margin: 0 calc(-1 * var(--espaco-4)); padding-left: var(--espaco-4); padding-right: var(--espaco-4); }
+[data-visual="b"] [data-tela="calcular"] .calc-topo { padding-top: 0; }
+/* C: detalhes com o pontilhado da fita */
+[data-visual="c"] [data-tela="calcular"] .calc-mais { border-top: 1.5px dashed var(--cor-borda); border-bottom: 1.5px dashed var(--cor-borda); }
+[data-visual="c"] [data-tela="calcular"] .calc-exemplo-nota { border-left-color: var(--cor-texto); }
+
+@media (min-width: 900px) {
+  [data-visual="b"] [data-tela="calcular"] .calc-resultado .resultado { margin: 0; border: 1px solid var(--cor-borda-leve); }
+}
+
+/* Impressão: só o que interessa (o impressao.css da estrutura vale por cima) */
+@media print {
+  [data-tela="calcular"] .calc-topo, [data-tela="calcular"] .calc-exemplo-nota, [data-tela="calcular"] .resultado-acoes,
+  [data-tela="calcular"] .calc-selos-botao, [data-tela="calcular"] .alerta-acoes .botao, [data-tela="calcular"] .calc-resumo-fixo { display: none !important; }
+}

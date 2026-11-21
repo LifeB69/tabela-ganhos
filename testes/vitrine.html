@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="pt-BR" data-visual="a" data-tema="auto" data-letra="normal" data-contraste="normal" data-movimento="auto">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; form-action 'none'; base-uri 'none'">
+<title>Vitrine de componentes</title>
+<meta name="robots" content="noindex">
+<script src="../js/pre-tema.js"></script>
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/componentes.css">
+<link rel="stylesheet" href="../css/impressao.css" media="print">
+<script type="module" src="vitrine.js"></script>
+</head>
+<body>
+<!-- Página de teste (não é do app): mostra todos os componentes de js/ui/ com dados reais do motor.
+     Use ?visual=a|b|c&tema=claro|escuro&letra=grande&contraste=alto, e ?folha=1 ou ?toast=1.
+     Com ?verificar=1 roda as checagens automáticas (contraste AA, alvos de 44 px, rolagem lateral)
+     e escreve o relatório em <pre id="relatorio">. -->
+<div class="conteudo">
+  <main id="tela" tabindex="-1"><p class="carregando">Abrindo…</p></main>
+</div>
+<div class="sr" id="anuncio" role="status" aria-live="polite" aria-atomic="true"></div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+</body>
+</html>

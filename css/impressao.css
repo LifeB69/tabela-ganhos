@@ -1,0 +1,36 @@
+/* Tabela de Ganhos v2 — impressão / PDF. Carregado com media="print".
+   Papel branco, tinta preta, sem navegação nem botões; links da lei com o endereço por extenso.
+   O app.js abre todos os <details> antes de imprimir e fecha de novo depois. */
+@page { margin: 14mm 12mm; }
+:root, :root[data-visual][data-tema] {
+  --cor-fundo: #FFFFFF; --cor-superficie: #FFFFFF; --cor-superficie-2: #F2F2F2;
+  --cor-texto: #000000; --cor-texto-2: #333333; --cor-rotulo: #333333;
+  --cor-topo: #FFFFFF; --cor-sobre-topo: #000000; --cor-sobre-topo-2: #333333;
+  --cor-acao: #000000; --cor-digitado: #000000; --cor-total: #000000; --cor-desconto: #000000;
+  --cor-borda: #666666; --cor-borda-leve: #BBBBBB; --cor-selo: #000000;
+  --cor-ok: #000000; --cor-info: #000000; --cor-atencao: #000000; --cor-risco: #000000;
+  --cor-info-fundo: #FFFFFF; --cor-atencao-fundo: #FFFFFF; --cor-risco-fundo: #FFFFFF;
+  color-scheme: light;
+}
+html { font-size: 11pt; }
+body { background: #FFFFFF !important; color: #000000 !important; overflow: visible; }
+.abas, .pular, .topo-botao, .toasts, .folha, .botao, .grupo-botoes, .resultado-acoes, .alerta-acoes, .nao-imprimir, .campo-passo { display: none !important; }
+.so-impressao { display: block !important; }
+.casca { display: block; min-height: 0; }
+.conteudo { padding: 0 !important; }
+#tela { max-width: none; padding: 0 !important; }
+.topo { padding: 0 0 6pt; border-bottom: 1pt solid #000; }
+.topo::before { display: none !important; }
+.selo-conferido { transform: none !important; }
+.resultado, .conta, .alerta, .bloco--papel, .tabela-rolavel { break-inside: avoid; box-shadow: none !important; }
+.resultado::before, .resultado::after, .bloco--papel::before, .bloco--papel::after { display: none !important; }
+.alerta { border: 1.5pt solid #000 !important; }
+.tabela-rolavel { overflow: visible; border: 0; }
+.tabela th, .tabela td { height: auto; padding: 3pt 5pt; }
+.tabela--fixa-1 tbody th, .tabela--fixa-1 thead th:first-child { position: static; }
+a { color: #000; text-decoration: underline; }
+a.conta-lei[href^="http"]::after, a.alerta-link[href^="http"]::after { content: " (" attr(href) ")"; font-weight: 400; font-size: 8.5pt; overflow-wrap: anywhere; }
+.conta-resumo .icone, svg.icone--externo { display: none; }
+.campo-input { color: #000 !important; }
+.aviso-legal { padding: 8pt 0 0; font-size: 9pt; }
+* { animation: none !important; transition: none !important; }
